@@ -1,0 +1,13 @@
+#ifndef TERMINALS_H
+#define TERMINALS_H
+
+#define TERMINALS "+-*/%^!()[],;?"
+
+enum T_CHARS
+{
+    PLUS, MINUS, STAR, SLASH, PERCENT, CARET, EXCLAM,
+    O_PAREN, C_PAREN, O_BRACKET, C_BRACKET, COMMA, SEMICOLON,
+    QUESTION,
+};
+
+#endif

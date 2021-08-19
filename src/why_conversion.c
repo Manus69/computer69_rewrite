@@ -34,6 +34,23 @@ static real _convert_int_part(const char *string, int_signed length)
     return result;
 }
 
+int_signed convert_to_int(const char *string)
+{
+    int_signed result;
+
+    if (*string == '-')
+        return convert_to_int(++ string);
+    
+    result = 0;
+    while (*string && id_digit(string))
+    {
+        result = result * 10 + *string - '0';
+        string ++;
+    }
+
+    return result;
+}
+
 real convert_to_real(const char *string)
 {
     real result;

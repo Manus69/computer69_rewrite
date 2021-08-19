@@ -78,3 +78,18 @@ char *cstr_concat(const char *lhs, const char *rhs)
 
     return cstr_concat_length(lhs, lhs_len, rhs, rhs_len);
 }
+
+int_signed cstr_index_of(const char *string, char c)
+{
+    int_signed n;
+
+    n = 0;
+    while (string[n])
+    {
+        if (string[n] == c)
+            return n;
+        n ++;
+    }
+
+    return NOT_FOUND;
+}

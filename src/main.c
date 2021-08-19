@@ -5,12 +5,29 @@
 
 #include <stdio.h>
 
+struct test
+{
+    union
+    {
+        int n;
+        char *str;
+        char *str2;
+        String *string;
+    };
+};
+
+//user defined names must be case insensitive
+
 int main()
 {
-    Number *number;
+    struct test *test;
 
-    number = number_new_complex(complex(-1, -1));
-    print_number(number);
+    test = allocate(sizeof(struct test));
+    void *p = string_new_allocated("01234", 2);
+    test->str = p;
     
+    string_delete((String **)&test->str);
+    free(test);
+
     return 0;
 }

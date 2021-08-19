@@ -6,6 +6,7 @@
 void _string_init(String *string, const char *literal, int_signed length, unsigned char allocated)
 {
     string->characters = (char *)literal;
+    string->pointer = string->characters;
     string->length = length;
     string->allocated = allocated;
 }
@@ -13,15 +14,13 @@ void _string_init(String *string, const char *literal, int_signed length, unsign
 void _string_init_copy(String *lhs, const String *rhs)
 {
     lhs->characters = (char *)rhs->characters;
+    lhs->pointer = lhs->characters;
     lhs->length = rhs->length;
     lhs->allocated = FALSE;
 }
 
 int_signed _string_shift(String *string, int_signed shift)
 {
-    if (string->allocated)
-        return 0;
-    
     if (string->length < shift)
         shift = string->length;
     
@@ -62,8 +61,6 @@ String *string_new_allocated(const char *literal, int_signed length)
     string = allocate(sizeof(String));
 
     characters = allocate(length + 1);
-    if (!characters)
-        return NULL;
 
     characters = memory_copy(characters, literal, length);
     characters[length] = 0;
@@ -93,7 +90,7 @@ void string_delete(String **string)
     if (!string || !*string)
         return ;
     if ((*string)->allocated)
-        free((*string)->characters);
+        free((*string)->pointer);
 
     free(*string);
     *string = NULL;
@@ -178,19 +175,41 @@ boolean string_is_identical(const String *lhs, const String *rhs)
     return (string_compare(lhs, rhs) == 0) ? TRUE : FALSE;
 }
 
-String *string_get_substring(const String *string, int_signed left_int_signed, int_signed right_int_signed)
+String *string_get_substring(const String *string, int_signed left_index, int_signed length)
 {
     char *pointer;
 
-    pointer = string->characters + left_int_signed;
+    pointer = string->characters + left_index;
 
-    return string_new_fixed_length(pointer, right_int_signed - left_int_signed);
+    return string_new_fixed_length(pointer, length);
 }
 
-String *string_get_substring_from(const String *string, int_signed left_int_signed)
+String *string_get_substring_from(const String *string, int_signed left_index)
 {
-    if (string->length <= left_int_signed)
+    if (string->length <= left_index)
         return NULL;
 
-    return string_get_substring(string, left_int_signed, string->length);
+    return string_get_substring(string, left_index, string->length - left_index);
+}
+
+String *string_remove_whitespace(const String *string)
+{
+    char *new_characters;
+    char *characters;
+    int_signed n;
+
+    n = 0;
+    characters = string_get_characters(string);
+    new_characters = memory_zero(string->length + 1);
+    while (n < string->length)
+    {
+        if (!id_whitespace(characters))
+        {
+            new_characters[n] = *characters;
+            n ++;
+        }
+        characters ++;
+    }
+
+    return string_new_allocated(new_characters, n);
 }

@@ -44,6 +44,30 @@ int_signed string_index_of_compliment_from(const String *string, int_signed star
     return string_index_of_predicate(string, start, c, _not_id_char);
 }
 
+int_signed string_index_of_any(const String *string, char *characters)
+{
+    int_signed n;
+    int_signed index;
+    String *wrapper;
+
+    n = 0;
+    index = NOT_FOUND;
+    wrapper = string_new(characters);
+    while (n < string->length)
+    {
+        index = string_index_of(wrapper, string_at(string, n));
+        if (index != NOT_FOUND)
+        {
+            string_delete(&wrapper);
+            return n;
+        }
+        n ++;            
+    }
+
+    string_delete(&wrapper);
+    return NOT_FOUND;
+}
+
 static int_signed _string_find_from(const String *haystack, const String *needle, int_signed start)
 {
     int_signed next_index;

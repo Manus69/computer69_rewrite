@@ -21,8 +21,9 @@ String      *string_append_string(String *string, const String *rhs);
 String      *string_copy_shallow(const String *string);
 String      *string_copy_semideep(const String *string);
 String      *string_copy_deep(const String *string);
-String      *string_get_substring(const String *string, int_signed left_int_signed, int_signed right_int_signed);
-String      *string_get_substring_from(const String *string, int_signed left_int_signed);
+String      *string_get_substring(const String *string, int_signed left_index, int_signed length);
+String      *string_get_substring_from(const String *string, int_signed length);
+String      *string_remove_whitespace(const String *string);
 void        string_delete(String **string);
 
 //search
@@ -30,6 +31,7 @@ int_signed string_index_of_predicate(const String *string, int_signed start, cha
 int_signed string_index_of_from(const String *string, int_signed start, char c);
 int_signed string_index_of(const String *string, char c);
 int_signed string_index_of_compliment_from(const String *string, int_signed start, char c);
+int_signed string_index_of_any(const String *string, char *characters);
 int_signed string_find(const String *haystack, const String *needle);
 int_signed string_find_literal(const String *haystack, const char *needle);
 

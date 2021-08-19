@@ -10,6 +10,8 @@
 #include "why_tree_interface.h"
 #include "why_conversion.h"
 #include "why_copy.h"
+#include "why_print.h"
+#include "why_cstring.h"
 
 Vector *string_split(String *string, char delimiter);
 Vector *string_split_cstar(char *c_string, char delimiter);
