@@ -53,7 +53,7 @@ String *string_new(const char *literal)
     return string_new_fixed_length(literal, length);
 }
 
-String *string_new_allocated(const char *literal, int_signed length)
+String *string_new_allocated_fl(const char *literal, int_signed length)
 {
     String *string;
     char *characters;
@@ -68,6 +68,15 @@ String *string_new_allocated(const char *literal, int_signed length)
     _string_init(string, characters, length, TRUE);
 
     return string;
+}
+
+String *string_new_allocated(const char *literal)
+{
+    int_signed length;
+
+    length = cstr_length(literal);
+
+    return string_new_allocated_fl(literal, length);
 }
 
 char string_at(const String *string, int_signed n)
@@ -192,18 +201,32 @@ String *string_get_substring_from(const String *string, int_signed left_index)
     return string_get_substring(string, left_index, string->length - left_index);
 }
 
-String *string_remove_whitespace(const String *string)
+static inline void _insert(char *string, int_signed n, char c)
+{
+    if (c)
+        string[n] = c;
+}
+
+String *string_substitute_chars(String *string, const char *set, char replacement)
 {
     char *new_characters;
     char *characters;
     int_signed n;
+    int_signed index;
 
-    n = 0;
-    characters = string_get_characters(string);
     new_characters = memory_zero(string->length + 1);
-    while (n < string->length)
+    characters = string_get_characters(string);
+    n = 0;
+    while (*characters)
     {
-        if (!id_whitespace(characters))
+        index = cstr_index_of(set, *characters);
+        if (index != NOT_FOUND)
+        {
+            new_characters[n] = replacement;
+            if (replacement)
+                n ++;
+        }
+        else
         {
             new_characters[n] = *characters;
             n ++;
@@ -211,5 +234,12 @@ String *string_remove_whitespace(const String *string)
         characters ++;
     }
 
-    return string_new_allocated(new_characters, n);
+    _string_init(string, new_characters, n, TRUE);
+    
+    return string;
+}
+
+String *string_remove_spaces(String *string)
+{
+    return string_substitute_chars(string, " \t", 0);
 }

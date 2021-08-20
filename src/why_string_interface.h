@@ -15,7 +15,8 @@ int_signed  string_compare(const String *lhs, const String *rhs);
 boolean     string_is_identical(const String *lhs, const String *rhs);
 String      *string_new_fixed_length(const char *literal, int_signed length);
 String      *string_new(const char *literal);
-String      *string_new_allocated(const char *literal, int_signed length);
+String      *string_new_allocated_fl(const char *literal, int_signed length);
+String      *string_new_allocated(const char *literal);
 String      *string_append_literal(String *string, const char *rhs);
 String      *string_append_string(String *string, const String *rhs);
 String      *string_copy_shallow(const String *string);
@@ -23,7 +24,8 @@ String      *string_copy_semideep(const String *string);
 String      *string_copy_deep(const String *string);
 String      *string_get_substring(const String *string, int_signed left_index, int_signed length);
 String      *string_get_substring_from(const String *string, int_signed length);
-String      *string_remove_whitespace(const String *string);
+String      *string_remove_spaces(String *string);
+String      *string_substitute_chars(String *string, const char *set, char replacement);
 void        string_delete(String **string);
 
 //search

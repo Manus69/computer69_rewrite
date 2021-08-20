@@ -6,16 +6,6 @@
 
 #include <assert.h>
 
-static String *_remove_spaces(String *string)
-{
-    String *new_string;
-
-    new_string = string_remove_whitespace(string);
-    string_delete(&string);
-
-    return new_string;
-}
-
 Computation *get_stuff_in_parens(String *string)
 {
     int_signed right_index;
@@ -100,7 +90,7 @@ Computation *get_operator(String *string)
 
     op_node = node_get_operator(string);
 
-    return computation_new(op_node);
+    return op_node ? computation_new(op_node) : NULL;
 }
 
 static Computation *process_u_minus(String *string)
@@ -170,7 +160,7 @@ static Computation *_parse(String *string)
         return root;
 
     if (!operator_is_binary(root->node->operator))
-            return root;
+        return root;
 
     last_op = root;
     while (TRUE)
@@ -184,6 +174,8 @@ static Computation *_parse(String *string)
 
         last_op->rhs = term;
         next_op = get_operator(string);
+        if (!next_op)
+            return root;
 
         if (!operator_is_binary(next_op->node->operator))
         {
@@ -208,7 +200,7 @@ Computation *parse(String *string)
     if (!string || !string_get_length(string))
         return NULL;
 
-    string = _remove_spaces(string);
+    string = string_remove_spaces(string);
 
     return _parse(string);
 }

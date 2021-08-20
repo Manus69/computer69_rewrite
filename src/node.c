@@ -41,6 +41,8 @@ static void *_fetch_destructor(NODE_TYPE type)
         return matrix_repr_delete;
     else if (type == NT_IDENTIFIER)
         return string_delete;
+    else if (type == NT_OPERATOR)
+        return operator_delete;
     
     return NULL;
 }

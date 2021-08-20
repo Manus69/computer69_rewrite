@@ -129,7 +129,7 @@ String *buffer_read_from(Buffer *buffer, int_signed n_bytes, boolean allocate_by
         n_bytes = bytes_availible;
     
     if (allocate_bytes)
-        string = string_new_allocated(buffer->read_pointer, n_bytes);
+        string = string_new_allocated_fl(buffer->read_pointer, n_bytes);
     else
         string = string_new_fixed_length(buffer->read_pointer, n_bytes);
     

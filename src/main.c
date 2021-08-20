@@ -13,13 +13,13 @@ void parse_test()
     Computation *cmp;
     String *string;
 
-    string = string_new("1");
+    string = string_new("0+1*2^2");
     cmp = parse(string);
 
     print_computation(cmp);
 
-    computation_delete(&cmp);
     string_delete(&string);
+    computation_delete(&cmp);
 }
 
 int main()

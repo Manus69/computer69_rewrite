@@ -37,6 +37,7 @@ int_unsigned id_identifier_str(const String *string);
 int_unsigned id_function_name_str(const String *string);
 int_signed find_matching_bracket(const char *string);
 int_signed find_matching_bracket_str(const String *string);
+String *string_new_no_space(const char *characters);
 
 Computation *parse(String *string);
 
