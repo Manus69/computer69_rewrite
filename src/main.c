@@ -5,29 +5,26 @@
 
 #include <stdio.h>
 
-struct test
-{
-    union
-    {
-        int n;
-        char *str;
-        char *str2;
-        String *string;
-    };
-};
-
 //user defined names must be case insensitive
+//NT enums have the same prefix
+
+void parse_test()
+{
+    Computation *cmp;
+    String *string;
+
+    string = string_new("1");
+    cmp = parse(string);
+
+    print_computation(cmp);
+
+    computation_delete(&cmp);
+    string_delete(&string);
+}
 
 int main()
 {
-    struct test *test;
-
-    test = allocate(sizeof(struct test));
-    void *p = string_new_allocated("01234", 2);
-    test->str = p;
-    
-    string_delete((String **)&test->str);
-    free(test);
+    parse_test();
 
     return 0;
 }

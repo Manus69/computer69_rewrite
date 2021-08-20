@@ -8,7 +8,7 @@ enum NODE_TYPE
 {
     NT_NUMBER, NT_MATRIX, NT_WILDCARD,
     NT_OPERATOR,
-    NT_FUNCTION, NT_UNDETERMINED,
+    NT_FUNCTION, NT_IDENTIFIER,
 };
 
 struct Node
@@ -16,9 +16,11 @@ struct Node
     union
     {
         Number *number;
+        Operator *operator;
         MatrixRepr *matrix;
         String *identifier;
     };
+    
     NODE_TYPE type;
 };
 

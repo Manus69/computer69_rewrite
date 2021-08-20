@@ -28,10 +28,19 @@ int_signed find_matching_bracket(const char *string)
             count ++;
         
         if (count == 0)
-            return string - initial - 1;
+            return string - initial;
         
         string ++;
     }
     
     return NOT_FOUND;
+}
+
+int_signed find_matching_bracket_str(const String *string)
+{
+    char *characters;
+
+    characters = string_get_characters(string);
+
+    return find_matching_bracket(characters);
 }

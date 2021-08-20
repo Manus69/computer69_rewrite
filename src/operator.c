@@ -6,6 +6,21 @@
 
 #include <assert.h>
 
+boolean operator_is_binary(Operator *operator)
+{
+    if (operator->type == OT_FACTORIAL)
+        return FALSE;
+    
+    return TRUE;
+}
+
+int_signed operator_compare_precedence(Operator *lhs, Operator *rhs)
+{
+    if (lhs->precedence > rhs->precedence)
+        return -1;
+    return rhs->precedence > lhs->precedence;
+}
+
 static byte _get_precedence(OPERATOR_TYPE type)
 {
     if (type <= OT_MINUS)
@@ -47,7 +62,14 @@ Operator *operator_new(String *string)
     if (index > EXCLAM)
         return NULL;
     
+    _string_shift(string, 1);
+
     return _new(index);
+}
+
+OPERATOR_TYPE operator_get_type(const Operator *operator)
+{
+    return operator->type;
 }
 
 void operator_delete(Operator **operator)

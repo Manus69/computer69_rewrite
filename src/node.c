@@ -12,7 +12,7 @@ Node *node_new(void *data, NODE_TYPE type)
     //     node->number = data;
     // else if (type == NT_MATRIX)
     //     node->matrix = data;
-    // else if (type == NT_UNDETERMINED)
+    // else if (type == NT_IDENTIFIER)
     //     node->identifier = data;
     
     node->identifier = data;
@@ -21,13 +21,25 @@ Node *node_new(void *data, NODE_TYPE type)
     return node;
 }
 
+Node *node_change_type(Node *node, NODE_TYPE type)
+{
+    node->type = type;
+
+    return node;
+}
+
+NODE_TYPE node_get_type(const Node *node)
+{
+    return node->type;
+}
+
 static void *_fetch_destructor(NODE_TYPE type)
 {
     if (type == NT_NUMBER)
         return number_delete;
     else if (type == NT_MATRIX)
         return matrix_repr_delete;
-    else if (type == NT_UNDETERMINED)
+    else if (type == NT_IDENTIFIER)
         return string_delete;
     
     return NULL;
@@ -37,6 +49,9 @@ static void *_fetch_destructor(NODE_TYPE type)
 void node_delete(Node **node)
 {
     void (*destructor)();
+
+    if (!node || !*node)
+        return ;
 
     destructor = _fetch_destructor((*node)->type);
     if (destructor)
@@ -64,7 +79,7 @@ Node *node_get_operator(String *string)
     return operator ? node_new(operator, NT_OPERATOR) : NULL;
 }
 
-Node *node_get_undetermined(String *string)
+Node *node_get_identifier(String *string)
 {
     int_unsigned length;
     String *substring;
@@ -74,6 +89,7 @@ Node *node_get_undetermined(String *string)
         return NULL;
     
     substring = string_get_substring(string, 0, length);
-    
-    return node_new(substring, NT_UNDETERMINED);
+    _string_shift(string, length);
+
+    return node_new(substring, NT_IDENTIFIER);
 }
