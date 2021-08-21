@@ -135,6 +135,16 @@ Number *number_new(String *string)
     return NULL;
 }
 
+Number *number_copy(const Number *number)
+{
+    Number *copy;
+
+    copy = allocate(sizeof(Number));
+    copy = memory_copy(copy, number, sizeof(Number));
+
+    return copy;
+}
+
 void number_delete(Number **number)
 {
     if (!number || !*number)

@@ -49,7 +49,7 @@ void test()
     VariableTable *v_table;
     String *string;
 
-    string = string_new_no_space("x = 1+1-(1+1)");
+    string = string_new_no_space("x = 3!!");
     v_table = NULL;
     
     if (id_assignment(string))
@@ -68,27 +68,6 @@ void test()
     string_delete(&string);    
 }
 
-void number_test()
-{
-    Number *n0, *n1, *result;
-    String *str0, *str1;
-
-    str0 = string_new("-1");
-    str1 = string_new("i");
-
-    n0 = number_new(str0);
-    n1 = number_new(str1);
-    result = number_add(n0, n1);
-
-    print_number(result);
-
-    number_delete(&n0);
-    number_delete(&n1);
-    number_delete(&result);
-    string_delete(&str0);
-    string_delete(&str1);
-}
-
 //user defined names must be case insensitive
 //NT enums have the same prefix
 //double exclam in a row?
@@ -103,7 +82,8 @@ int main()
 
     // number_test();
     // parse_test();
-    // test_syntax(valid_strings);
+    // test_syntax(valid_basic_strings);
+    // computation_test_basic(valid_basic_strings);
     // variable_test();
     test();
 

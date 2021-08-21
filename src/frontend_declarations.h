@@ -9,6 +9,7 @@ Number          *number_new_int(int_signed n);
 Number          *number_new_real(real x);
 Number          *number_new_complex(Complex z);
 Number          *number_new(String *string);
+Number          *number_copy(const Number *number);
 Number          *number_promote(Number *number, NUMBER_TYPE type);
 Number          *number_add(Number *lhs, Number *rhs);
 Number          *number_mult(Number *lhs, Number *rhs);
@@ -17,6 +18,8 @@ Number          *number_divide(Number *lhs, Number *rhs);
 Number          *number_mod(Number *lhs, Number *rhs);
 Number          *number_power(Number *lhs, Number *rhs);
 Number          *number_factorial(Number *lhs, const Number *rhs);
+Number          *number_scale(Number *number, real factor);
+Number          *number_add_in_situ(Number *lhs, Number *rhs);
 boolean         number_is_zero(const Number *number);
 void            number_delete(Number **number);
 

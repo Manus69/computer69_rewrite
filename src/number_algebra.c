@@ -27,6 +27,7 @@ Number *number_add(Number *lhs, Number *rhs)
         return number_new_real(add_real(lhs->x, rhs->x));
     else
         return number_new_complex(complex_add(lhs->z, rhs->z));
+
 }
 
 Number *number_mult(Number *lhs, Number *rhs)
@@ -48,6 +49,11 @@ Number *number_mult(Number *lhs, Number *rhs)
 Number *number_subtract(Number *lhs, Number *rhs)
 {
     NUMBER_TYPE type;
+
+    if (!rhs)
+    {
+        return number_copy(number_scale(lhs, -1));
+    }
 
     type = _promote(lhs, rhs);
 
@@ -116,3 +122,39 @@ Number *number_factorial(Number *lhs, const Number *rhs)
     
     return number_new_int(factorial(lhs->n));
 }
+
+Number *number_scale(Number *number, real factor)
+{
+    if (number->type == NT_INT)
+        number->n *= factor;
+    else if (number->type == NT_REAL)
+        number->x *= factor;
+    else
+        number->z = complex_scale(number->z, factor);
+
+    return number;
+}
+
+//implement if needed
+Number          *number_add_in_situ(Number *lhs, Number *rhs)
+{
+    NUMBER_TYPE type;
+
+    type = _promote(lhs, rhs);
+
+    if (type == NT_INT)
+        lhs->n += rhs->n;
+    else if (type == NT_REAL)
+        lhs->x += rhs->x;
+    else
+        lhs->z = complex_add(lhs->z, rhs->z);
+    
+    return lhs;
+}
+
+Number          *number_mult_in_situ(Number *lhs, Number *rhs);
+Number          *number_subtract_in_situ(Number *lhs, Number *rhs);
+Number          *number_divide_in_situ(Number *lhs, Number *rhs);
+Number          *number_mod_in_situ(Number *lhs, Number *rhs);
+Number          *number_power_in_situ(Number *lhs, Number *rhs);
+Number          *number_factorial_in_situ(Number *lhs, const Number *rhs);
