@@ -23,3 +23,7 @@ Variable *v_table_search(const VariableTable *v_table, const String *name)
     return tree_search_function(v_table, name, match_variable);
 }
 
+boolean v_table_insert(VariableTable *v_table, Variable *variable)
+{
+    return tree_insert(v_table, variable);
+}

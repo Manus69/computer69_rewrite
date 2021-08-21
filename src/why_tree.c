@@ -2,12 +2,15 @@
 #include "why_tree_interface.h"
 #include "why_memory.h"
 
-Tree *tree_new(void *node, int_signed (*compare)())
+Tree *tree_new(const void *node, int_signed (*compare)())
 {
     Tree *tree;
 
+    if (!node)
+        return NULL;
+
     tree = allocate(sizeof(Tree));
-    tree->node = node;
+    tree->node = (void *)node;
     tree->compare = compare;
     tree->left = NULL;
     tree->right = NULL;
@@ -61,7 +64,7 @@ void tree_map_lfr(Tree *tree, void (*function)())
     tree_map_lfr(tree->right, function);
 }
 
-void *tree_search(Tree *tree, void *item)
+void *tree_search(const Tree *tree, const void *item)
 {
     if (!tree)
         return NULL;
@@ -69,7 +72,7 @@ void *tree_search(Tree *tree, void *item)
     return tree_search_function(tree, item, tree->compare);
 }
 
-void *tree_search_function(Tree *tree, void *item, int_signed (*function)())
+void *tree_search_function(const Tree *tree, const void *item, int_signed (*function)())
 {
     int_signed result;
 
@@ -101,6 +104,8 @@ boolean tree_insert(Tree *tree, void *item)
             return tree_insert(tree->right, item);
         
         tree->right = tree_new(item, tree->compare);
+
+        return TRUE;
     }
     else
     {
@@ -108,6 +113,8 @@ boolean tree_insert(Tree *tree, void *item)
             return tree_insert(tree, item);
         
         tree->left = tree_new(item, tree->compare);
+
+        return TRUE;
     }
 
     return FALSE;

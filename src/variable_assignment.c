@@ -18,6 +18,7 @@ Variable *variable_create_from_string(String *string, VariableTable *v_table)
     String *name;
     String *arg_name;
     Computation *argument;
+    Variable *variable;
 
     string = string_remove_spaces(string);
     length = id_function_name_str(string);
@@ -28,5 +29,10 @@ Variable *variable_create_from_string(String *string, VariableTable *v_table)
     _string_shift(string, length);
     arg_name = _get_arg_name(string);
     _string_shift(string, string_get_length(arg_name) + 3);
+
     argument = _parse(string);
+    argument = computation_resolve(argument, arg_name, v_table);
+    variable = variable_new(name, argument);
+
+    return variable;
 }

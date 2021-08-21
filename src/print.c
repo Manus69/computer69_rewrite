@@ -6,6 +6,8 @@
 #include "node.h"
 #include "operator.h"
 #include "computation.h"
+#include "variable.h"
+#include "number.h"
 
 #include <stdio.h>
 #include <unistd.h>
@@ -137,4 +139,11 @@ void print_computation(const Computation *computation)
     _check_branch_and_print(computation, computation->lhs);
     print_node(root_node);
     _check_branch_and_print(computation, computation->rhs);
+}
+
+void print_variable(const Variable *variable)
+{
+    print_string(variable->name);
+    printf(" = ");
+    print_computation(variable->value);
 }

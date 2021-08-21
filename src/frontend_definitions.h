@@ -1,7 +1,7 @@
 #ifndef FRONTEND_DEFINITIONS_H
 #define FRONTEND_DEFINITIONS_H
 
-#include "why_definitions.h"
+#include "why_tree_interface.h"
 
 typedef struct Number Number;
 typedef struct MatrixRepr MatrixRepr;

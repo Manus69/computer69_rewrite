@@ -25,3 +25,8 @@ int_signed variable_compare(const Variable *lhs, const Variable *rhs)
 {
     return string_compare(lhs->name, rhs->name);
 }
+
+Computation *variable_get_value(const Variable *variable)
+{
+    return variable->value;
+}

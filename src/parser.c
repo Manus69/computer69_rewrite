@@ -6,7 +6,7 @@
 
 #include <assert.h>
 
-static Computation *_parse(String *string);
+// static Computation *_parse(String *string);
 
 Computation *get_stuff_in_parens(String *string)
 {
