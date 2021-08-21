@@ -33,6 +33,27 @@ char *cstr_copy(const char *string)
     return cstr_substring(string, cstr_length(string));
 }
 
+int_signed cstr_compare_length(const char *lhs, const char *rhs, int_signed length)
+{
+    int_signed n;
+
+    if (!lhs && !rhs)
+        return 0;
+    
+    if (!rhs)
+        return *lhs;
+    if (!lhs)
+        return *rhs;
+
+    n = 0;
+    while (n < length && lhs[n] == rhs[n])
+    {
+        n ++;
+    }
+
+    return rhs[n] - lhs[n];
+}
+
 int_signed cstr_compare(const char *lhs, const char *rhs)
 {
     if (!lhs && !rhs)

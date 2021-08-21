@@ -5,8 +5,10 @@
 #include "terminals.h"
 #include "node.h"
 #include "operator.h"
+#include "computation.h"
 
 #include <stdio.h>
+#include <unistd.h>
 #include <assert.h>
 
 void print_number(const Number *number)
@@ -41,15 +43,98 @@ void print_node(const Node *node)
     else if (type == NT_IDENTIFIER)
         print_string(node->identifier);
     else if (type == NT_WILDCARD)
+        print_cstring("WC");
+    else if (type == NT_FUNCTION)
         print_string(node->identifier);
+}
+
+void _default_print(const Computation *computation)
+{
+    print_computation(computation_get_lhs(computation));
+    print_node(computation_get_node(computation));
+    print_computation(computation_get_rhs(computation));
+}
+
+static void _pp_print(const Computation *computation)
+{
+    printf("(");
+    fflush(NULL);
+    print_computation(computation);
+    printf(")");
+}
+
+static void _check_branch_and_print(const Computation *root, const Computation *branch)
+{
+    Node *root_node;
+    Node *branch_node;
+
+    root_node = root->node;
+    branch_node = branch ? branch->node : NULL;
+
+    if (!branch_node)
+        return ;
+
+    if (root_node->type == NT_FUNCTION)
+        return _pp_print(branch);
+
+    if (branch_node->type != NT_OPERATOR)
+        return print_computation(branch);
+
+    if (root_node->type == NT_OPERATOR && branch_node->type == NT_OPERATOR)
+    {
+        if (operator_compare_precedence(branch_node->operator, root_node->operator) > 0)
+        {
+            return _pp_print(branch);
+        }
+        else
+        {
+            return print_computation(branch);
+        }
+    }
+
+    print_computation(branch);
+}
+
+static void _print_function(const Computation *computation)
+{
+    print_node(computation->node);
+    _pp_print(computation->lhs);
+}
+
+static void _print_u_minus(const Computation *computation)
+{
+    print_node(computation->node);
+    print_computation(computation->lhs);
+}
+
+static byte _check_u_minus(const Computation *computation)
+{
+    Node *node;
+
+    node = computation->node;
+
+    if (node->type == NT_OPERATOR && node->operator->type == OT_MINUS && !computation->rhs)
+        return TRUE;
+
+    return FALSE;
 }
 
 void print_computation(const Computation *computation)
 {
+    Node *root_node;
+
     if (!computation)
         return ;
     
-    print_computation(computation_get_lhs(computation));
-    print_node(computation_get_node(computation));
-    print_computation(computation_get_rhs(computation));
+    root_node = computation->node;
+
+    if (root_node->type == NT_FUNCTION)
+        return _print_function(computation);
+
+    if (_check_u_minus(computation))
+        return _print_u_minus(computation);
+
+    _check_branch_and_print(computation, computation->lhs);
+    print_node(root_node);
+    _check_branch_and_print(computation, computation->rhs);
 }

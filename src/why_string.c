@@ -2,6 +2,7 @@
 #include "why_string_interface.h"
 #include "why_memory.h"
 #include "why_cstring.h"
+#include "why_macros.h"
 
 void _string_init(String *string, const char *literal, int_signed length, unsigned char allocated)
 {
@@ -173,7 +174,15 @@ String *string_copy_deep(const String *string)
 
 int_signed string_compare(const String *lhs, const String *rhs)
 {
-    return cstr_compare(lhs->characters, rhs->characters);
+    int_signed min_length;
+    int_signed lhs_length;
+    int_signed rhs_length;
+
+    lhs_length = string_get_length(lhs);
+    rhs_length = string_get_length(rhs);
+    min_length = MIN(lhs_length, rhs_length);
+
+    return cstr_compare_length(lhs->characters, rhs->characters, min_length);
 }
 
 boolean string_is_identical(const String *lhs, const String *rhs)
@@ -222,9 +231,11 @@ String *string_substitute_chars(String *string, const char *set, char replacemen
         index = cstr_index_of(set, *characters);
         if (index != NOT_FOUND)
         {
-            new_characters[n] = replacement;
             if (replacement)
+            {
+                new_characters[n] = replacement;
                 n ++;
+            }
         }
         else
         {

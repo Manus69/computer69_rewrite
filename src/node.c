@@ -8,13 +8,6 @@ Node *node_new(void *data, NODE_TYPE type)
 
     node = allocate(sizeof(Node));
     
-    // if (type == NT_NUMBER)
-    //     node->number = data;
-    // else if (type == NT_MATRIX)
-    //     node->matrix = data;
-    // else if (type == NT_IDENTIFIER)
-    //     node->identifier = data;
-    
     node->identifier = data;
     node->type = type;
 
@@ -24,6 +17,17 @@ Node *node_new(void *data, NODE_TYPE type)
 Node *node_change_type(Node *node, NODE_TYPE type)
 {
     node->type = type;
+
+    return node;
+}
+
+Node *node_convert_to_wildcard(Node *node)
+{
+    if (node->type != NT_IDENTIFIER)
+        return NULL;
+    
+    string_delete(&node->identifier);
+    node->type = NT_WILDCARD;
 
     return node;
 }
@@ -43,6 +47,8 @@ static void *_fetch_destructor(NODE_TYPE type)
         return string_delete;
     else if (type == NT_OPERATOR)
         return operator_delete;
+    else if (type == NT_FUNCTION)
+        return string_delete;
     
     return NULL;
 }

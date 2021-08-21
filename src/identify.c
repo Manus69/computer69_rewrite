@@ -31,7 +31,7 @@ int_unsigned id_function_name(const char *string)
     if (!length)
         return 0;
     
-    if (*string == O_PAREN)
+    if (string[length] == TERMINALS[O_PAREN])
         return length;
     
     return 0;

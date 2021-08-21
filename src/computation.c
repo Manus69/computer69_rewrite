@@ -1,5 +1,6 @@
 #include "computation.h"
 #include "frontend_declarations.h"
+#include "node.h"
 
 Computation *computation_new(Node *node)
 {
@@ -51,18 +52,13 @@ Computation *computation_insert_root(Computation *root, Computation *new_root)
     return new_root;
 }
 
-Computation *computation_swap_root(Computation *root, Computation *new_root)
+void computation_traverse(Computation *computation, void (*function)())
 {
-    Computation *lhs;
-    Computation *rhs;
-
-    lhs = root->lhs;
-    rhs = root->rhs;
-    root->lhs = new_root;
-    root->rhs = NULL;
-    new_root->lhs = lhs;
-    new_root->rhs = rhs;
-    SWAP(root->node,new_root->node, Node *);
-
-    return root;
+    if (!computation)
+        return ;
+    
+    computation_traverse(computation->lhs, function);
+    function(computation->node);
+    computation_traverse(computation->rhs, function);
 }
+

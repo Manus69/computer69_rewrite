@@ -6,6 +6,8 @@
 
 #include <assert.h>
 
+static Computation *_parse(String *string);
+
 Computation *get_stuff_in_parens(String *string)
 {
     int_signed right_index;
@@ -17,7 +19,7 @@ Computation *get_stuff_in_parens(String *string)
         return NULL;
 
     substring = string_get_substring(string, 1, right_index - 1);
-    computation = parse(substring);
+    computation = _parse(substring);
 
     _string_shift(string, right_index + 1);
     string_delete(&substring);
@@ -148,7 +150,25 @@ static Computation *get_partial_tree(String *string)
     return root;    
 }
 
-static Computation *_parse(String *string)
+static boolean _check_order(const Computation *last_op, const Computation *next_op)
+{
+    if (!operator_is_binary(next_op->node->operator) ||
+    (operator_compare_precedence(last_op->node->operator, next_op->node->operator) > 0))
+        return TRUE;
+    
+    return FALSE;
+}
+
+static Computation *_insert_in_order(Computation *last_op, Computation *next_op, Computation *term)
+{
+    last_op->rhs = next_op;
+    next_op->lhs = term;
+    last_op = next_op;
+
+    return last_op;
+}
+
+Computation *_parse(String *string)
 {
     Computation *root;
     Computation *last_op;
@@ -156,7 +176,7 @@ static Computation *_parse(String *string)
     Computation *term;
 
     root = get_partial_tree(string);
-    if (root->node->type != NT_OPERATOR)
+    if (!root || root->node->type != NT_OPERATOR)
         return root;
 
     if (!operator_is_binary(root->node->operator))
@@ -167,28 +187,22 @@ static Computation *_parse(String *string)
     {
         if (string_get_length(string) == 0)
             return root;
-        
+
         term = get_term(string);
-        if (!term)
-            assert(0);
 
-        last_op->rhs = term;
-        next_op = get_operator(string);
-        if (!next_op)
+        if (!(next_op = get_operator(string)))
+        {
+            last_op->rhs = term;
             return root;
-
-        if (!operator_is_binary(next_op->node->operator))
-        {
-            computation_insert_root(last_op->rhs, next_op);
-            last_op = next_op;
         }
-        else if (operator_compare_precedence(last_op->node->operator, next_op->node->operator) > 0)
+
+        if (_check_order(last_op, next_op))
         {
-            computation_swap_root(last_op, next_op);
-            last_op = next_op;
+            last_op = _insert_in_order(last_op, next_op, term);
         }
         else
         {
+            last_op->rhs = term;
             root = computation_insert_root(root, next_op);
             last_op = root;
         }

@@ -25,12 +25,12 @@ void tree_delete(Tree **tree, void (*delete_)())
 
     left = (*tree)->left;
     right = (*tree)->right;
-    delete_(&(*tree)->node);
-    free(*tree);
-    *tree = NULL;
-
     tree_delete(&left, delete_);
     tree_delete(&right, delete_);
+    delete_(&(*tree)->node);
+
+    free(*tree);
+    *tree = NULL;
 }
 
 void *tree_get_node(Tree *tree)

@@ -32,8 +32,11 @@ void print_complex(Complex z)
         print_real(z.re);
         return ;
     }
-    print_real(z.re);
-    printf(" + ");
+    if (z.re)
+    {
+        print_real(z.re);
+        printf(" + ");
+    }
 
     if (z.im != 1)
         print_real(z.im);
@@ -46,12 +49,15 @@ void print_cstring(const char *string)
     printf("%s\n", string);
 }
 
+//this is ugly and dangerous
 void print_string(const String *string)
 {
     char *cstring;
+    int_signed length;
 
     cstring = string_get_characters(string);
-    write(STDOUT_FILENO, cstring, string_get_length(string));
+    length = string_get_length(string);
+    printf("%.*s", (int)length, cstring);
 }
 
 void print_vector(const Vector *vector, void (*print)())
