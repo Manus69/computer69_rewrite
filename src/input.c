@@ -39,5 +39,5 @@ boolean id_evaluation(const String *string)
 
 boolean id_find_roots(const String *string)
 {
-    return FALSE;
+    return string ? FALSE : FALSE;
 }

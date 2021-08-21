@@ -1,6 +1,8 @@
 #include "variable.h"
 #include "frontend_declarations.h"
 
+#include <assert.h>
+
 static String *_get_arg_name(String *string)
 {
     int_signed n;
@@ -12,27 +14,55 @@ static String *_get_arg_name(String *string)
     return arg_name;
 }
 
-Variable *variable_create_from_string(String *string, VariableTable *v_table)
+static Variable *_create_constant(String *string, VariableTable *v_table, int_signed name_length)
 {
-    int_signed length;
+    String *name;
+    Computation *argument;
+    Variable *variable;
+    Number *value;
+
+    name = string_get_substring(string, 0, name_length);
+    _string_shift(string, name_length + 1);
+    argument = _parse(string);
+    argument = computation_resolve(argument, NULL, v_table);
+    value = computation_eval(argument);
+    computation_delete(&argument);
+    argument = computation_new(node_new(value, NT_NUMBER));
+    variable = variable_new(name, argument, VT_CONSTANT);
+
+    return variable;
+}
+
+static Variable *_create_parametrized(String *string, VariableTable *v_table, int_signed name_length)
+{
     String *name;
     String *arg_name;
     Computation *argument;
     Variable *variable;
-
-    string = string_remove_spaces(string);
-    length = id_function_name_str(string);
-    if (!length)
-        return NULL;
-
-    name = string_get_substring(string, 0, length);
-    _string_shift(string, length);
+    
+    name = string_get_substring(string, 0, name_length);
+    _string_shift(string, name_length);
     arg_name = _get_arg_name(string);
     _string_shift(string, string_get_length(arg_name) + 3);
 
     argument = _parse(string);
     argument = computation_resolve(argument, arg_name, v_table);
-    variable = variable_new(name, argument);
+    variable = variable_new(name, argument, VT_COMPUTATION);
 
     return variable;
+}
+
+Variable *variable_create_from_string(String *string, VariableTable *v_table)
+{
+    int_signed length;
+
+    length = id_function_name_str(string);
+    if (length)
+        return _create_parametrized(string, v_table, length);
+
+    length = id_identifier(string_get_characters(string));
+    if (length)
+        return _create_constant(string, v_table, length);
+
+    assert(0);    
 }

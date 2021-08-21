@@ -4,10 +4,11 @@
 
 MatrixRepr *matrix_repr_new(String *string)
 {
-    return NULL;
+    return string ? NULL : NULL;
 }
 
 void matrix_repr_delete(MatrixRepr **matrix)
 {
-    ;
+    if (matrix)
+        return ;
 }

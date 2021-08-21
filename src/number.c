@@ -4,6 +4,8 @@
 #include "why_conversion.h"
 #include "why_cstring.h"
 
+#include <assert.h>
+
 Number *number_new_int(int_signed n)
 {
     Number *number;
@@ -62,6 +64,39 @@ Number *number_new_complex_str(const char *string)
     z = convert_to_complex(string);
 
     return number_new_complex(z);
+}
+
+Number *number_promote(Number *number, NUMBER_TYPE type)
+{
+    Complex z;
+
+    if (type <= number->type)
+        return number;
+    else if (type == NT_REAL)
+    {
+        number->x = number->n;
+    }
+    else if (type == NT_COMPLEX)
+    {
+        z = number->type == NT_INT ? complex(number->n, 0) : complex(number->x, 0);
+        number->z = z;
+    }
+    number->type = type;
+
+    return number;
+}
+
+boolean number_is_zero(const Number *number)
+{
+    if (!number)
+        assert(0);
+    
+    if (number->type == NT_INT)
+        return number->n == 0;
+    else if (number->type == NT_REAL)
+        return number->x == 0;
+    else
+        return complex_is_zero(number->z);
 }
 
 Number *number_new(String *string)

@@ -7,6 +7,7 @@
 #include "why_math.h"
 #include "why_string_interface.h"
 #include "why_vector_interface.h"
+#include "why_math_number_interface.h"
 #include "why_tree_interface.h"
 #include "why_conversion.h"
 #include "why_copy.h"

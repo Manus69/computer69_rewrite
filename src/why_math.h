@@ -13,6 +13,7 @@ typedef struct Matrix Matrix;
 
 int_unsigned factorial(int_unsigned n);
 real power(real base, int_unsigned n);
+int_signed power_int(int_signed base, int_unsigned n);
 int_unsigned round_to_int(real x);
 real absolute_value(real x);
 
@@ -36,11 +37,13 @@ Complex complex_zero();
 Complex complex_add(Complex lhs, Complex rhs);
 Complex complex_mult(Complex lhs, Complex rhs);
 Complex complex_div(Complex lhs, Complex rhs);
+Complex complex_subtract(Complex lhs, Complex rhs);
 Complex complex_inv(Complex z);
 boolean complex_is_real(Complex z);
 boolean complex_is_zero(Complex z);
 Complex complex_scale(Complex z, real a);
 Complex complex_conjugate(Complex z);
+Complex complex_power(Complex z, int_unsigned n);
 real complex_mod_squared(Complex z);
 
 //

@@ -44,6 +44,11 @@ Complex complex_scale(Complex z, real a)
     return (Complex){z.re * a, z.im * a};
 }
 
+Complex complex_subtract(Complex lhs, Complex rhs)
+{
+    return complex_add(lhs, complex_scale(rhs, -1));
+}
+
 real complex_mod_squared(Complex z)
 {
     return z.re * z.re + z.im * z.im;
@@ -60,4 +65,31 @@ Complex complex_inv(Complex z)
 Complex complex_div(Complex lhs, Complex rhs)
 {
     return complex_mult(lhs, complex_inv(rhs));
+}
+
+//naive
+Complex complex_power(Complex z, int_unsigned n)
+{
+    Complex result;
+
+    if (complex_is_zero(z))
+        return z;
+    
+    if (complex_is_real(z) && z.re == 1)
+        return z;
+    
+    if (n == 0)
+        return complex(1, 0);
+    
+    if (n == 1)
+        return z;
+    
+    result = z;
+    while (n > 1)
+    {
+        result = complex_mult(result, z);
+        n --;
+    }
+
+    return result;
 }

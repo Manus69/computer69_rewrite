@@ -1,6 +1,51 @@
 #include "why_math_number_interface.h"
 #include "why_memory.h"
 
+int_signed add_int(int_signed n, int_signed m)
+{
+    return n + m;
+}
+
+int_signed mult_int(int_signed n, int_signed m)
+{
+    return n * m;
+}
+
+int_signed subtract_int(int_signed n, int_signed m)
+{
+    return n - m;
+}
+
+int_signed divide_int(int_signed n, int_signed m)
+{
+    return n / m;
+}
+
+int_signed mod_int(int_signed n, int_signed m)
+{
+    return n % m;
+}
+
+real add_real(real x, real y)
+{
+    return x + y;
+}
+
+real mult_real(real x, real y)
+{
+    return x * y;
+}
+
+real subtract_real(real x, real y)
+{
+    return x - y;
+}
+
+real divide_real(real x, real y)
+{
+    return x / y;
+}
+
 boolean real_is_zero(real *x)
 {
     return *x == 0;

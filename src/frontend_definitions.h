@@ -16,6 +16,12 @@ typedef enum NUMBER_TYPE NUMBER_TYPE;
 typedef enum T_CHARS T_CHARS;
 typedef enum OPERATOR_TYPE OPERATOR_TYPE;
 typedef enum NODE_TYPE NODE_TYPE;
+typedef enum VARIABLE_TYPE VARIABLE_TYPE;
+
+enum NUMBER_TYPE
+{
+    NT_INT, NT_REAL, NT_COMPLEX,
+};
 
 enum NODE_TYPE
 {
@@ -30,6 +36,12 @@ enum OPERATOR_TYPE
     OT_MULTIPLY, OT_DIVIDE, OT_MOD,
     OT_EXPONENT,
     OT_FACTORIAL,
+};
+
+enum VARIABLE_TYPE
+{
+    VT_CONSTANT,
+    VT_COMPUTATION,
 };
 
 #endif

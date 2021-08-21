@@ -32,6 +32,11 @@ real power(real base, int_unsigned n)
     return result;
 }
 
+int_signed power_int(int_signed base, int_unsigned n)
+{
+    return (int_signed)power(base, n);
+}
+
 int_unsigned round_to_int(real x)
 {
     if (x > ULLONG_MAX)

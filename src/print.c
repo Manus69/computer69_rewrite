@@ -15,6 +15,9 @@
 
 void print_number(const Number *number)
 {
+    if (!number)
+        return ;
+    
     if (number->type == NT_INT)
         print_int(number->n);
     else if (number->type == NT_REAL)
@@ -28,6 +31,9 @@ void print_operator(const Operator *operator)
 {
     int_signed index;
 
+    if (!operator)
+        return ;
+
     index = operator_get_type(operator);
 
     printf("%c", TERMINALS[index]);
@@ -36,6 +42,9 @@ void print_operator(const Operator *operator)
 void print_node(const Node *node)
 {
     NODE_TYPE type;
+
+    if (!node)
+        return ;
 
     type = node_get_type(node);
     if (type == NT_NUMBER)
@@ -52,6 +61,9 @@ void print_node(const Node *node)
 
 void _default_print(const Computation *computation)
 {
+    if (!computation)
+        return ;
+    
     print_computation(computation_get_lhs(computation));
     print_node(computation_get_node(computation));
     print_computation(computation_get_rhs(computation));
@@ -143,6 +155,9 @@ void print_computation(const Computation *computation)
 
 void print_variable(const Variable *variable)
 {
+    if (!variable)
+        return ;
+    
     print_string(variable->name);
     printf(" = ");
     print_computation(variable->value);
