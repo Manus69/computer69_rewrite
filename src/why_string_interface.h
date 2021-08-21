@@ -7,6 +7,7 @@ typedef struct String String;
 
 void        _string_init(String *string, const char *literal, int_signed length, unsigned char allocated);
 void        _string_init_copy(String *lhs, const String *rhs);
+void        _string_set_allocation(String *string, byte allocated);
 char        string_at(const String *string, int_signed n);
 char        *string_get_characters(const String *string);
 int_signed  _string_shift(String *string, int_signed shift);

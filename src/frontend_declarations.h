@@ -66,4 +66,9 @@ int_signed      find_matching_bracket(const char *string);
 int_signed      find_matching_bracket_str(const String *string);
 String          *string_new_no_space(const char *characters);
 
+boolean id_assignment(const String *string);
+boolean id_evaluation(const String *string);
+boolean id_find_roots(const String *string);
+
+
 #endif

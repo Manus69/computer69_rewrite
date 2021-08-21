@@ -44,3 +44,29 @@ int_signed find_matching_bracket_str(const String *string)
 
     return find_matching_bracket(characters);
 }
+
+String *string_new_no_space(const char *literal)
+{
+    String *string;
+    char *new_literal;
+    int_signed length;
+    int_signed n;
+
+    length = cstr_length(literal);
+    new_literal = memory_zero(length + 1);
+    n = 0;
+    while (*literal)
+    {
+        if (!id_whitespace(literal))
+        {
+            new_literal[n] = *literal;
+            n ++;
+        }
+        literal ++;
+    }
+
+    string = string_new_fixed_length(new_literal, n);
+    _string_set_allocation(string, TRUE);
+
+    return string;
+}

@@ -42,6 +42,16 @@ void variable_test()
     string_delete(&string);
 }
 
+void test()
+{
+    Variable *variable;
+    VariableTable *v_table;
+    String *string;
+    char *input;
+
+    string = string_new_no_space("x=1");
+}
+
 //user defined names must be case insensitive
 //NT enums have the same prefix
 //double exclam in a row?
@@ -50,8 +60,8 @@ void variable_test()
 int main()
 {
     // parse_test();
-    // test_syntax(valid_strings);
-    variable_test();
+    test_syntax(valid_strings);
+    // variable_test();
 
     return 0;
 }

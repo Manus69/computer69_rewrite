@@ -20,6 +20,11 @@ void _string_init_copy(String *lhs, const String *rhs)
     lhs->allocated = FALSE;
 }
 
+void _string_set_allocation(String *string, byte allocated)
+{
+    string->allocated = allocated;
+}
+
 int_signed _string_shift(String *string, int_signed shift)
 {
     if (string->length < shift)
