@@ -192,10 +192,28 @@ int_signed string_compare(const String *lhs, const String *rhs)
 
 boolean string_is_identical(const String *lhs, const String *rhs)
 {
+    if (!lhs && !rhs)
+        return TRUE;
+    
+    if (!lhs || !rhs)
+        return FALSE;
+    
     if (lhs->length != rhs->length)
         return FALSE;
 
     return (string_compare(lhs, rhs) == 0) ? TRUE : FALSE;
+}
+
+boolean string_is_identical_to(const String *string, const char *characters)
+{
+    int_signed result;
+
+    if (!string || !characters)
+        return FALSE;
+    
+    result = cstr_compare_length(string_get_characters(string), characters, string->length - 1);
+
+    return result == 0 ? TRUE : FALSE;
 }
 
 String *string_get_substring(const String *string, int_signed left_index, int_signed length)

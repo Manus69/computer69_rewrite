@@ -49,7 +49,9 @@ void test()
     VariableTable *v_table;
     String *string;
 
-    string = string_new_no_space("x = 3!!");
+    // string = string_new_no_space("x = cos(2*pi*sin(-pi+2*pi))");
+    string = string_new_no_space("x = cos(i*i*pi)");
+
     v_table = NULL;
     
     if (id_assignment(string))
@@ -70,7 +72,6 @@ void test()
 
 //user defined names must be case insensitive
 //NT enums have the same prefix
-//double exclam in a row?
 //format all headers
 
 int main()
@@ -83,9 +84,11 @@ int main()
     // number_test();
     // parse_test();
     // test_syntax(valid_basic_strings);
-    // computation_test_basic(valid_basic_strings);
+    computation_test_basic(valid_basic_strings);
+    // computation_test_basic(valid_id_strings);
     // variable_test();
-    test();
+    // test();
+
 
     end = clock();
 

@@ -17,6 +17,29 @@ static Variable *_check_if_variable(Computation *computation, VariableTable *v_t
     return variable ? variable : NULL;
 }
 
+static Computation *_resolve_node(Computation *computation, const String *wc_identifier, VariableTable *v_table)
+{
+    Variable *variable;
+
+    variable = _check_if_variable(computation, v_table);
+    if (variable)
+    {
+        computation_delete(&computation);
+        computation = variable_get_value(variable);
+    }
+    else if (computation->node->type == NT_IDENTIFIER)
+    {
+        if (string_is_identical(wc_identifier, computation->node->identifier))
+            node_convert_to_wildcard(computation->node);
+    }
+    else if (computation->node->type == NT_FUNCTION)
+    {
+        ;
+    }
+
+    return computation;
+}
+
 static Computation *_resolve(Computation *computation, const String *wc_identifier, VariableTable *v_table)
 {
     Variable *variable;
@@ -37,7 +60,7 @@ static Computation *_resolve(Computation *computation, const String *wc_identifi
     }
     else
     {
-        computation_resolve(computation, wc_identifier, v_table);
+        computation = computation_resolve(computation, wc_identifier, v_table);
     }
 
     return computation;
@@ -45,23 +68,13 @@ static Computation *_resolve(Computation *computation, const String *wc_identifi
 
 Computation *computation_resolve(Computation *computation, const String *wc_identifier, VariableTable *v_table)
 {
-    Variable *variable;
-
     if (!computation)
         return NULL;
     
     computation->lhs = _resolve(computation->lhs, wc_identifier, v_table);
-    variable = _check_if_variable(computation, v_table);
-    if (variable)
-    {
-        computation_delete(&computation);
-        computation = variable_get_value(variable);
-    }
-    else if (computation->node->type == NT_IDENTIFIER)
-    {
-        if (string_is_identical(wc_identifier, computation->node->identifier))
-            node_convert_to_wildcard(computation->node);
-    }
+
+    computation = _resolve_node(computation, wc_identifier, v_table);
+
     computation->rhs = _resolve(computation->rhs, wc_identifier, v_table);
 
     return computation;

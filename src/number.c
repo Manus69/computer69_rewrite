@@ -70,6 +70,9 @@ Number *number_promote(Number *number, NUMBER_TYPE type)
 {
     Complex z;
 
+    if (!number)
+        return NULL;
+
     if (type <= number->type)
         return number;
     else if (type == NT_REAL)
@@ -82,6 +85,36 @@ Number *number_promote(Number *number, NUMBER_TYPE type)
         number->z = z;
     }
     number->type = type;
+
+    return number;
+}
+
+Number *number_demote_if_possible(Number *number)
+{
+    if (!number)
+        return NULL;
+
+    if (number->type == NT_INT)
+        return number;
+
+    if (number->type == NT_REAL)
+    {
+        if (number->x == (int_signed)number->x)
+        {
+            number->n = number->x;
+            number->type = NT_INT;
+        }
+    }
+    else if (number->type == NT_COMPLEX)
+    {
+        if (complex_is_real(number->z))
+        {
+            number->x = number->z.re;
+            number->type = NT_REAL;
+
+            return number_demote_if_possible(number);
+        }
+    }
 
     return number;
 }

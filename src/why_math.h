@@ -18,17 +18,18 @@ int_unsigned round_to_int(real x);
 real absolute_value(real x);
 
 //
-real identity(real x);
-real sinus(real x);
-real cosinus(real x);
-real tangent(real x);
-real logarithm(real x, int_unsigned base);
+real math_id(real x);
+real math_sin(real x);
+real math_cos(real x);
+real math_tan(real x);
+real math_log(real x, int_unsigned base);
+real math_log2();
 
-Complex math_id(Complex z);
-Complex math_sin(Complex z);
-Complex math_cos(Complex z);
-Complex math_tan(Complex z);
-Complex math_log(Complex z);
+Complex complex_id(Complex z);
+Complex complex_sin(Complex z);
+Complex complex_cos(Complex z);
+Complex complex_tan(Complex z);
+Complex complex_log(Complex z);
 
 
 //

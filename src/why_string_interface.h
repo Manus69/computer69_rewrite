@@ -14,6 +14,7 @@ int_signed  _string_shift(String *string, int_signed shift);
 int_signed  string_get_length(const String *string);
 int_signed  string_compare(const String *lhs, const String *rhs);
 boolean     string_is_identical(const String *lhs, const String *rhs);
+boolean     string_is_identical_to(const String *string, const char *characters);
 String      *string_new_fixed_length(const char *literal, int_signed length);
 String      *string_new(const char *literal);
 String      *string_new_allocated_fl(const char *literal, int_signed length);

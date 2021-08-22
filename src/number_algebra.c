@@ -135,26 +135,46 @@ Number *number_scale(Number *number, real factor)
     return number;
 }
 
-//implement if needed
-Number          *number_add_in_situ(Number *lhs, Number *rhs)
+Number *number_trig_function(const Number *number, real (*trig_function)(real))
 {
-    NUMBER_TYPE type;
+    real arg;
 
-    type = _promote(lhs, rhs);
-
-    if (type == NT_INT)
-        lhs->n += rhs->n;
-    else if (type == NT_REAL)
-        lhs->x += rhs->x;
-    else
-        lhs->z = complex_add(lhs->z, rhs->z);
+    if (number->type == NT_COMPLEX)
+        assert(0);
     
-    return lhs;
+    arg = number->type == NT_REAL ? number->x : number->n;
+
+    return number_new_real(trig_function(arg));
 }
 
-Number          *number_mult_in_situ(Number *lhs, Number *rhs);
-Number          *number_subtract_in_situ(Number *lhs, Number *rhs);
-Number          *number_divide_in_situ(Number *lhs, Number *rhs);
-Number          *number_mod_in_situ(Number *lhs, Number *rhs);
-Number          *number_power_in_situ(Number *lhs, Number *rhs);
-Number          *number_factorial_in_situ(Number *lhs, const Number *rhs);
+Number *number_sin(const Number *number)
+{
+    return number_trig_function(number, math_sin);
+}
+
+Number *number_cos(const Number *number)
+{
+    return number_trig_function(number, math_cos);
+}
+
+Number *number_tan(const Number *number)
+{
+    return number_trig_function(number, math_tan);
+}
+
+Number *number_log(const Number *number)
+{
+    return number_trig_function(number, math_log2);
+}
+
+Number *number_abs(Number *number)
+{
+    if (number->type == NT_INT)
+        number->n = ABS(number->n);
+    else if (number->type == NT_REAL)
+        number->x = ABS(number->x);
+    else
+        assert(0);
+    
+    return number;
+}

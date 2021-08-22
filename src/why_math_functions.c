@@ -3,27 +3,32 @@
 
 #include <math.h>
 
-Complex math_id(Complex z)
+Complex complex_id(Complex z)
 {
     return z;
 }
 
-Complex math_sin(Complex z)
+Complex complex_sin(Complex z)
 {
     return (Complex){sin(z.re), 0};
 }
 
-Complex math_cos(Complex z)
+Complex complex_cos(Complex z)
 {
     return complex(cos(z.re), 0);
 }
 
-Complex math_tan(Complex z)
+Complex complex_tan(Complex z)
 {
     return complex(tan(z.re), 0);
 }
 
-Complex math_log(Complex z)
+Complex complex_log(Complex z)
 {
     return complex(log2(z.re), 0);
+}
+
+real math_log2(real x)
+{
+    return log2(x);
 }

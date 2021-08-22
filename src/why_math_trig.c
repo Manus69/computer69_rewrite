@@ -2,22 +2,22 @@
 
 #include <math.h> /////
 
-real identity(real x)
+real math_id(real x)
 {
     return x;
 }
 
-real sinus(real x)
+real math_sin(real x)
 {
     return sin(x);
 }
 
-real cosinus(real x)
+real math_cos(real x)
 {
     return cos(x);
 }
 
-real tangent(real x)
+real math_tan(real x)
 {
     return tan(x);
 }
