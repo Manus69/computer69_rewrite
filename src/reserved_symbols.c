@@ -6,6 +6,8 @@ const char *RESERVED_SYMBOLS[] =
     "abs", "i", "pi", "e", "sin", "cos", "tan", "log", "abs", "sqrt", 0,
 };
 
+const char *FUNCTION_STRINGS[] = {"sin", "cos", "tan", "log", "abs", 0};
+
 char *check_reserved_symbols(const String *string)
 {
     int_signed n;

@@ -14,6 +14,6 @@ void    tree_map_flr(Tree *tree, void (*function)());
 void    tree_map_lfr(Tree *tree, void (*function)());
 void    *tree_search(const Tree *tree, const void *item);
 void    *tree_search_function(const Tree *tree, const void *item, int_signed (*function)());
-boolean tree_insert(Tree *tree, void *item);
+boolean tree_insert(Tree *tree, const void *item);
 
 #endif

@@ -81,6 +81,8 @@ void test()
 //user defined names must be case insensitive
 //NT enums have the same prefix
 //format all headers
+//add sqrt()
+//order all reserved symbols (reserved symols, function names, etc) and make a binary lookup
 
 int main()
 {
@@ -89,13 +91,6 @@ int main()
 
     start = clock();
 
-    // String *lhs, *rhs;
-    // lhs = string_new("a1");
-    // rhs = string_new("a");
-
-    // printf("%lld\n", string_compare(lhs, rhs));
-
-    // test_syntax(valid_basic_strings);
     // test_computation(valid_basic_strings);
     // test_computation(valid_id_strings);
     // test_assignment(valid_ass_strings);

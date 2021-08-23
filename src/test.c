@@ -26,13 +26,23 @@ const char *valid_ass_strings[] = {"a(y) = 43*y/(4%2*y)", "f(x) = 1", "f(x) = x"
 
 const char *valid_sequence_basic[] = {"x = 1", "y = x + x", 0};
 
-const char *valid_sequence[] = {"ass(cock) = cock + cock", "y = ass(ass(1))", 0};
+const char *valid_sequence[] = {"1+1", 0};
 
 const char *valid_sequences[][SEQUENCE_LENGTH] = {{"x = 1", "y = x + x", 0},
 {"var = pi", "var2 = var*var + 1", 0},
 {"f(x) = x", "y = f(1)", 0},
 {"ass(cock) = cock + cock", "y = ass(ass(1))", 0},
-{"f(x) = x + x + x", "g(x) = x^2", "h = f(g(1))", 0},
+{"f(x) = x + x + x", "g(x) = x^2", "y = f(g(1))", "z = g(f(1))", 0},
+{"f(x) = sin(x)", "ass2(x) = -f(x)", "var = ass2(pi/2)", 0},
+{"x1 = -pi/e", "x2 = x1^2 - 1", 0},
+{"x = 0", "x = x + 1", 0},
+{"ass1 = pi", "ass1 = ass1 + 1", 0},
+{"ass10 = pi/2", "f(x) = sin(x) + ass10", "ass1 = f(ass10)", 0},
+{"x = pi*e", "x = x^2", "x = x*3!", "f(w) = x + x", "w = f(1)", 0},
+{"x = pi/4", "f(y) = sin(y)^(3!) - e", "w = f(x)", 0},
+{"x = -sin(2*cos(0))/sin(pi/2)", "y(k) = x^k", "w = y(2)", 0},
+{"thisIsaVariable = -1-1-1", "f(vvv) = vvv^3!", "w = f(thisIsaVariable)", 0},
+{"1-(1+(2*3-1))+1", "sin(pi/2)", 0},
 {0}};
 
 const char *valid_matrix_strings[] = {"[[0]]", "[[0,1]]", "[[-1,10]]",
@@ -119,11 +129,9 @@ void test_sequence(const char **strings)
 {
     String *string;
     Variable *variable;
+    Variable *v;
     VariableTable *v_table;
     int_signed n;
-
-    if (!*strings)
-        return ;
 
     n = 0;
     v_table = NULL;
@@ -133,20 +141,37 @@ void test_sequence(const char **strings)
         print_string_n(string);
 
         variable = variable_create_from_string(string, v_table);
-        v_table = v_table_insert(v_table, variable);
 
         print_variable(variable);
         printf("\n");
-        // fflush(NULL);
         string_delete(&string);
-        // variable_delete(&variable);
+
+        if (variable_get_name(variable) == NULL)
+        {
+            variable_delete(&variable);
+            n ++;
+
+            continue ;
+        }
+
+        if (!v_table)
+            v_table = v_table_new(variable);
+        else if ((v = v_table_search(v_table, variable_get_name(variable))))
+        {
+            v = variable_assign(v, variable_get_value(variable));
+            variable_delete(&variable);
+        }
+        else if (!v_table_insert_report(v_table, variable))
+            variable_delete(&variable);
+        
+        // printf("TABLE:\n");
+        // print_v_table(v_table);
+        // printf("\n");
 
         n ++;
     }
 
     v_table_delete(&v_table);
-    // free(variable);
-    // variable_delete(&variable);
 }
 
 void test_all_sequences(const char *array[][SEQUENCE_LENGTH])
@@ -160,7 +185,7 @@ void test_all_sequences(const char *array[][SEQUENCE_LENGTH])
     {
         test_sequence(array[n]);
         printf("\n");
-        
+
         n ++;
         sequence = array[n];
     }

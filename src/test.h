@@ -1,7 +1,7 @@
 #ifndef TEST_H
 #define TEST_H
 
-#define SEQUENCE_LENGTH 5
+#define SEQUENCE_LENGTH 10
 
 extern const char *valid_basic_strings[];
 extern const char *valid_matrix_strings[];

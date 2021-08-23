@@ -55,6 +55,9 @@ void print_string(const String *string)
     char *cstring;
     int_signed length;
 
+    if (!string)
+        return ;
+
     cstring = string_get_characters(string);
     length = string_length(string);
     printf("%.*s", (int)length, cstring);

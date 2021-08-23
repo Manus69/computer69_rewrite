@@ -44,6 +44,9 @@ Computation *get_function(String *string)
         return NULL;
 
     node_change_type(identifier_node, NT_FUNCTION);
+
+    node_convert_to_bft(identifier_node); //
+
     identifier = computation_new(identifier_node);
     identifier->lhs = argument;
 

@@ -83,12 +83,12 @@ void *tree_search_function(const Tree *tree, const void *item, int_signed (*func
     if (result == 0)
         return tree->node;
     else if (result > 0)
-        return tree_search(tree->right, item);
+        return tree_search_function(tree->right, item, function);
     else
-        return tree_search(tree->left, item);
+        return tree_search_function(tree->left, item, function);
 }
 
-boolean tree_insert(Tree *tree, void *item)
+boolean tree_insert(Tree *tree, const void *item)
 {
     int_signed result;
 
@@ -110,7 +110,7 @@ boolean tree_insert(Tree *tree, void *item)
     else
     {
         if (tree->left)
-            return tree_insert(tree, item);
+            return tree_insert(tree->left, item);
         
         tree->left = tree_new(item, tree->compare);
 

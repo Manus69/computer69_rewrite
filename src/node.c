@@ -53,7 +53,6 @@ static void *_fetch_destructor(NODE_TYPE type)
     return NULL;
 }
 
-//this is spooky
 void node_delete(Node **node)
 {
     void (*destructor)();
@@ -96,7 +95,7 @@ Node *node_get_identifier(String *string)
     if (!length)
         return NULL;
     
-    substring = string_substring(string, 0, length);
+    substring = string_substring_allocated(string, 0, length);
     _string_shift(string, length);
 
     return node_new(substring, NT_IDENTIFIER);

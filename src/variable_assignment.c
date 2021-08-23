@@ -14,15 +14,11 @@ static String *_get_arg_name(String *string)
     return arg_name;
 }
 
-static Variable *_create_constant(String *string, VariableTable *v_table, int_signed name_length)
+static Variable *_create_with_name(String *string, VariableTable *v_table, String *name)
 {
-    String *name;
     Computation *argument;
     Variable *variable;
     Number *value;
-
-    name = string_substring_allocated(string, 0, name_length);
-    _string_shift(string, name_length + 1);
 
     argument = _parse(string);
     argument = computation_resolve(argument, NULL, v_table);
@@ -35,6 +31,16 @@ static Variable *_create_constant(String *string, VariableTable *v_table, int_si
     return variable;
 }
 
+static Variable *_create_constant(String *string, VariableTable *v_table, int_signed name_length)
+{
+    String *name;
+
+    name = string_substring_allocated(string, 0, name_length);
+    _string_shift(string, name_length + 1);
+
+    return _create_with_name(string, v_table, name);
+}
+
 static Variable *_create_parametrized(String *string, VariableTable *v_table, int_signed name_length)
 {
     String *name;
@@ -45,9 +51,12 @@ static Variable *_create_parametrized(String *string, VariableTable *v_table, in
     name = string_substring_allocated(string, 0, name_length);
     if (check_reserved_symbols(name))
         assert(0);
-    
+
     _string_shift(string, name_length);
-    arg_name = _get_arg_name(string);    
+    arg_name = _get_arg_name(string);
+    if (v_table_search(v_table, arg_name))
+        assert(0);
+    
     _string_shift(string, string_length(arg_name) + 3);
 
     argument = _parse(string);
@@ -61,14 +70,16 @@ static Variable *_create_parametrized(String *string, VariableTable *v_table, in
 Variable *variable_create_from_string(String *string, VariableTable *v_table)
 {
     int_signed length;
+    int_signed index;
 
+    index = string_index_of(string, '=');
     length = id_function_name_str(string);
-    if (length)
+    if (length && index != NOT_FOUND)
         return _create_parametrized(string, v_table, length);
 
     length = id_identifier(string_get_characters(string));
-    if (length)
+    if (length && index != NOT_FOUND)
         return _create_constant(string, v_table, length);
 
-    assert(0);    
+    return _create_with_name(string, v_table, NULL); 
 }

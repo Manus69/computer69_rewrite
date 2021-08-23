@@ -8,6 +8,8 @@
 #include "computation.h"
 #include "variable.h"
 #include "number.h"
+#include "variable_table.h"
+#include "why_tree.h"
 
 #include <stdio.h>
 #include <unistd.h>
@@ -57,6 +59,8 @@ void print_node(const Node *node)
         print_cstring(WC_SYMBOL);
     else if (type == NT_FUNCTION)
         print_string(node->identifier);
+    else if (type == NT_BUILTIN_FUNCTION)
+        print_cstring(FUNCTION_STRINGS[node->bf_type]);
 }
 
 void _default_print(const Computation *computation)
@@ -142,7 +146,7 @@ void print_computation(const Computation *computation)
     
     root_node = computation->node;
 
-    if (root_node->type == NT_FUNCTION)
+    if (root_node->type == NT_FUNCTION || root_node->type == NT_BUILTIN_FUNCTION)
         return _print_function(computation);
 
     if (_check_u_minus(computation))
@@ -158,10 +162,28 @@ void print_variable(const Variable *variable)
     if (!variable)
         return ;
     
+    if (!variable->name)
+    {
+        print_computation(variable->value);
+
+        return ;
+    }
+
     print_string(variable->name);
     if (variable->type == VT_COMPUTATION)
         printf("(%s)", WC_SYMBOL);
 
     printf(" = ");
     print_computation(variable->value);
+}
+
+void print_v_table(const VariableTable *v_table)
+{
+    if (!v_table)
+        return ;
+
+    print_v_table(v_table->left);
+    print_variable(v_table->node);
+    printf("\n");
+    print_v_table(v_table->right);
 }

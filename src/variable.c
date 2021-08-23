@@ -30,6 +30,11 @@ int_signed variable_compare(const Variable *lhs, const Variable *rhs)
     return string_compare(lhs->name, rhs->name);
 }
 
+String *variable_get_name(const Variable *variable)
+{
+    return variable->name;
+}
+
 Computation *variable_get_value(const Variable *variable)
 {
     return variable->value;
@@ -45,4 +50,12 @@ Variable *variable_copy(const Variable *variable)
     copy->type = variable->type;
 
     return copy;
+}
+
+Variable *variable_assign(Variable *variable, const Computation *value)
+{
+    computation_delete(&variable->value);
+    variable->value = computation_copy(value);
+
+    return variable;
 }

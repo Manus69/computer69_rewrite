@@ -4,6 +4,8 @@
 #include "frontend_definitions.h"
 #include "why_lib.h"
 
+extern const char *FUNCTION_STRINGS[];
+
 //number
 Number          *number_new_int(int_signed n);
 Number          *number_new_real(real x);
@@ -48,6 +50,7 @@ Node            *node_get_operator(String *string);
 Node            *node_get_identifier(String *string);
 Node            *node_change_type(Node *node, NODE_TYPE type);
 Node            *node_convert_to_wildcard(Node *node);
+Node            *node_convert_to_bft(Node *node);
 Node            *node_copy(const Node *node);
 NODE_TYPE       node_get_type(const Node *node);
 void            node_delete(Node **node);
@@ -69,16 +72,19 @@ Number          *computation_eval(const Computation *computation, VariableTable 
 Variable        *variable_new(String *name, Computation *value, VARIABLE_TYPE type);
 int_signed      variable_compare(const Variable *lhs, const Variable *rhs);
 Computation     *variable_get_value(const Variable *variable);
+String          *variable_get_name(const Variable *variable);
 void            variable_delete(Variable **variable);
 Variable        *variable_create_from_string(String *string, VariableTable *v_table);
 Variable        *variable_copy(const Variable *variable);
+Variable        *variable_assign(Variable *variable, const Computation *value);
 
 //variable table
 VariableTable   *v_table_new(const Variable *variable);
 void            v_table_delete(VariableTable **v_table);
 int_signed      match_variable(const Variable *variable, const String *name);
 Variable        *v_table_search(const VariableTable *v_table, const String *name);
-VariableTable   *v_table_insert(VariableTable *v_table, Variable *variable);
+VariableTable   *v_table_insert(VariableTable *v_table, const Variable *variable);
+boolean         v_table_insert_report(VariableTable *v_table, const Variable *variable);
 
 //parser
 Computation     *parse(String *string);
@@ -98,6 +104,7 @@ boolean         id_evaluation(const String *string);
 boolean         id_find_roots(const String *string);
 
 char *check_reserved_symbols(const String *string);
+void *get_bft_pointer(BULITIN_FUNCTION_TYPE type);
 
 
 #endif

@@ -92,6 +92,9 @@ char string_at(const String *string, int_signed n)
 
 char *string_get_characters(const String *string)
 {
+    if (!string)
+        return NULL;
+
     return string->characters;
 }
 
@@ -186,6 +189,12 @@ int_signed string_compare(const String *lhs, const String *rhs)
 
     if (!lhs && !rhs)
         return 0;
+
+    if (!lhs)
+        return 1;
+    
+    if (!rhs)
+        return -1;
 
     lhs_length = string_length(lhs);
     rhs_length = string_length(rhs);

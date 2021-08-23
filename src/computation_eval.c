@@ -8,17 +8,30 @@
 static const void *op_functions[] = {number_add, number_subtract, 
 number_mult, number_divide, number_mod, number_power, number_factorial, 0};
 
-void *get_function_by_name(const String *name)
+void *get_function_by_name(String *name)
 {
+    void *result;
+
     if (!name)
         return NULL;
 
+    result = NULL;
+
     if (string_is_identical_to(name, "sin"))
-        return number_sin;
+        result = number_sin;
     else if (string_is_identical_to(name, "cos"))
-        return number_cos;
+        result = number_cos;
+    else if (string_is_identical_to(name, "tan"))
+        result = number_tan;
+    else if (string_is_identical_to(name, "log"))
+        result = number_log;
+    else if (string_is_identical_to(name, "abs"))
+        result = number_abs;
     
-    assert(0);
+    if (result)
+        _string_shift(name, 3); //careful here
+
+    return result;
 }
 
 static Number *_get_value(const String *id)
@@ -34,24 +47,14 @@ static Number *_get_value(const String *id)
     assert(0);
 }
 
-static Number *_process_function(const Computation *computation, VariableTable *v_table, Number *wc_value)
+static Number *_process_btf(const Computation *computation, VariableTable *v_table, Number *wc_value)
 {
     Number *(*function)();
     Number *lhs_value;
     Number *result;
-    Variable *variable;
 
     lhs_value = computation_eval(computation->lhs, v_table, wc_value);
-    variable = v_table_search(v_table, computation->node->identifier);
-    if (variable)
-    {
-        result = computation_eval(variable_get_value(variable), v_table, lhs_value);
-        result = number_demote_if_possible(result);
-        number_delete(&lhs_value);
-
-        return result;
-    }
-    function = get_function_by_name(computation->node->identifier);
+    function = get_bft_pointer(computation->node->bf_type);
     if (function)
     {
         result = function(lhs_value);
@@ -60,7 +63,27 @@ static Number *_process_function(const Computation *computation, VariableTable *
 
         return result;
     }
-    
+
+    assert(0);
+}
+
+static Number *_process_function(const Computation *computation, VariableTable *v_table, Number *wc_value)
+{
+    Number *lhs_value;
+    Number *result;
+    Variable *variable;
+
+    variable = v_table_search(v_table, computation->node->identifier);
+    if (variable)
+    {
+        lhs_value = computation_eval(computation->lhs, v_table, wc_value);
+        result = computation_eval(variable_get_value(variable), v_table, lhs_value);
+        result = number_demote_if_possible(result);
+        number_delete(&lhs_value);
+
+        return result;
+    }
+
     assert(0);
 }
 
@@ -85,6 +108,8 @@ Number *computation_eval(const Computation *computation, VariableTable *v_table,
 
     if (computation->node->type == NT_NUMBER)
         return number_copy(computation->node->number);
+    if (computation->node->type == NT_BUILTIN_FUNCTION)
+        return _process_btf(computation, v_table, wc_value);
     if (computation->node->type == NT_FUNCTION)
         return _process_function(computation, v_table, wc_value);
     if (computation->node->type == NT_IDENTIFIER)

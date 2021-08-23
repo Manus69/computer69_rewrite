@@ -23,14 +23,17 @@ Variable *v_table_search(const VariableTable *v_table, const String *name)
     return tree_search_function(v_table, name, match_variable);
 }
 
-VariableTable *v_table_insert(VariableTable *v_table, Variable *variable)
+VariableTable *v_table_insert(VariableTable *v_table, const Variable *variable)
 {
-    // variable = variable_copy(variable); //
-
     if (!v_table)
         return v_table_new(variable);
     
     tree_insert(v_table, variable);
     
     return v_table;
+}
+
+boolean v_table_insert_report(VariableTable *v_table, const Variable *variable)
+{
+    return tree_insert(v_table, variable);
 }
