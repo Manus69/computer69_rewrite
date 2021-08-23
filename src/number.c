@@ -132,12 +132,12 @@ boolean number_is_zero(const Number *number)
         return complex_is_zero(number->z);
 }
 
-Number *number_new(String *string)
+Number *number_from_string(String *string)
 {
     int_signed length;
     char *literal;
 
-    if (string_get_length(string) == 0)
+    if (string_length(string) == 0)
         return NULL;
 
     literal = string_get_characters(string);

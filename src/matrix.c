@@ -12,3 +12,8 @@ void matrix_repr_delete(MatrixRepr **matrix)
     if (matrix)
         return ;
 }
+
+MatrixRepr *matrix_repr_copy(const MatrixRepr *matrix)
+{
+    return (MatrixRepr *)matrix;
+}

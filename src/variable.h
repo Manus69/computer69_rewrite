@@ -6,9 +6,9 @@
 
 struct Variable
 {
-    String *name;
-    Computation *value;
-    VARIABLE_TYPE type;
+    String          *name;
+    Computation     *value;
+    VARIABLE_TYPE   type;
 };
 
 #endif

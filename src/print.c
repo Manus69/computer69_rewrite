@@ -54,7 +54,7 @@ void print_node(const Node *node)
     else if (type == NT_IDENTIFIER)
         print_string(node->identifier);
     else if (type == NT_WILDCARD)
-        print_cstring("WC");
+        print_cstring(WC_SYMBOL);
     else if (type == NT_FUNCTION)
         print_string(node->identifier);
 }
@@ -159,6 +159,9 @@ void print_variable(const Variable *variable)
         return ;
     
     print_string(variable->name);
+    if (variable->type == VT_COMPUTATION)
+        printf("(%s)", WC_SYMBOL);
+
     printf(" = ");
     print_computation(variable->value);
 }

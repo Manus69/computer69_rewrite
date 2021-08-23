@@ -18,7 +18,7 @@ Computation *get_stuff_in_parens(String *string)
     if (right_index <= 1)
         return NULL;
 
-    substring = string_get_substring(string, 1, right_index - 1);
+    substring = string_substring(string, 1, right_index - 1);
     computation = _parse(substring);
 
     _string_shift(string, right_index + 1);
@@ -64,7 +64,7 @@ Computation *get_term(String *string)
     Node *node;
     Computation *term;
 
-    if (!string || string_get_length(string) == 0)
+    if (!string || string_length(string) == 0)
         return NULL;
     
     node = node_get_number(string);
@@ -185,7 +185,7 @@ Computation *_parse(String *string)
     last_op = root;
     while (TRUE)
     {
-        if (string_get_length(string) == 0)
+        if (string_length(string) == 0)
             return root;
 
         term = get_term(string);
@@ -211,7 +211,7 @@ Computation *_parse(String *string)
 
 Computation *parse(String *string)
 {
-    if (!string || !string_get_length(string))
+    if (!string || !string_length(string))
         return NULL;
 
     string = string_remove_spaces(string);

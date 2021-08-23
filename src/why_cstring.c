@@ -1,6 +1,6 @@
 #include "why_cstring.h"
 
-int_unsigned cstr_length(const char *string)
+int_signed cstr_length(const char *string)
 {
     char *iterator;
 
@@ -46,12 +46,15 @@ int_signed cstr_compare_length(const char *lhs, const char *rhs, int_signed leng
         return *rhs;
 
     n = 0;
-    while (n < length && lhs[n] == rhs[n])
+    while (n < length)
     {
+        if (lhs[n] != rhs[n])
+            return rhs[n] - lhs[n];
+        
         n ++;
     }
 
-    return rhs[n] - lhs[n];
+    return 0;
 }
 
 int_signed cstr_compare(const char *lhs, const char *rhs)

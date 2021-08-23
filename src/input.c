@@ -6,7 +6,7 @@ boolean id_assignment(const String *string)
     int_signed length;
     int_signed index;
 
-    length = string_get_length(string);
+    length = string_length(string);
     if (length < 3)
         return FALSE;
     
@@ -24,7 +24,7 @@ boolean id_evaluation(const String *string)
 {
     int_signed length;
 
-    length = string_get_length(string);
+    length = string_length(string);
     if (length <= 2)
         return FALSE;
     

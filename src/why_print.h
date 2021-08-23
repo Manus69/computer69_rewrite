@@ -13,7 +13,7 @@ void print_real(real x);
 void print_complex(Complex z);
 void print_cstring(const char *string);
 void print_string(const String *string);
+void print_string_n(const String *string);
 void print_vector(const Vector *vector, void (*print)());
-
 
 #endif

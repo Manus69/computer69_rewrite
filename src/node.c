@@ -73,7 +73,7 @@ Node *node_get_number(String *string)
 {
     Number *number;
 
-    number = number_new(string);
+    number = number_from_string(string);
     
     return number ? node_new(number, NT_NUMBER) : NULL;   
 }
@@ -96,8 +96,27 @@ Node *node_get_identifier(String *string)
     if (!length)
         return NULL;
     
-    substring = string_get_substring(string, 0, length);
+    substring = string_substring(string, 0, length);
     _string_shift(string, length);
 
     return node_new(substring, NT_IDENTIFIER);
+}
+
+Node *node_copy(const Node *node)
+{
+    Node *new_node;
+
+    new_node = allocate(sizeof(Node));
+    new_node->type = node->type;
+
+    if (node->type == NT_OPERATOR)
+        new_node->operator = node->operator;
+    else if (node->type == NT_NUMBER)
+        new_node->number = number_copy(node->number);
+    else if (node->type == NT_IDENTIFIER)
+        new_node->identifier = string_copy_semideep(node->identifier);
+    else if (node->type == NT_MATRIX)
+        new_node->matrix = matrix_repr_copy(node->matrix);
+
+    return new_node;
 }

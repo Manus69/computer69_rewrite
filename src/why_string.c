@@ -95,7 +95,7 @@ char *string_get_characters(const String *string)
     return string->characters;
 }
 
-int_signed string_get_length(const String *string)
+int_signed string_length(const String *string)
 {
     return string->length;
 }
@@ -182,12 +182,30 @@ int_signed string_compare(const String *lhs, const String *rhs)
     int_signed min_length;
     int_signed lhs_length;
     int_signed rhs_length;
+    int_signed n;
 
-    lhs_length = string_get_length(lhs);
-    rhs_length = string_get_length(rhs);
+    if (!lhs && !rhs)
+        return 0;
+
+    lhs_length = string_length(lhs);
+    rhs_length = string_length(rhs);
     min_length = MIN(lhs_length, rhs_length);
 
-    return cstr_compare_length(lhs->characters, rhs->characters, min_length);
+    n = 0;
+    while (n < min_length && lhs->characters[n] == rhs->characters[n])
+    {
+        n ++;
+    }
+
+    return rhs->characters[n] - lhs->characters[n];
+}
+
+int_signed string_compare_length(const String *lhs, const String *rhs, int_signed length)
+{
+    if (!length)
+        length = MIN(lhs->length, rhs->length);
+
+    return cstr_compare_length(lhs->characters, rhs->characters, length);
 }
 
 boolean string_is_identical(const String *lhs, const String *rhs)
@@ -201,7 +219,10 @@ boolean string_is_identical(const String *lhs, const String *rhs)
     if (lhs->length != rhs->length)
         return FALSE;
 
-    return (string_compare(lhs, rhs) == 0) ? TRUE : FALSE;
+    if (!lhs->length)
+        return TRUE;
+
+    return (cstr_compare_length(lhs->characters, rhs->characters, lhs->length) == 0) ? TRUE : FALSE;
 }
 
 boolean string_is_identical_to(const String *string, const char *characters)
@@ -211,12 +232,15 @@ boolean string_is_identical_to(const String *string, const char *characters)
     if (!string || !characters)
         return FALSE;
     
-    result = cstr_compare_length(string_get_characters(string), characters, string->length - 1);
+    if (cstr_length(characters) != string->length)
+        return FALSE;
+
+    result = cstr_compare_length(string_get_characters(string), characters, string->length);
 
     return result == 0 ? TRUE : FALSE;
 }
 
-String *string_get_substring(const String *string, int_signed left_index, int_signed length)
+String *string_substring(const String *string, int_signed left_index, int_signed length)
 {
     char *pointer;
 
@@ -225,12 +249,21 @@ String *string_get_substring(const String *string, int_signed left_index, int_si
     return string_new_fixed_length(pointer, length);
 }
 
-String *string_get_substring_from(const String *string, int_signed left_index)
+String *string_substring_allocated(const String *string, int_signed left_index, int_signed length)
+{
+    char *characters;
+
+    characters = string->characters + left_index;
+
+    return string_new_allocated_fl(characters, length);
+}
+
+String *string_substring_from(const String *string, int_signed left_index)
 {
     if (string->length <= left_index)
         return NULL;
 
-    return string_get_substring(string, left_index, string->length - left_index);
+    return string_substring(string, left_index, string->length - left_index);
 }
 
 static inline void _insert(char *string, int_signed n, char c)

@@ -29,7 +29,7 @@ void variable_test()
     VariableTable *v_table;
     String *string;
 
-    string = string_new("v(x) = sin(x)");
+    string = string_new_no_space("sin(x) = x");
     v_table = v_table_new(NULL);
     v = variable_create_from_string(string, v_table);
 
@@ -48,9 +48,13 @@ void test()
     Variable *variable;
     VariableTable *v_table;
     String *string;
+    String *string1;
 
-    // string = string_new_no_space("x = cos(2*pi*sin(-pi+2*pi))");
-    string = string_new_no_space("x = cos(i*i*pi)");
+    // string = string_new_no_space("x = pi");
+    // string1 = string_new_no_space("x2 = x");
+
+    string = string_new_no_space("var = pi");
+    string1 = string_new_no_space("v = var");
 
     v_table = NULL;
     
@@ -58,8 +62,11 @@ void test()
     {
         variable = variable_create_from_string(string, v_table);
         print_variable(variable);
-
         v_table = v_table_insert(v_table, variable);
+
+        variable = variable_create_from_string(string1, v_table);
+        print_variable(variable);
+        v_table_insert(v_table, variable);
     }
     else if (id_evaluation(string))
     {
@@ -67,7 +74,8 @@ void test()
     }
 
     v_table_delete(&v_table);
-    string_delete(&string);    
+    string_delete(&string);
+    string_delete(&string1);
 }
 
 //user defined names must be case insensitive
@@ -81,12 +89,18 @@ int main()
 
     start = clock();
 
-    // number_test();
-    // parse_test();
+    // String *lhs, *rhs;
+    // lhs = string_new("a1");
+    // rhs = string_new("a");
+
+    // printf("%lld\n", string_compare(lhs, rhs));
+
     // test_syntax(valid_basic_strings);
-    computation_test_basic(valid_basic_strings);
-    // computation_test_basic(valid_id_strings);
-    // variable_test();
+    // test_computation(valid_basic_strings);
+    // test_computation(valid_id_strings);
+    // test_assignment(valid_ass_strings);
+    // test_sequence(valid_sequence);
+    test_all_sequences(valid_sequences);
     // test();
 
 

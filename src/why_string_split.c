@@ -18,7 +18,7 @@ Vector *string_split(String *string, char delimiter)
 
     while (right_index != NOT_FOUND && left_index != NOT_FOUND)
     {
-        substring = string_get_substring(string, left_index, right_index);
+        substring = string_substring(string, left_index, right_index);
         vector_push(vector, substring);
 
         left_index = string_index_of_compliment_from(string, right_index + 1, delimiter);
@@ -27,7 +27,7 @@ Vector *string_split(String *string, char delimiter)
 
     if (left_index != NOT_FOUND)
     {
-        substring = string_get_substring_from(string, left_index);
+        substring = string_substring_from(string, left_index);
         vector_push(vector, substring);
     }
 

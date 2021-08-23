@@ -9,7 +9,7 @@ static String *_get_arg_name(String *string)
     String *arg_name;
 
     n = find_matching_bracket_str(string);
-    arg_name = string_get_substring(string, 1, n - 1);
+    arg_name = string_substring(string, 1, n - 1);
 
     return arg_name;
 }
@@ -21,12 +21,14 @@ static Variable *_create_constant(String *string, VariableTable *v_table, int_si
     Variable *variable;
     Number *value;
 
-    name = string_get_substring(string, 0, name_length);
+    name = string_substring_allocated(string, 0, name_length);
     _string_shift(string, name_length + 1);
+
     argument = _parse(string);
     argument = computation_resolve(argument, NULL, v_table);
-    value = computation_eval(argument);
+    value = computation_eval(argument, v_table, NULL);
     computation_delete(&argument);
+
     argument = computation_new(node_new(value, NT_NUMBER));
     variable = variable_new(name, argument, VT_CONSTANT);
 
@@ -40,14 +42,18 @@ static Variable *_create_parametrized(String *string, VariableTable *v_table, in
     Computation *argument;
     Variable *variable;
     
-    name = string_get_substring(string, 0, name_length);
+    name = string_substring_allocated(string, 0, name_length);
+    if (check_reserved_symbols(name))
+        assert(0);
+    
     _string_shift(string, name_length);
-    arg_name = _get_arg_name(string);
-    _string_shift(string, string_get_length(arg_name) + 3);
+    arg_name = _get_arg_name(string);    
+    _string_shift(string, string_length(arg_name) + 3);
 
     argument = _parse(string);
     argument = computation_resolve(argument, arg_name, v_table);
     variable = variable_new(name, argument, VT_COMPUTATION);
+    string_delete(&arg_name);
 
     return variable;
 }

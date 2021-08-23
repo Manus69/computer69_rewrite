@@ -51,7 +51,7 @@ Operator *operator_new(String *string)
     char *characters;
     int_signed index;
 
-    if (string_get_length(string) == 0)
+    if (string_length(string) == 0)
         return NULL;
     
     characters = string_get_characters(string);
@@ -79,4 +79,14 @@ void operator_delete(Operator **operator)
     
     free(*operator);
     *operator = NULL;
+}
+
+Operator *operator_copy(const Operator *operator)
+{
+    Operator *copy;
+
+    copy = allocate(sizeof(Operator));
+    copy = memory_copy(copy, operator, sizeof(Operator));
+
+    return copy;
 }

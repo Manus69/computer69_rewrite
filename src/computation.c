@@ -22,9 +22,9 @@ void computation_delete(Computation **computation)
         return ;
 
     cmp = *computation;
-    node_delete(&cmp->node);
     computation_delete(&cmp->lhs);
     computation_delete(&cmp->rhs);
+    node_delete(&cmp->node);
     
     free(cmp);
     *computation = NULL;
@@ -62,3 +62,16 @@ void computation_traverse(Computation *computation, void (*function)())
     computation_traverse(computation->rhs, function);
 }
 
+Computation *computation_copy(const Computation *computation)
+{
+    Computation *copy;
+
+    if (!computation)
+        return NULL;
+
+    copy = computation_new(node_copy(computation->node));
+    copy->lhs = computation_copy(computation->lhs);
+    copy->rhs = computation_copy(computation->rhs);
+
+    return copy;
+}

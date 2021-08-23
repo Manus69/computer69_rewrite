@@ -25,7 +25,7 @@ static Computation *_resolve_node(Computation *computation, const String *wc_ide
     if (variable)
     {
         computation_delete(&computation);
-        computation = variable_get_value(variable);
+        computation = computation_copy(variable_get_value(variable));
     }
     else if (computation->node->type == NT_IDENTIFIER)
     {
@@ -40,42 +40,16 @@ static Computation *_resolve_node(Computation *computation, const String *wc_ide
     return computation;
 }
 
-static Computation *_resolve(Computation *computation, const String *wc_identifier, VariableTable *v_table)
-{
-    Variable *variable;
-
-    if (!computation)
-        return NULL;
-
-    variable = _check_if_variable(computation, v_table);
-    if (variable)
-    {
-        computation_delete(&computation);
-        computation = variable_get_value(variable);
-    }
-    else if (computation->node->type == NT_IDENTIFIER)
-    {
-        if (string_is_identical(wc_identifier, computation->node->identifier))
-            node_convert_to_wildcard(computation->node);
-    }
-    else
-    {
-        computation = computation_resolve(computation, wc_identifier, v_table);
-    }
-
-    return computation;
-}
-
 Computation *computation_resolve(Computation *computation, const String *wc_identifier, VariableTable *v_table)
 {
     if (!computation)
         return NULL;
-    
-    computation->lhs = _resolve(computation->lhs, wc_identifier, v_table);
+
+    computation->lhs = computation_resolve(computation->lhs, wc_identifier, v_table);
 
     computation = _resolve_node(computation, wc_identifier, v_table);
 
-    computation->rhs = _resolve(computation->rhs, wc_identifier, v_table);
+    computation->rhs = computation_resolve(computation->rhs, wc_identifier, v_table);    
 
     return computation;
 }

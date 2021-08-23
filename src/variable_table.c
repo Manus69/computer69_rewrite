@@ -15,7 +15,7 @@ void v_table_delete(VariableTable **v_table)
 
 int_signed match_variable(const Variable *variable, const String *name)
 {
-    return string_compare(variable->name, name);
+    return string_compare_length(variable->name, name, 0);
 }
 
 Variable *v_table_search(const VariableTable *v_table, const String *name)
@@ -25,6 +25,8 @@ Variable *v_table_search(const VariableTable *v_table, const String *name)
 
 VariableTable *v_table_insert(VariableTable *v_table, Variable *variable)
 {
+    // variable = variable_copy(variable); //
+
     if (!v_table)
         return v_table_new(variable);
     

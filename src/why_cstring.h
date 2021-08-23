@@ -3,7 +3,7 @@
 
 #include "why_memory.h"
 
-int_unsigned    cstr_length(const char *string);
+int_signed    cstr_length(const char *string);
 int_signed      cstr_compare(const char *lhs, const char *rhs);
 int_signed      cstr_compare_length(const char *lhs, const char *rhs, int_signed length);
 int_signed      cstr_index_of(const char *string, char c);

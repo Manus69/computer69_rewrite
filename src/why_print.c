@@ -46,7 +46,7 @@ void print_complex(Complex z)
 
 void print_cstring(const char *string)
 {
-    printf("%s\n", string);
+    printf("%s", string);
 }
 
 //this is ugly and dangerous
@@ -56,8 +56,14 @@ void print_string(const String *string)
     int_signed length;
 
     cstring = string_get_characters(string);
-    length = string_get_length(string);
+    length = string_length(string);
     printf("%.*s", (int)length, cstring);
+}
+
+void print_string_n(const String *string)
+{
+    print_string(string);
+    printf("\n");
 }
 
 void print_vector(const Vector *vector, void (*print)())

@@ -34,3 +34,15 @@ Computation *variable_get_value(const Variable *variable)
 {
     return variable->value;
 }
+
+Variable *variable_copy(const Variable *variable)
+{
+    Variable *copy;
+
+    copy = allocate(sizeof(Variable));
+    copy->name = string_copy_deep(variable->name);
+    copy->value = computation_copy(variable->value);
+    copy->type = variable->type;
+
+    return copy;
+}

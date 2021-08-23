@@ -34,18 +34,34 @@ static Number *_get_value(const String *id)
     assert(0);
 }
 
-static Number *_process_function(const Computation *computation)
+static Number *_process_function(const Computation *computation, VariableTable *v_table, Number *wc_value)
 {
     Number *(*function)();
     Number *lhs_value;
     Number *result;
+    Variable *variable;
 
+    lhs_value = computation_eval(computation->lhs, v_table, wc_value);
+    variable = v_table_search(v_table, computation->node->identifier);
+    if (variable)
+    {
+        result = computation_eval(variable_get_value(variable), v_table, lhs_value);
+        result = number_demote_if_possible(result);
+        number_delete(&lhs_value);
+
+        return result;
+    }
     function = get_function_by_name(computation->node->identifier);
-    lhs_value = computation_eval(computation->lhs);
-    result = function(lhs_value);
-    number_delete(&lhs_value);
+    if (function)
+    {
+        result = function(lhs_value);
+        result = number_demote_if_possible(result);
+        number_delete(&lhs_value);
 
-    return result;
+        return result;
+    }
+    
+    assert(0);
 }
 
 static Number *_process_id(const Computation *computation)
@@ -57,7 +73,7 @@ static Number *_process_id(const Computation *computation)
     return value;
 }
 
-Number *computation_eval(const Computation *computation)
+Number *computation_eval(const Computation *computation, VariableTable *v_table, Number *wc_value)
 {
     Number *(*function)();
     Number *lhs_value;
@@ -69,18 +85,17 @@ Number *computation_eval(const Computation *computation)
 
     if (computation->node->type == NT_NUMBER)
         return number_copy(computation->node->number);
-    
     if (computation->node->type == NT_FUNCTION)
-        return _process_function(computation);
-
+        return _process_function(computation, v_table, wc_value);
     if (computation->node->type == NT_IDENTIFIER)
         return _process_id(computation);
-
+    if (computation->node->type == NT_WILDCARD && wc_value)
+        return number_copy(wc_value);
     if (computation->node->type != NT_OPERATOR)
         assert(0);
     
-    lhs_value = computation->lhs ? computation_eval(computation->lhs) : NULL;
-    rhs_value = computation->rhs ? computation_eval(computation->rhs) : NULL;
+    lhs_value = computation->lhs ? computation_eval(computation->lhs, v_table, wc_value) : NULL;
+    rhs_value = computation->rhs ? computation_eval(computation->rhs, v_table, wc_value) : NULL;
 
     function = op_functions[computation->node->operator->type];
     result = function(lhs_value, rhs_value);
