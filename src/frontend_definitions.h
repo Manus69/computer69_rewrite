@@ -49,6 +49,7 @@ enum VARIABLE_TYPE
 {
     VT_CONSTANT,
     VT_COMPUTATION,
+    VT_MATRIX,
 };
 
 #endif

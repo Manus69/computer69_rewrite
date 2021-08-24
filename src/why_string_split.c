@@ -4,33 +4,35 @@
 
 Vector *string_split(String *string, char delimiter)
 {
-    Vector *vector;
-    String *substring;
-    int_signed left_index;
-    int_signed right_index;
+    Vector      *vector;
+    String      *element;
+    int_signed  index;
+    int_signed  length;
 
     vector = vector_new(copy_shallow, string_delete);
-    left_index = string_index_of_compliment_from(string, 0, delimiter);
-    if (left_index == NOT_FOUND)
-        return vector;
 
-    right_index = string_index_of_from(string, left_index + 1, delimiter);
-
-    while (right_index != NOT_FOUND && left_index != NOT_FOUND)
+    while ((length = string_length(string)))
     {
-        substring = string_substring(string, left_index, right_index);
-        vector_push(vector, substring);
-
-        left_index = string_index_of_compliment_from(string, right_index + 1, delimiter);
-        right_index = string_index_of_from(string, right_index + 1, delimiter);
+        index = string_index_of(string, delimiter);
+        if (index > 0)
+        {
+            element = string_substring(string, 0, index);
+            _string_shift(string, index + 1);
+        }
+        else if (index == NOT_FOUND)
+        {
+            element = string_substring_from(string, 0);
+            _string_shift(string, length);
+        }
+        else
+        {
+            element = string_new("");
+            _string_shift(string, 1);
+        }
+        vector_push(vector, element);
     }
 
-    if (left_index != NOT_FOUND)
-    {
-        substring = string_substring_from(string, left_index);
-        vector_push(vector, substring);
-    }
-
+    _string_rewind(string);
     return vector;
 }
 

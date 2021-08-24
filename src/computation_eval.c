@@ -8,32 +8,6 @@
 static const void *op_functions[] = {number_add, number_subtract, 
 number_mult, number_divide, number_mod, number_power, number_factorial, 0};
 
-void *get_function_by_name(String *name)
-{
-    void *result;
-
-    if (!name)
-        return NULL;
-
-    result = NULL;
-
-    if (string_is_identical_to(name, "sin"))
-        result = number_sin;
-    else if (string_is_identical_to(name, "cos"))
-        result = number_cos;
-    else if (string_is_identical_to(name, "tan"))
-        result = number_tan;
-    else if (string_is_identical_to(name, "log"))
-        result = number_log;
-    else if (string_is_identical_to(name, "abs"))
-        result = number_abs;
-    
-    if (result)
-        _string_shift(name, 3); //careful here
-
-    return result;
-}
-
 static Number *_get_value(const String *id)
 {
     if (!id)
@@ -47,7 +21,7 @@ static Number *_get_value(const String *id)
     assert(0);
 }
 
-static Number *_process_btf(const Computation *computation, VariableTable *v_table, Number *wc_value)
+static Number *_process_btf(const Computation *computation, const VariableTable *v_table, Number *wc_value)
 {
     Number *(*function)();
     Number *lhs_value;
@@ -67,7 +41,7 @@ static Number *_process_btf(const Computation *computation, VariableTable *v_tab
     assert(0);
 }
 
-static Number *_process_function(const Computation *computation, VariableTable *v_table, Number *wc_value)
+static Number *_process_function(const Computation *computation, const VariableTable *v_table, Number *wc_value)
 {
     Number *lhs_value;
     Number *result;
@@ -96,7 +70,7 @@ static Number *_process_id(const Computation *computation)
     return value;
 }
 
-Number *computation_eval(const Computation *computation, VariableTable *v_table, Number *wc_value)
+Number *computation_eval(const Computation *computation, const VariableTable *v_table, Number *wc_value)
 {
     Number *(*function)();
     Number *lhs_value;

@@ -36,6 +36,14 @@ int_signed _string_shift(String *string, int_signed shift)
     return shift;
 }
 
+int_signed _string_rewind(String *string)
+{
+    string->length = string->characters - string->pointer;
+    string->characters = string->pointer;
+
+    return string->length;
+}
+
 String *string_new_fixed_length(const char *literal, int_signed length)
 {
     String *string;

@@ -69,18 +69,28 @@ void print_string_n(const String *string)
     printf("\n");
 }
 
-void print_vector(const Vector *vector, void (*print)())
+void print_vector(const Vector *vector, void (*print)(), const char *separator)
 {
     int_signed n;
     int_signed size;
     void *item;
 
+    if (!vector)
+        return ;
+
     size = vector_size(vector);
-    n = 0;
+    item = vector_at(vector, 0);
+    print(item);
+
+    n = 1;
     while (n < size)
     {
+        if (separator)
+            printf("%s", separator);
+        
         item = vector_at(vector, n);
         print(item);
+
         n ++;
     }
 }

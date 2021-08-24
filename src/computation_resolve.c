@@ -2,7 +2,7 @@
 #include "computation.h"
 #include "node.h"
 
-static Variable *_check_if_variable(Computation *computation, VariableTable *v_table)
+static Variable *_check_if_variable(Computation *computation, const VariableTable *v_table)
 {
     Variable *variable;
 
@@ -17,7 +17,7 @@ static Variable *_check_if_variable(Computation *computation, VariableTable *v_t
     return variable ? variable : NULL;
 }
 
-static Computation *_resolve_node(Computation *computation, const String *wc_identifier, VariableTable *v_table)
+static Computation *_resolve_node(Computation *computation, const String *wc_identifier, const VariableTable *v_table)
 {
     Variable *variable;
 
@@ -40,7 +40,7 @@ static Computation *_resolve_node(Computation *computation, const String *wc_ide
     return computation;
 }
 
-Computation *computation_resolve(Computation *computation, const String *wc_identifier, VariableTable *v_table)
+Computation *computation_resolve(Computation *computation, const String *wc_identifier, const VariableTable *v_table)
 {
     if (!computation)
         return NULL;

@@ -14,7 +14,7 @@ static String *_get_arg_name(String *string)
     return arg_name;
 }
 
-static Variable *_create_with_name(String *string, VariableTable *v_table, String *name)
+Variable *variable_create_with_name(String *string, const VariableTable *v_table, String *name)
 {
     Computation *argument;
     Variable *variable;
@@ -28,20 +28,23 @@ static Variable *_create_with_name(String *string, VariableTable *v_table, Strin
     argument = computation_new(node_new(value, NT_NUMBER));
     variable = variable_new(name, argument, VT_CONSTANT);
 
+    if (string_length(string))
+        assert(0);
+
     return variable;
 }
 
-static Variable *_create_constant(String *string, VariableTable *v_table, int_signed name_length)
+static Variable *_create_constant(String *string, const VariableTable *v_table, int_signed name_length)
 {
     String *name;
 
     name = string_substring_allocated(string, 0, name_length);
     _string_shift(string, name_length + 1);
 
-    return _create_with_name(string, v_table, name);
+    return variable_create_with_name(string, v_table, name);
 }
 
-static Variable *_create_parametrized(String *string, VariableTable *v_table, int_signed name_length)
+static Variable *_create_parametrized(String *string, const VariableTable *v_table, int_signed name_length)
 {
     String *name;
     String *arg_name;
@@ -64,10 +67,13 @@ static Variable *_create_parametrized(String *string, VariableTable *v_table, in
     variable = variable_new(name, argument, VT_COMPUTATION);
     string_delete(&arg_name);
 
+    if (string_length(string))
+        assert(0);
+    
     return variable;
 }
 
-Variable *variable_create_from_string(String *string, VariableTable *v_table)
+Variable *variable_create_from_string(String *string, const VariableTable *v_table)
 {
     int_signed length;
     int_signed index;
@@ -81,5 +87,5 @@ Variable *variable_create_from_string(String *string, VariableTable *v_table)
     if (length && index != NOT_FOUND)
         return _create_constant(string, v_table, length);
 
-    return _create_with_name(string, v_table, NULL); 
+    return variable_create_with_name(string, v_table, NULL); 
 }

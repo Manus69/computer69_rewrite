@@ -45,37 +45,17 @@ void variable_test()
 
 void test()
 {
-    Variable *variable;
-    VariableTable *v_table;
     String *string;
-    String *string1;
 
-    // string = string_new_no_space("x = pi");
-    // string1 = string_new_no_space("x2 = x");
+    // string = string_new_no_space("[1, 1, pi]");
+    string = string_new_no_space("[[1];[pi]]");
+    MatrixRepr *matrix = matrix_repr_from_string(string, NULL);
 
-    string = string_new_no_space("var = pi");
-    string1 = string_new_no_space("v = var");
-
-    v_table = NULL;
-    
-    if (id_assignment(string))
-    {
-        variable = variable_create_from_string(string, v_table);
-        print_variable(variable);
-        v_table = v_table_insert(v_table, variable);
-
-        variable = variable_create_from_string(string1, v_table);
-        print_variable(variable);
-        v_table_insert(v_table, variable);
-    }
-    else if (id_evaluation(string))
-    {
-        ;
-    }
-
-    v_table_delete(&v_table);
     string_delete(&string);
-    string_delete(&string1);
+
+    print_matrix_repr(matrix);
+
+    matrix_repr_delete(&matrix);
 }
 
 //user defined names must be case insensitive
@@ -97,7 +77,6 @@ int main()
     // test_sequence(valid_sequence);
     test_all_sequences(valid_sequences);
     // test();
-
 
     end = clock();
 

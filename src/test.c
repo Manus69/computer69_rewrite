@@ -43,6 +43,11 @@ const char *valid_sequences[][SEQUENCE_LENGTH] = {{"x = 1", "y = x + x", 0},
 {"x = -sin(2*cos(0))/sin(pi/2)", "y(k) = x^k", "w = y(2)", 0},
 {"thisIsaVariable = -1-1-1", "f(vvv) = vvv^3!", "w = f(thisIsaVariable)", 0},
 {"1-(1+(2*3-1))+1", "sin(pi/2)", 0},
+{"p(x) = pi + x + x^2", "p(1)", 0},
+{"cos(2*pi*sin(-pi+2*pi))*cos(pi)^2+sin(pi)^2-sin(-pi/2)", 0},
+{"[[0]]", "[[0,1]]", "[[-1,10]]",
+"[[99];[-99]]", "[[-1,-2];[-9.1,-1.99]]", "[[pi]]", "[[-pi];[-i];[0.0]]",
+"[[cos(pi/2),-sin(pi/2)]]", 0},
 {0}};
 
 const char *valid_matrix_strings[] = {"[[0]]", "[[0,1]]", "[[-1,10]]",

@@ -1,7 +1,7 @@
 #include "print.h"
 #include "frontend_definitions.h"
 #include "frontend_declarations.h"
-#include "why_print.h"
+// #include "why_print.h"
 #include "terminals.h"
 #include "node.h"
 #include "operator.h"
@@ -186,4 +186,42 @@ void print_v_table(const VariableTable *v_table)
     print_variable(v_table->node);
     printf("\n");
     print_v_table(v_table->right);
+}
+
+void print_matrix_row(const Vector *row)
+{
+    if (!row)
+        return ;
+
+    printf("[");
+    print_vector(row, print_variable, ",");
+    printf("]");
+}
+
+void print_matrix_repr(const MatrixRepr *matrix)
+{
+    int_signed n;
+    int_signed length;
+    Vector *row;
+
+    if (!matrix)
+        return ;
+
+    length = matrix_repr_size(matrix);
+    if (!length)
+        return ;
+    
+    printf("[");
+    row = matrix_repr_get_row(matrix, 0);
+    print_matrix_row(row);
+
+    n = 1;
+    while (n < length)
+    {
+        printf(";");
+        row = matrix_repr_get_row(matrix, n);
+        print_matrix_row(row);
+        n ++;
+    }
+    printf("]");
 }

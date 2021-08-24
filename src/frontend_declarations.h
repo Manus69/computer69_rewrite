@@ -39,9 +39,13 @@ OPERATOR_TYPE   operator_get_type(const Operator *operator);
 Operator        *operator_copy(const Operator *operator);
 
 //matrix representation
-MatrixRepr      *matrix_repr_new(String *string);
+MatrixRepr      *matrix_repr_new();
+Vector          *matrix_repr_get_row(const MatrixRepr *matrix, int_signed n);
+int_signed      matrix_repr_size(const MatrixRepr *matrix);
 void            matrix_repr_delete(MatrixRepr **matrix);
 MatrixRepr      *matrix_repr_copy(const MatrixRepr *matrix);
+Vector          *matrix_row_from_string(String *string, const VariableTable *v_table);
+MatrixRepr      *matrix_repr_from_string(String *string, const VariableTable *v_table);
 
 //node
 Node            *node_new(void *data, NODE_TYPE type);
@@ -62,11 +66,11 @@ Computation     *computation_insert_root(Computation *root, Computation *new_roo
 Computation     *computation_swap_root(Computation *root, Computation *new_root);
 Computation     *computation_get_lhs(const Computation *computation);
 Computation     *computation_get_rhs(const Computation *computation);
-Computation     *computation_resolve(Computation *computation, const String *wc_identifier, VariableTable *v_table);
+Computation     *computation_resolve(Computation *computation, const String *wc_identifier, const VariableTable *v_table);
 void            computation_traverse(Computation *computation, void (*function)());
 Node            *computation_get_node(const Computation *computation);
 void            computation_delete(Computation **computation);
-Number          *computation_eval(const Computation *computation, VariableTable *v_table, Number *wc_value);
+Number          *computation_eval(const Computation *computation, const VariableTable *v_table, Number *wc_value);
 
 //variable
 Variable        *variable_new(String *name, Computation *value, VARIABLE_TYPE type);
@@ -74,9 +78,10 @@ int_signed      variable_compare(const Variable *lhs, const Variable *rhs);
 Computation     *variable_get_value(const Variable *variable);
 String          *variable_get_name(const Variable *variable);
 void            variable_delete(Variable **variable);
-Variable        *variable_create_from_string(String *string, VariableTable *v_table);
+Variable        *variable_create_from_string(String *string, const VariableTable *v_table);
 Variable        *variable_copy(const Variable *variable);
 Variable        *variable_assign(Variable *variable, const Computation *value);
+Variable        *variable_create_with_name(String *string, const VariableTable *v_table, String *name);
 
 //variable table
 VariableTable   *v_table_new(const Variable *variable);
