@@ -101,6 +101,17 @@ Node *node_get_identifier(String *string)
     return node_new(substring, NT_IDENTIFIER);
 }
 
+Node *node_get_matrix(String *string, const VariableTable *v_table)
+{
+    MatrixRepr *matrix;
+    Node *node;
+
+    matrix = matrix_repr_from_string(string, v_table);
+    node = matrix ? node_new(matrix, NT_MATRIX) : NULL;    
+
+    return node;
+}
+
 Node *node_copy(const Node *node)
 {
     Node *new_node;

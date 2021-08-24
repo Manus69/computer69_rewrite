@@ -15,7 +15,7 @@ void parse_test()
     // string = string_new("3!^2+1");
     string = string_new("i");
 
-    cmp = parse(string);
+    cmp = parse(string, NULL);
 
     print_computation(cmp);
 
@@ -43,12 +43,12 @@ void variable_test()
     string_delete(&string);
 }
 
-void test()
+void matrix_test()
 {
     String *string;
 
     // string = string_new_no_space("[1, 1, pi]");
-    string = string_new_no_space("[[1];[pi]]");
+    string = string_new_no_space("[[x];[pi]]");
     MatrixRepr *matrix = matrix_repr_from_string(string, NULL);
 
     string_delete(&string);
@@ -56,6 +56,11 @@ void test()
     print_matrix_repr(matrix);
 
     matrix_repr_delete(&matrix);
+}
+
+void test()
+{
+    ;
 }
 
 //user defined names must be case insensitive

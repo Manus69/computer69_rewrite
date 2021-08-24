@@ -6,7 +6,6 @@
 struct MatrixRepr
 {
     Vector *rows;
-    // int_signed n_rows;
     int_signed n_cols;
 };
 

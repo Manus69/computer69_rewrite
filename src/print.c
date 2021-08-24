@@ -152,6 +152,9 @@ void print_computation(const Computation *computation)
     if (_check_u_minus(computation))
         return _print_u_minus(computation);
 
+    if (root_node->type == NT_MATRIX)
+        return print_matrix_repr(root_node->matrix);
+
     _check_branch_and_print(computation, computation->lhs);
     print_node(root_node);
     _check_branch_and_print(computation, computation->rhs);
@@ -194,7 +197,8 @@ void print_matrix_row(const Vector *row)
         return ;
 
     printf("[");
-    print_vector(row, print_variable, ",");
+    // print_vector(row, print_variable, ",");
+    print_vector(row, print_computation, ",");
     printf("]");
 }
 

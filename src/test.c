@@ -26,7 +26,7 @@ const char *valid_ass_strings[] = {"a(y) = 43*y/(4%2*y)", "f(x) = 1", "f(x) = x"
 
 const char *valid_sequence_basic[] = {"x = 1", "y = x + x", 0};
 
-const char *valid_sequence[] = {"1+1", 0};
+const char *valid_sequence[] = {"[[0,1]]", 0};
 
 const char *valid_sequences[][SEQUENCE_LENGTH] = {{"x = 1", "y = x + x", 0},
 {"var = pi", "var2 = var*var + 1", 0},
@@ -45,9 +45,7 @@ const char *valid_sequences[][SEQUENCE_LENGTH] = {{"x = 1", "y = x + x", 0},
 {"1-(1+(2*3-1))+1", "sin(pi/2)", 0},
 {"p(x) = pi + x + x^2", "p(1)", 0},
 {"cos(2*pi*sin(-pi+2*pi))*cos(pi)^2+sin(pi)^2-sin(-pi/2)", 0},
-{"[[0]]", "[[0,1]]", "[[-1,10]]",
-"[[99];[-99]]", "[[-1,-2];[-9.1,-1.99]]", "[[pi]]", "[[-pi];[-i];[0.0]]",
-"[[cos(pi/2),-sin(pi/2)]]", 0},
+{"f(x) = x + x", "g(x) = 2*x", "w(x) = f(x) + g(x)", "k = w(1)", 0},
 {0}};
 
 const char *valid_matrix_strings[] = {"[[0]]", "[[0,1]]", "[[-1,10]]",
@@ -66,7 +64,7 @@ void test_syntax(const char **strings)
         string = string_new(strings[n]);
         print_string(string);
         fflush(NULL);
-        computation = parse(string);
+        computation = parse(string, NULL);
 
         printf(" => ");
         print_computation(computation);
@@ -90,7 +88,7 @@ void test_computation(const char **strings)
     while (strings[n])
     {
         string = string_new_no_space(strings[n]);
-        computation = _parse(string);
+        computation = _parse(string, NULL);
         computation = computation_resolve(computation, NULL, NULL);
         result = computation_eval(computation, NULL, NULL);
 

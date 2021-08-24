@@ -1,5 +1,6 @@
 #include "variable.h"
 #include "frontend_declarations.h"
+#include "terminals.h"
 
 #include <assert.h>
 
@@ -8,7 +9,7 @@ static String *_get_arg_name(String *string)
     int_signed n;
     String *arg_name;
 
-    n = find_matching_bracket_str(string);
+    n = find_matching_bracket_str(string, TERMINALS[O_PAREN], TERMINALS[C_PAREN]);
     arg_name = string_substring(string, 1, n - 1);
 
     return arg_name;
@@ -20,7 +21,7 @@ Variable *variable_create_with_name(String *string, const VariableTable *v_table
     Variable *variable;
     Number *value;
 
-    argument = _parse(string);
+    argument = _parse(string, v_table);
     argument = computation_resolve(argument, NULL, v_table);
     value = computation_eval(argument, v_table, NULL);
     computation_delete(&argument);
@@ -62,7 +63,7 @@ static Variable *_create_parametrized(String *string, const VariableTable *v_tab
     
     _string_shift(string, string_length(arg_name) + 3);
 
-    argument = _parse(string);
+    argument = _parse(string, v_table);
     argument = computation_resolve(argument, arg_name, v_table);
     variable = variable_new(name, argument, VT_COMPUTATION);
     string_delete(&arg_name);

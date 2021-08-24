@@ -7,7 +7,8 @@
 
 Vector *matrix_row_new()
 {
-    return vector_new(copy_shallow, variable_delete);
+    // return vector_new(copy_shallow, variable_delete);
+    return vector_new(copy_shallow, computation_delete);
 }
 
 MatrixRepr *matrix_repr_new()
@@ -34,10 +35,11 @@ int_signed matrix_repr_size(const MatrixRepr *matrix)
 static Vector *_process_elements(const Vector *elements, const VariableTable *v_table)
 {
     Vector *row;
-    Variable *variable;
+    // Variable *variable;
     String *element;
     int_signed n;
     int_signed length;
+    Computation *computation;
 
     row = matrix_row_new();
     n = 0;
@@ -45,8 +47,10 @@ static Vector *_process_elements(const Vector *elements, const VariableTable *v_
     while (n < length)
     {
         element = vector_at(elements, n);
-        variable = variable_create_with_name(element, v_table, NULL);
-        vector_push(row, variable);
+        // variable = variable_create_with_name(element, v_table, NULL);
+        // vector_push(row, variable);
+        computation = _parse(element, v_table);
+        vector_push(row, computation);
         n ++;
     }
 
@@ -60,7 +64,7 @@ Vector *matrix_row_from_string(String *string, const VariableTable *v_table)
     Vector *elements;
     Vector *row;
 
-    n = find_matching_bracket_str(string);
+    n = find_matching_bracket_str(string, TERMINALS[O_BRACKET], TERMINALS[C_BRACKET]);
     if (n == NOT_FOUND || n < 2)
         return NULL;
 
@@ -124,16 +128,14 @@ MatrixRepr *matrix_repr_from_string(String *string, const VariableTable *v_table
 {
     MatrixRepr *matrix;
     int_signed index;
-    int_signed length;
     String *substring;
 
-    index = find_matching_bracket_str(string);
-    length = string_length(string);
-    if (index == NOT_FOUND || length < 5)
+    index = find_matching_bracket_str(string, TERMINALS[O_BRACKET], TERMINALS[C_BRACKET]);
+    if (index == NOT_FOUND || index < 4)
         return NULL;
     
-    substring = string_substring(string, 1, length - 2);
-    _string_shift(string, string_length(substring) + 2);
+    substring = string_substring(string, 1, index - 1);
+    _string_shift(string, index + 1);
     
     matrix = _get_matrix(substring, v_table);
     string_delete(&substring);

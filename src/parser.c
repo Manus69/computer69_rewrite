@@ -8,18 +8,18 @@
 
 // static Computation *_parse(String *string);
 
-Computation *get_stuff_in_parens(String *string)
+Computation *get_stuff_in_parens(String *string, const VariableTable *v_table)
 {
     int_signed right_index;
     String *substring;
     Computation *computation;
 
-    right_index = find_matching_bracket_str(string);
+    right_index = find_matching_bracket_str(string, TERMINALS[O_PAREN], TERMINALS[C_PAREN]);
     if (right_index <= 1)
         return NULL;
 
     substring = string_substring(string, 1, right_index - 1);
-    computation = _parse(substring);
+    computation = _parse(substring, v_table);
 
     _string_shift(string, right_index + 1);
     string_delete(&substring);
@@ -27,7 +27,7 @@ Computation *get_stuff_in_parens(String *string)
     return computation;
 }
 
-Computation *get_function(String *string)
+Computation *get_function(String *string, const VariableTable *v_table)
 {
     int_unsigned length;
     Node *identifier_node;
@@ -39,7 +39,7 @@ Computation *get_function(String *string)
         return NULL;
 
     identifier_node = node_get_identifier(string);
-    argument = get_stuff_in_parens(string);
+    argument = get_stuff_in_parens(string, v_table);
     if (!argument)
         return NULL;
 
@@ -62,7 +62,7 @@ Computation *get_identifier(String *string)
     return node ? computation_new(node) : NULL;
 }
 
-Computation *get_term(String *string)
+Computation *get_term(String *string, const VariableTable *v_table)
 {
     Node *node;
     Computation *term;
@@ -74,11 +74,15 @@ Computation *get_term(String *string)
     if (node)
         return computation_new(node);
     
-    term = get_stuff_in_parens(string);
+    node = node_get_matrix(string, v_table);
+    if (node)
+        return computation_new(node);
+
+    term = get_stuff_in_parens(string, v_table);
     if (term)
         return term;
     
-    term = get_function(string);
+    term = get_function(string, v_table);
     if (term)
         return term;
     
@@ -98,14 +102,14 @@ Computation *get_operator(String *string)
     return op_node ? computation_new(op_node) : NULL;
 }
 
-static Computation *process_u_minus(String *string)
+static Computation *process_u_minus(String *string, const VariableTable *v_table)
 {
     Computation *root;
     Computation *minus;
     Computation *term;
 
     minus = get_operator(string);
-    term = get_term(string);
+    term = get_term(string, v_table);
     if (!term)
     {
         computation_delete(&minus);
@@ -123,16 +127,16 @@ static Computation *process_u_minus(String *string)
     return root;
 }
 
-static Computation *get_partial_tree(String *string)
+static Computation *get_partial_tree(String *string, const VariableTable *v_table)
 {
     Computation *root;
     Computation *lhs;
     Computation *new_root;
 
     if (string_at(string, 0) == TERMINALS[MINUS])
-        return process_u_minus(string);
+        return process_u_minus(string, v_table);
     
-    lhs = get_term(string);
+    lhs = get_term(string, v_table);
     if (!lhs)
         return NULL;
     
@@ -171,14 +175,14 @@ static Computation *_insert_in_order(Computation *last_op, Computation *next_op,
     return last_op;
 }
 
-Computation *_parse(String *string)
+Computation *_parse(String *string, const VariableTable *v_table)
 {
     Computation *root;
     Computation *last_op;
     Computation *next_op;
     Computation *term;
 
-    root = get_partial_tree(string);
+    root = get_partial_tree(string, v_table);
     if (!root || root->node->type != NT_OPERATOR)
         return root;
 
@@ -191,7 +195,7 @@ Computation *_parse(String *string)
         if (string_length(string) == 0)
             return root;
 
-        term = get_term(string);
+        term = get_term(string, v_table);
 
         if (!(next_op = get_operator(string)))
         {
@@ -212,12 +216,12 @@ Computation *_parse(String *string)
     }
 }
 
-Computation *parse(String *string)
+Computation *parse(String *string, const VariableTable *v_table)
 {
     if (!string || !string_length(string))
         return NULL;
 
     string = string_remove_spaces(string);
 
-    return _parse(string);
+    return _parse(string, v_table);
 }

@@ -52,6 +52,7 @@ Node            *node_new(void *data, NODE_TYPE type);
 Node            *node_get_number(String *string);
 Node            *node_get_operator(String *string);
 Node            *node_get_identifier(String *string);
+Node *node_get_matrix(String *string, const VariableTable *v_table);
 Node            *node_change_type(Node *node, NODE_TYPE type);
 Node            *node_convert_to_wildcard(Node *node);
 Node            *node_convert_to_bft(Node *node);
@@ -92,16 +93,16 @@ VariableTable   *v_table_insert(VariableTable *v_table, const Variable *variable
 boolean         v_table_insert_report(VariableTable *v_table, const Variable *variable);
 
 //parser
-Computation     *parse(String *string);
-Computation     *_parse(String *string); // get rid of one of these later
+Computation     *parse(String *string, const VariableTable *v_table);
+Computation     *_parse(String *string, const VariableTable *v_table); // get rid of one of these later
 
 //support
 int_unsigned    id_identifier(const char *string);
 int_unsigned    id_function_name(const char *string);
 int_unsigned    id_identifier_str(const String *string);
 int_unsigned    id_function_name_str(const String *string);
-int_signed      find_matching_bracket(const char *string);
-int_signed      find_matching_bracket_str(const String *string);
+int_signed      find_matching_bracket(const char *string, char o_symbol, char c_symbol);
+int_signed      find_matching_bracket_str(const String *string, char o_symbol, char c_symbol);
 String          *string_new_no_space(const char *characters);
 
 boolean         id_assignment(const String *string);

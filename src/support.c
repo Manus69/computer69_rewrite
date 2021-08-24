@@ -1,23 +1,15 @@
 #include "frontend_declarations.h"
 #include "terminals.h"
 
-int_signed find_matching_bracket(const char *string)
+int_signed find_matching_bracket(const char *string, char o_symbol, char c_symbol)
 {
     char *initial;
-    char c_symbol;
     int_signed count;
 
-    if (!string)
+    if (!string || *string != o_symbol)
         return NOT_FOUND;
 
     initial = (char *)string;
-    if (*initial == TERMINALS[O_PAREN])
-        c_symbol = TERMINALS[C_PAREN];
-    else if (*initial == TERMINALS[O_BRACKET])
-        c_symbol = TERMINALS[C_BRACKET];
-    else
-        return NOT_FOUND;
-
     string ++;
     count = 1;
     while (*string)
@@ -36,13 +28,13 @@ int_signed find_matching_bracket(const char *string)
     return NOT_FOUND;
 }
 
-int_signed find_matching_bracket_str(const String *string)
+int_signed find_matching_bracket_str(const String *string, char o_symbol, char c_symbol)
 {
     char *characters;
 
     characters = string_get_characters(string);
 
-    return find_matching_bracket(characters);
+    return find_matching_bracket(characters, o_symbol, c_symbol);
 }
 
 String *string_new_no_space(const char *literal)

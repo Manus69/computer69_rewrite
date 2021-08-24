@@ -9,6 +9,7 @@ typedef struct Operator Operator;
 typedef struct Node Node;
 typedef struct Computation Computation;
 typedef struct Variable Variable;
+typedef struct Entity Entity;
 
 typedef Tree VariableTable;
 
@@ -18,6 +19,7 @@ typedef enum OPERATOR_TYPE OPERATOR_TYPE;
 typedef enum NODE_TYPE NODE_TYPE;
 typedef enum VARIABLE_TYPE VARIABLE_TYPE;
 typedef enum BULITIN_FUNCTION_TYPE BULITIN_FUNCTION_TYPE;
+typedef enum ENTITY_TYPE ENTITY_TYPE;
 
 enum NUMBER_TYPE
 {
@@ -50,6 +52,12 @@ enum VARIABLE_TYPE
     VT_CONSTANT,
     VT_COMPUTATION,
     VT_MATRIX,
+};
+
+enum ENTITY_TYPE
+{
+    ET_NUMBER,
+    ET_MATRIX,
 };
 
 #endif
