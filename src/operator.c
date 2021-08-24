@@ -8,7 +8,7 @@
 
 boolean operator_is_binary(Operator *operator)
 {
-    if (operator->type == OT_FACTORIAL)
+    if (operator->type == OT_EXCLAM)
         return FALSE;
     
     return TRUE;
@@ -27,15 +27,15 @@ static byte _get_precedence(OPERATOR_TYPE type)
         return 0;
     else if (type <= OT_MOD)
         return 1;
-    else if (type == OT_EXPONENT)
+    else if (type == OT_CARET)
         return 2;
-    else if (type == OT_FACTORIAL)
+    else if (type == OT_EXCLAM)
         return 3;
     
     assert(0);
 }
 
-static Operator *_new(OPERATOR_TYPE type)
+Operator *operator_new_from_type(OPERATOR_TYPE type)
 {
     Operator *op;
 
@@ -64,7 +64,7 @@ Operator *operator_new(String *string)
     
     _string_shift(string, 1);
 
-    return _new(index);
+    return operator_new_from_type(index);
 }
 
 OPERATOR_TYPE operator_get_type(const Operator *operator)

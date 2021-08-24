@@ -69,6 +69,9 @@ void test()
 //add sqrt()
 //order all reserved symbols (reserved symols, function names, etc) and make a binary lookup
 
+//variable - entity and a name ? add ET_COMPUTATION ?
+//implement all the algebra functions for mr and entity
+
 int main()
 {
     clock_t start;

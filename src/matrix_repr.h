@@ -1,5 +1,5 @@
-#ifndef MATRIX_H
-#define MATRIX_H
+#ifndef MATRIX_REPR_H
+#define MATRIX_REPR_H
 
 #include "why_vector_interface.h"
 

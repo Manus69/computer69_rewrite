@@ -211,7 +211,7 @@ void print_matrix_repr(const MatrixRepr *matrix)
     if (!matrix)
         return ;
 
-    length = matrix_repr_size(matrix);
+    length = matrix_repr_n_cols(matrix);
     if (!length)
         return ;
     

@@ -32,6 +32,7 @@ void            number_delete(Number **number);
 
 //operator
 Operator        *operator_new(String *string);
+Operator        *operator_new_from_type(OPERATOR_TYPE type);
 void            operator_delete(Operator **operator);
 boolean         operator_is_binary(Operator *operator);
 int_signed      operator_compare_precedence(Operator *lhs, Operator *rhs);
@@ -41,18 +42,27 @@ Operator        *operator_copy(const Operator *operator);
 //matrix representation
 MatrixRepr      *matrix_repr_new();
 Vector          *matrix_repr_get_row(const MatrixRepr *matrix, int_signed n);
-int_signed      matrix_repr_size(const MatrixRepr *matrix);
+int_signed      matrix_repr_n_cols(const MatrixRepr *matrix);
+int_signed      matrix_repr_n_rows(const MatrixRepr *matrix);
 void            matrix_repr_delete(MatrixRepr **matrix);
 MatrixRepr      *matrix_repr_copy(const MatrixRepr *matrix);
 Vector          *matrix_row_from_string(String *string, const VariableTable *v_table);
 MatrixRepr      *matrix_repr_from_string(String *string, const VariableTable *v_table);
+boolean         matrix_repr_equal_size(const MatrixRepr *lhs, const MatrixRepr *rhs);
+Computation     *matrix_repr_at(const MatrixRepr *matrix, int_signed j, int_signed k);
+boolean         matrix_repr_set(MatrixRepr *matrix, Computation *value, int_signed j, int_signed k);
+MatrixRepr      *matrix_repr_new_fixed_size(int_signed n_rows, int_signed n_cols);
+MatrixRepr      *matrix_repr_add(MatrixRepr *lhs, MatrixRepr *rhs);
+MatrixRepr      *matrix_repr_mult(MatrixRepr *lhs, MatrixRepr *rhs);
+MatrixRepr      *matrix_repr_add_row(MatrixRepr *matrix, Vector *row);
+MatrixRepr *matrix_repr_scale(MatrixRepr *matrix, Number *number);
 
 //node
 Node            *node_new(void *data, NODE_TYPE type);
 Node            *node_get_number(String *string);
 Node            *node_get_operator(String *string);
 Node            *node_get_identifier(String *string);
-Node *node_get_matrix(String *string, const VariableTable *v_table);
+Node            *node_get_matrix(String *string, const VariableTable *v_table);
 Node            *node_change_type(Node *node, NODE_TYPE type);
 Node            *node_convert_to_wildcard(Node *node);
 Node            *node_convert_to_bft(Node *node);
@@ -72,6 +82,29 @@ void            computation_traverse(Computation *computation, void (*function)(
 Node            *computation_get_node(const Computation *computation);
 void            computation_delete(Computation **computation);
 Number          *computation_eval(const Computation *computation, const VariableTable *v_table, Number *wc_value);
+Entity          *computation_evalG(const Computation *computation, const VariableTable *v_table, Entity *wc_value);
+Computation     *computation_add(Computation *lhs, Computation *rhs);
+Computation     *computation_mult(Computation *lhs, Computation *rhs);
+Computation     *computation_subtract(Computation *lhs, Computation *rhs);
+Computation     *computation_divide(Computation *lhs, Computation *rhs);
+Computation     *computation_mod(Computation *lhs, Computation *rhs);
+Computation     *computation_power(Computation *lhs, Computation *rhs);
+Computation     *computation_factorial(Computation *lhs, Computation *rhs);
+Computation     *computation_increment(Computation *lhs, Computation *rhs);
+Computation     *computation_scale(Computation *computation, Number *number);
+
+//entity
+Entity          *entity_new(const void *stuff, ENTITY_TYPE type);
+void            entity_delete(Entity **entity);
+Entity          *entity_new_from_number(const Number *number);
+Entity          *entity_new_from_matrix(const MatrixRepr *matrix);
+Entity          *entity_add(Entity *lhs, Entity *rhs);
+Entity          *entity_mult(Entity *lhs, Entity *rhs);
+Entity          *entity_subtract(Entity *lhs, Entity *rhs);
+Entity          *entity_divide(Entity *lhs, Entity *rhs);
+Entity          *entity_mod(Entity *lhs, Entity *rhs);
+Entity          *entity_power(Entity *lhs, Entity *rhs);
+Entity          *entity_factorial(Entity *lhs, Entity *rhs);
 
 //variable
 Variable        *variable_new(String *name, Computation *value, VARIABLE_TYPE type);
@@ -109,8 +142,8 @@ boolean         id_assignment(const String *string);
 boolean         id_evaluation(const String *string);
 boolean         id_find_roots(const String *string);
 
-char *check_reserved_symbols(const String *string);
-void *get_bft_pointer(BULITIN_FUNCTION_TYPE type);
+char            *check_reserved_symbols(const String *string);
+void            *get_bft_pointer(BULITIN_FUNCTION_TYPE type);
 
 
 #endif

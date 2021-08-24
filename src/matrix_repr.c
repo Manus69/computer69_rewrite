@@ -1,4 +1,4 @@
-#include "matrix.h"
+#include "matrix_repr.h"
 #include "frontend_declarations.h"
 #include "frontend_declarations.h"
 #include "terminals.h"
@@ -22,14 +22,86 @@ MatrixRepr *matrix_repr_new()
     return matrix;
 }
 
+static Vector *_row_of_zeroes(int_signed size)
+{
+    int_signed n;
+    Vector *row;
+
+    n = 0;
+    row = matrix_row_new();
+    while (n < size)
+    {
+        vector_push(row, NULL);
+        n ++;
+    }
+
+    return row;
+}
+
+MatrixRepr *matrix_repr_new_fixed_size(int_signed n_rows, int_signed n_cols)
+{
+    Vector *row;
+    MatrixRepr *matrix;
+    int_signed j;
+
+    matrix = matrix_repr_new();
+    j = 0;
+    while (j < n_rows)
+    {
+        row = _row_of_zeroes(n_cols);
+        matrix_repr_add_row(matrix, row);
+
+        j ++;
+    }
+    
+    return matrix;
+}
+
 Vector *matrix_repr_get_row(const MatrixRepr *matrix, int_signed n)
 {
     return vector_at(matrix->rows, n);
 }
 
-int_signed matrix_repr_size(const MatrixRepr *matrix)
+int_signed matrix_repr_n_cols(const MatrixRepr *matrix)
+{
+    return matrix->n_cols;
+}
+
+int_signed matrix_repr_n_rows(const MatrixRepr *matrix)
 {
     return vector_size(matrix->rows);
+}
+
+boolean matrix_repr_equal_size(const MatrixRepr *lhs, const MatrixRepr *rhs)
+{
+    if (lhs->n_cols != rhs->n_cols)
+        return FALSE;
+    
+    return matrix_repr_n_rows(lhs) == matrix_repr_n_rows(rhs);
+}
+
+Computation *matrix_repr_at(const MatrixRepr *matrix, int_signed j, int_signed k)
+{
+    Vector *row;
+    Computation *value;
+
+    row = matrix_repr_get_row(matrix, j);
+    value = vector_at(row, k);
+
+    return value;
+}
+
+boolean matrix_repr_set(MatrixRepr *matrix, Computation *value, int_signed j, int_signed k)
+{
+    Vector *row;
+    Computation *old_value;
+
+    row = matrix_repr_get_row(matrix, j);
+    old_value = vector_at(row, k);
+    computation_delete(&old_value);
+    vector_set(row, value, k);
+
+    return TRUE;
 }
 
 static Vector *_process_elements(const Vector *elements, const VariableTable *v_table)
