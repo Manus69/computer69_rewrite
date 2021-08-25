@@ -9,6 +9,7 @@ struct Entity
     {
         Number *number;
         MatrixRepr *matrix;
+        Computation *computation;
     };
 
     ENTITY_TYPE type;

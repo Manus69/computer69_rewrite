@@ -22,6 +22,44 @@ Entity *entity_new_from_matrix(const MatrixRepr *matrix)
     return entity_new(matrix, ET_MATRIX);
 }
 
+Entity *entity_new_from_computation(const Computation *computation)
+{
+    return entity_new(computation, ET_COMPUTATION);
+}
+
+ENTITY_TYPE entity_get_type(const Entity *entity)
+{
+    return entity->type;
+}
+
+Entity *entity_copy(const Entity *entity)
+{
+    Number *number;
+    MatrixRepr *matrix;
+    Computation *computation;
+
+    if (entity->type == ET_NUMBER)
+    {
+        number = number_copy(entity->number);
+
+        return entity_new_from_number(number);
+    }
+    else if (entity->type == ET_MATRIX)
+    {
+        matrix = matrix_repr_copy(entity->matrix);
+
+        return entity_new_from_matrix(matrix);
+    }
+    else if (entity->type == ET_COMPUTATION)
+    {
+        computation = computation_copy(entity->computation);
+
+        return entity_new_from_computation(computation);
+    }
+
+    return NULL;
+}
+
 void entity_delete(Entity **entity)
 {
     if (!entity || !*entity)
@@ -36,76 +74,31 @@ void entity_delete(Entity **entity)
     *entity = NULL;
 }
 
-Entity *entity_add(Entity *lhs, Entity *rhs)
+
+Computation *computation_from_entity(Entity *entity)
 {
-    Number *number;
+    ENTITY_TYPE type;
+    Node *node;
     MatrixRepr *matrix;
-
-    if (lhs->type != rhs->type)
-        return NULL;
-
-    if (lhs->type == ET_NUMBER)
-    {
-        number = number_add(lhs->number, rhs->number);
-
-        return entity_new_from_number(number);
-    }
-    else
-    {
-        matrix = matrix_repr_add(lhs->matrix, rhs->matrix);
-
-        return entity_new_from_matrix(matrix);
-    }
-}
-
-Entity *entity_mult(Entity *lhs, Entity *rhs)
-{
     Number *number;
-    MatrixRepr *matrix;
 
-    if (lhs->type == ET_NUMBER && rhs->type == ET_NUMBER)
+    type = entity_get_type(entity);
+    if (type == ET_COMPUTATION)
+        return computation_copy(entity->computation);
+    else if (type == ET_NUMBER)
     {
-        number = number_mult(lhs, rhs);
+        number = number_copy(entity->number);
+        node = node_new(number, NT_NUMBER);
 
-        return entity_new_from_number(number);
+        return computation_new(node);
     }
-    else if (lhs->type == ET_NUMBER && rhs->type == ET_MATRIX)
+    else if (type == ET_MATRIX)
     {
-        matrix = matrix_repr_scale(rhs->matrix, lhs->number);
+        matrix = matrix_repr_copy(entity->matrix);
+        node = node_new(matrix, NT_MATRIX);
 
-        return entity_new_from_matrix(matrix);
-    }
-    else if (lhs->type == ET_MATRIX && rhs->type == ET_MATRIX)
-    {
-        matrix = matrix_repr_mult(lhs, rhs);
-
-        return matrix;
+        return computation_new(node);
     }
 
     return NULL;
-}
-
-Entity *entity_subtract(Entity *lhs, Entity *rhs)
-{
-    ;
-}
-
-Entity *entity_divide(Entity *lhs, Entity *rhs)
-{
-    ;
-}
-
-Entity *entity_mod(Entity *lhs, Entity *rhs)
-{
-    ;
-}
-
-Entity *entity_power(Entity *lhs, Entity *rhs)
-{
-    ;
-}
-
-Entity *entity_factorial(Entity *lhs, Entity *rhs)
-{
-    ;
 }

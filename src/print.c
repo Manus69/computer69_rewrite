@@ -162,22 +162,25 @@ void print_computation(const Computation *computation)
 
 void print_variable(const Variable *variable)
 {
+    Entity *value;
+
     if (!variable)
         return ;
     
+    value = variable_get_value(variable);
     if (!variable->name)
     {
-        print_computation(variable->value);
+        print_entity(value); //
 
         return ;
     }
 
     print_string(variable->name);
-    if (variable->type == VT_COMPUTATION)
+    if (variable_get_type(variable) == VT_COMPUTATION)
         printf("(%s)", WC_SYMBOL);
 
     printf(" = ");
-    print_computation(variable->value);
+    print_entity(value);
 }
 
 void print_v_table(const VariableTable *v_table)
@@ -228,4 +231,17 @@ void print_matrix_repr(const MatrixRepr *matrix)
         n ++;
     }
     printf("]");
+}
+
+static void *functions[] = {print_number, print_matrix_repr, print_computation, 0};
+
+void print_entity(const Entity *entity)
+{
+    void (*print_function)();
+
+    if (!entity)
+        return ;
+    
+    print_function = functions[entity_get_type(entity)];
+    print_function(entity); //
 }

@@ -68,6 +68,7 @@ void test()
 //format all headers
 //add sqrt()
 //order all reserved symbols (reserved symols, function names, etc) and make a binary lookup
+//develop a convention about whether constructors copy or not
 
 //variable - entity and a name ? add ET_COMPUTATION ?
 //implement all the algebra functions for mr and entity

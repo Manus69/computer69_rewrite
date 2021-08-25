@@ -83,6 +83,7 @@ static Entity *_process_functionG(const Computation *computation, const Variable
 {
     Entity *lhs_value;
     Entity *result;
+    Entity *value; //
     Variable *variable;
 
     variable = v_table_search(v_table, computation->node->identifier);

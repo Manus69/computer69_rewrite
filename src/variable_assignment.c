@@ -27,7 +27,7 @@ Variable *variable_create_with_name(String *string, const VariableTable *v_table
     computation_delete(&argument);
 
     argument = computation_new(node_new(value, NT_NUMBER));
-    variable = variable_new(name, argument, VT_CONSTANT);
+    variable = variable_new_from_computation(name, argument);
 
     if (string_length(string))
         assert(0);
@@ -65,7 +65,7 @@ static Variable *_create_parametrized(String *string, const VariableTable *v_tab
 
     argument = _parse(string, v_table);
     argument = computation_resolve(argument, arg_name, v_table);
-    variable = variable_new(name, argument, VT_COMPUTATION);
+    variable = variable_new_from_computation(name, argument);
     string_delete(&arg_name);
 
     if (string_length(string))

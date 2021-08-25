@@ -4,14 +4,14 @@
 
 Computation *computation_new(Node *node)
 {
-    Computation *cmp;
+    Computation *computation;
 
-    cmp = allocate(sizeof(Computation));
-    cmp->node = node;
-    cmp->lhs = NULL;
-    cmp->rhs = NULL;
+    computation = allocate(sizeof(Computation));
+    computation->node = node;
+    computation->lhs = NULL;
+    computation->rhs = NULL;
 
-    return cmp;
+    return computation;
 }
 
 void computation_delete(Computation **computation)
@@ -21,12 +21,12 @@ void computation_delete(Computation **computation)
     if (!computation || !*computation)
         return ;
 
-    cmp = *computation;
+    computation = *computation;
     computation_delete(&cmp->lhs);
     computation_delete(&cmp->rhs);
     node_delete(&cmp->node);
     
-    free(cmp);
+    free(computation);
     *computation = NULL;
 }
 

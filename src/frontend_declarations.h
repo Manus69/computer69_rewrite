@@ -55,7 +55,7 @@ MatrixRepr      *matrix_repr_new_fixed_size(int_signed n_rows, int_signed n_cols
 MatrixRepr      *matrix_repr_add(MatrixRepr *lhs, MatrixRepr *rhs);
 MatrixRepr      *matrix_repr_mult(MatrixRepr *lhs, MatrixRepr *rhs);
 MatrixRepr      *matrix_repr_add_row(MatrixRepr *matrix, Vector *row);
-MatrixRepr *matrix_repr_scale(MatrixRepr *matrix, Number *number);
+MatrixRepr      *matrix_repr_scale(MatrixRepr *matrix, Number *number);
 
 //node
 Node            *node_new(void *data, NODE_TYPE type);
@@ -96,6 +96,9 @@ Computation     *computation_scale(Computation *computation, Number *number);
 //entity
 Entity          *entity_new(const void *stuff, ENTITY_TYPE type);
 void            entity_delete(Entity **entity);
+Entity          *entity_new_from_computation(const Computation *computation);
+ENTITY_TYPE     entity_get_type(const Entity *entity);
+Entity          *entity_copy(const Entity *entity);
 Entity          *entity_new_from_number(const Number *number);
 Entity          *entity_new_from_matrix(const MatrixRepr *matrix);
 Entity          *entity_add(Entity *lhs, Entity *rhs);
@@ -105,16 +108,20 @@ Entity          *entity_divide(Entity *lhs, Entity *rhs);
 Entity          *entity_mod(Entity *lhs, Entity *rhs);
 Entity          *entity_power(Entity *lhs, Entity *rhs);
 Entity          *entity_factorial(Entity *lhs, Entity *rhs);
+Computation     *computation_from_entity(Entity *entity);
 
 //variable
-Variable        *variable_new(String *name, Computation *value, VARIABLE_TYPE type);
+Variable        *variable_new(String *name, Entity *entity);
+Variable        *variable_new_from_computation(String *name, Computation *computation);
+VARIABLE_TYPE   variable_get_type(const Variable *variable);
 int_signed      variable_compare(const Variable *lhs, const Variable *rhs);
-Computation     *variable_get_value(const Variable *variable);
+Entity          *variable_get_value(const Variable *variable);
 String          *variable_get_name(const Variable *variable);
 void            variable_delete(Variable **variable);
 Variable        *variable_create_from_string(String *string, const VariableTable *v_table);
 Variable        *variable_copy(const Variable *variable);
-Variable        *variable_assign(Variable *variable, const Computation *value);
+Variable        *variable_assign(Variable *variable, Entity *value);
+Variable        *variable_assign_computation(Variable *variable, const Computation *value);
 Variable        *variable_create_with_name(String *string, const VariableTable *v_table, String *name);
 
 //variable table

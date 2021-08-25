@@ -7,8 +7,7 @@
 struct Variable
 {
     String          *name;
-    Computation     *value;
-    VARIABLE_TYPE   type;
+    Entity          *entity;
 };
 
 #endif

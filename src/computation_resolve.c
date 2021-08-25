@@ -47,12 +47,15 @@ static void _resolve_matrix(MatrixRepr *matrix, const String *wc_identifier, con
 static Computation *_resolve_node(Computation *computation, const String *wc_identifier, const VariableTable *v_table)
 {
     Variable *variable;
+    Entity *value;
 
     variable = _check_if_variable(computation, v_table);
     if (variable)
     {
         computation_delete(&computation);
-        computation = computation_copy(variable_get_value(variable));
+        // computation = computation_copy(variable_get_value(variable));
+        value = variable_get_value(variable);
+        computation = computation_from_entity(value);
     }
     else if (computation->node->type == NT_IDENTIFIER)
     {
