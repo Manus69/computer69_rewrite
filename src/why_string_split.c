@@ -16,11 +16,13 @@ Vector *string_split(String *string, char delimiter)
         index = string_index_of(string, delimiter);
         if (index > 0)
         {
+            // element = string_substring_allocated(string, 0, index);
             element = string_substring(string, 0, index);
             _string_shift(string, index + 1);
         }
         else if (index == NOT_FOUND)
         {
+            // element = string_substring_allocated(string, 0, string_length(string));
             element = string_substring_from(string, 0);
             _string_shift(string, length);
         }

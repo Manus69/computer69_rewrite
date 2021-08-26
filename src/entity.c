@@ -60,15 +60,17 @@ Entity *entity_copy(const Entity *entity)
     return NULL;
 }
 
+static void *destructors[] = {number_delete, matrix_repr_delete, computation_delete, 0};
+
 void entity_delete(Entity **entity)
 {
+    void (*destructor)();
+
     if (!entity || !*entity)
         return ;
     
-    if ((*entity)->type == ET_NUMBER)
-        number_delete(&(*entity)->number);
-    else
-        matrix_repr_delete(&(*entity)->matrix);
+    destructor = destructors[(*entity)->type];
+    destructor(&(*entity)->number);
 
     free(*entity);
     *entity = NULL;

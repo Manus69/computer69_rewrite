@@ -127,6 +127,8 @@ Node *node_copy(const Node *node)
         new_node->identifier = string_copy_semideep(node->identifier);
     else if (node->type == NT_MATRIX)
         new_node->matrix = matrix_repr_copy(node->matrix);
+    else if (node->type == NT_BUILTIN_FUNCTION)
+        new_node->bf_type = node->bf_type;
 
     return new_node;
 }

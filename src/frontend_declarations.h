@@ -28,6 +28,8 @@ Number          *number_tan(const Number *number);
 Number          *number_log(const Number *number);
 Number          *number_abs(Number *number);
 boolean         number_is_zero(const Number *number);
+NUMBER_TYPE     number_get_type(const Number *number);
+int_signed      number_get_int(const Number *number);
 void            number_delete(Number **number);
 
 //operator
@@ -41,6 +43,7 @@ Operator        *operator_copy(const Operator *operator);
 
 //matrix representation
 MatrixRepr      *matrix_repr_new();
+Vector          *matrix_row_new();
 Vector          *matrix_repr_get_row(const MatrixRepr *matrix, int_signed n);
 int_signed      matrix_repr_n_cols(const MatrixRepr *matrix);
 int_signed      matrix_repr_n_rows(const MatrixRepr *matrix);
@@ -50,9 +53,15 @@ Vector          *matrix_row_from_string(String *string, const VariableTable *v_t
 MatrixRepr      *matrix_repr_from_string(String *string, const VariableTable *v_table);
 boolean         matrix_repr_equal_size(const MatrixRepr *lhs, const MatrixRepr *rhs);
 Computation     *matrix_repr_at(const MatrixRepr *matrix, int_signed j, int_signed k);
+Computation     *matrix_repr_nth(const MatrixRepr *matrix, int_signed n);
+boolean         matrix_repr_set_nth(MatrixRepr *matrix, Computation *value, int_signed n);
 boolean         matrix_repr_set(MatrixRepr *matrix, Computation *value, int_signed j, int_signed k);
+boolean         matrix_repr_is_square(const MatrixRepr *matrix);
+MatrixRepr      *matrix_repr_power(MatrixRepr *lhs, Number *number);
+MatrixRepr      *matrix_repr_I(int_signed size);
 MatrixRepr      *matrix_repr_new_fixed_size(int_signed n_rows, int_signed n_cols);
 MatrixRepr      *matrix_repr_add(MatrixRepr *lhs, MatrixRepr *rhs);
+MatrixRepr      *matrix_repr_subtract(MatrixRepr *lhs, MatrixRepr *rhs);
 MatrixRepr      *matrix_repr_mult(MatrixRepr *lhs, MatrixRepr *rhs);
 MatrixRepr      *matrix_repr_add_row(MatrixRepr *matrix, Vector *row);
 MatrixRepr      *matrix_repr_scale(MatrixRepr *matrix, Number *number);

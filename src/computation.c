@@ -21,12 +21,12 @@ void computation_delete(Computation **computation)
     if (!computation || !*computation)
         return ;
 
-    computation = *computation;
+    cmp = *computation;
     computation_delete(&cmp->lhs);
     computation_delete(&cmp->rhs);
     node_delete(&cmp->node);
     
-    free(computation);
+    free(*computation);
     *computation = NULL;
 }
 

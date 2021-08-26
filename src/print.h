@@ -1,6 +1,8 @@
 #ifndef PRINT_H
 #define PRINT_H
 
+#include <stdio.h>
+
 #include "frontend_definitions.h"
 #include "why_print.h"
 

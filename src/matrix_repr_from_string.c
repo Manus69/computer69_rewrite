@@ -1,0 +1,134 @@
+#include "frontend_declarations.h"
+#include "terminals.h"
+#include "matrix_repr.h"
+
+#include "print.h"
+#include <stdio.h>
+#include <assert.h>
+
+static Vector *_process_elements(const Vector *elements, const VariableTable *v_table)
+{
+    Vector *row;
+    // Variable *variable;
+    String *element;
+    int_signed n;
+    int_signed length;
+    Computation *computation;
+
+    row = matrix_row_new();
+    n = 0;
+    length = vector_size(elements);
+    while (n < length)
+    {
+        element = vector_at(elements, n);
+        computation = _parse(element, v_table);
+        vector_push(row, computation);
+        n ++;
+    }
+
+    return row;
+}
+
+Vector *matrix_row_from_string(String *string, const VariableTable *v_table)
+{
+    int_signed n;
+    String *substring;
+    Vector *elements;
+    Vector *row;
+
+    n = find_matching_bracket_str(string, TERMINALS[O_BRACKET], TERMINALS[C_BRACKET]);
+    if (n == NOT_FOUND || n < 2)
+        return NULL;
+
+    substring = string_substring(string, 1, n - 1);
+    elements = string_split(substring, TERMINALS[COMMA]);
+
+    row = _process_elements(elements, v_table);
+    if (row)
+    {
+        _string_shift(string, n);
+    }
+    else assert(0);
+
+    string_delete(&substring);
+    vector_delete(&elements);
+//
+    // print_vector(row, print_computation, "\n");
+    // fflush(NULL);
+//
+    return row;
+}
+
+MatrixRepr *matrix_repr_add_row(MatrixRepr *matrix, Vector *row)
+{
+    if (matrix->n_cols == -1)
+    {
+        vector_push(matrix->rows, row);
+        matrix->n_cols = vector_size(row);
+    }
+    else if (matrix->n_cols == vector_size(row))
+    {
+        vector_push(matrix->rows, row);
+        
+    }
+    else assert(0);
+
+    //
+    // print_matrix_repr(matrix);
+    // fflush(NULL);
+    //
+
+    return matrix;
+}
+
+static MatrixRepr *_get_matrix(String *string, const VariableTable *v_table)
+{
+    MatrixRepr *matrix;
+    Vector *rows;
+    Vector *row;
+    int_signed n;
+    int_signed length;
+
+    matrix = matrix_repr_new();
+    rows = string_split(string, TERMINALS[SEMICOLON]);
+
+    length = vector_size(rows);
+    n = 0;
+
+    while (n < length)
+    {
+        row = matrix_row_from_string(vector_at(rows, n), v_table);
+        matrix_repr_add_row(matrix, row);
+        
+        n ++;
+    }
+
+    vector_delete(&rows);
+//
+    // print_matrix_repr(matrix);
+    // fflush(NULL);
+//
+    return matrix;
+}
+
+MatrixRepr *matrix_repr_from_string(String *string, const VariableTable *v_table)
+{
+    MatrixRepr *matrix;
+    int_signed index;
+    String *substring;
+
+    index = find_matching_bracket_str(string, TERMINALS[O_BRACKET], TERMINALS[C_BRACKET]);
+    if (index == NOT_FOUND || index < 4)
+        return NULL;
+    
+    substring = string_substring(string, 1, index - 1);
+    _string_shift(string, index + 1);
+    
+    matrix = _get_matrix(substring, v_table);
+    string_delete(&substring);
+//
+    // print_matrix_repr(matrix);
+    // fflush(NULL);
+//
+    return matrix;
+}

@@ -132,6 +132,16 @@ boolean number_is_zero(const Number *number)
         return complex_is_zero(number->z);
 }
 
+NUMBER_TYPE number_get_type(const Number *number)
+{
+    return number->type;
+}
+
+int_signed number_get_int(const Number *number)
+{
+    return number->n;
+}
+
 Number *number_from_string(String *string)
 {
     int_signed length;

@@ -4,6 +4,8 @@
 #include "operator.h"
 #include "entity.h"
 
+#include "print.h" //
+
 #include <assert.h>
 
 static const void *op_functions[] = {number_add, number_subtract, 
@@ -45,16 +47,16 @@ static Number *_process_btf(const Computation *computation, const VariableTable 
     assert(0);
 }
 
-static Entity *_process_btfG(const Computation *computation, const VariableTable *v_table, Entity *wc_value)
+static Entity *_eval_btfG(const Computation *computation, const VariableTable *v_table, Entity *wc_value)
 {
-    Entity *lhs_value;
     Number *result;
-
-    lhs_value = computation_evalG(computation, v_table, wc_value);
-    if (lhs_value->type == ET_MATRIX)
-        assert(0);
+    // Entity *lhs_value;
     
-    result = _process_btf(computation, v_table, wc_value->number);
+    if (!wc_value)
+        result = _process_btf(computation, v_table, NULL);
+    else if (wc_value->type == ET_NUMBER)
+        result = _process_btf(computation, v_table, wc_value->number);
+    else assert(0);
 
     return entity_new_from_number(result);
 }
@@ -64,12 +66,18 @@ static Number *_process_function(const Computation *computation, const VariableT
     Number *lhs_value;
     Number *result;
     Variable *variable;
+    Entity *value;
 
     variable = v_table_search(v_table, computation->node->identifier);
     if (variable)
     {
         lhs_value = computation_eval(computation->lhs, v_table, wc_value);
-        result = computation_eval(variable_get_value(variable), v_table, lhs_value);
+        value = variable_get_value(variable);
+
+        if (entity_get_type(value) != ET_COMPUTATION)
+            assert(0);
+        
+        result = computation_eval(value->computation, v_table, lhs_value);
         result = number_demote_if_possible(result);
         number_delete(&lhs_value);
 
@@ -79,18 +87,23 @@ static Number *_process_function(const Computation *computation, const VariableT
     assert(0);
 }
 
-static Entity *_process_functionG(const Computation *computation, const VariableTable *v_table, Entity *wc_value)
+static Entity *_eval_functionG(const Computation *computation, const VariableTable *v_table, Entity *wc_value)
 {
     Entity *lhs_value;
     Entity *result;
-    Entity *value; //
+    Entity *argument; //
     Variable *variable;
 
     variable = v_table_search(v_table, computation->node->identifier);
     if (variable)
     {
         lhs_value = computation_evalG(computation->lhs, v_table, wc_value);
-        result = computation_evalG(variable_get_value(variable), v_table, lhs_value);
+        argument = variable_get_value(variable);
+
+        if (entity_get_type(argument) != ET_COMPUTATION)
+            assert(0);
+        
+        result = computation_evalG(argument->computation, v_table, lhs_value);
         if (result->type == ET_NUMBER)
             result->number = number_demote_if_possible(result->number);
         entity_delete(&lhs_value);
@@ -110,7 +123,7 @@ static Number *_process_id(const Computation *computation)
     return value;
 }
 
-static Entity *_process_idG(const Computation *computation)
+static Entity *_eval_idG(const Computation *computation)
 {
     return entity_new_from_number(_process_id(computation));
 }
@@ -151,9 +164,28 @@ Number *computation_eval(const Computation *computation, const VariableTable *v_
     return result;
 }
 
-static Entity *_process_matrix(const Computation *computation, const VariableTable *v_table, Number *wc_value)
+static Entity *_eval_matrix(const Computation *computation, const VariableTable *v_table, Entity *wc_value)
 {
-    ;
+    int_signed n;
+    MatrixRepr *matrix;
+    Computation *value;
+    Number *number;
+
+    if (wc_value && wc_value->type != ET_NUMBER)
+        assert(0);
+    
+    matrix = computation->node->matrix;
+    n = 0;
+    while ((value = matrix_repr_nth(matrix, n)))
+    {
+        number = computation_eval(value, v_table, wc_value ? wc_value->number : NULL);
+        value = computation_new(node_new(number, NT_NUMBER));
+        matrix_repr_set_nth(matrix, value, n);
+
+        n ++;
+    }
+
+    return entity_new_from_matrix(matrix);
 }
 
 Entity *computation_evalG(const Computation *computation, const VariableTable *v_table, Entity *wc_value)
@@ -169,13 +201,13 @@ Entity *computation_evalG(const Computation *computation, const VariableTable *v
     if (computation->node->type == NT_NUMBER)
         return entity_new_from_number(number_copy(computation->node->number));
     if (computation->node->type == NT_MATRIX)
-        assert(0);
+        return _eval_matrix(computation, v_table, wc_value);
     if (computation->node->type == NT_BUILTIN_FUNCTION)
-        return _process_btfG(computation, v_table, wc_value);
+        return _eval_btfG(computation, v_table, wc_value);
     if (computation->node->type == NT_FUNCTION)
-        return _process_functionG(computation, v_table, wc_value);
+        return _eval_functionG(computation, v_table, wc_value);
     if (computation->node->type == NT_IDENTIFIER)
-        return _process_idG(computation);
+        return _eval_idG(computation);
     if (computation->node->type == NT_WILDCARD && wc_value && wc_value->type == ET_NUMBER)
         return entity_new_from_number(number_copy(wc_value->number));
     if (computation->node->type != NT_OPERATOR)
@@ -187,7 +219,7 @@ Entity *computation_evalG(const Computation *computation, const VariableTable *v
     function = op_functionsG[computation->node->operator->type];
     result = function(lhs_value, rhs_value);
 
-    if (result->type == ET_NUMBER)
+    if (result && result->type == ET_NUMBER)
         result->number = number_demote_if_possible(result->number);
 
     entity_delete(&lhs_value);

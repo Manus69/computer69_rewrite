@@ -73,6 +73,9 @@ void vector_delete(Vector **vector)
 
 void *vector_at(const Vector *vector, int_signed index)
 {
+    if (!vector || index >= vector->current_index)
+        return NULL;
+    
     return vector->items[index];
 }
 

@@ -4,6 +4,7 @@
 #include "terminals.h"
 
 #include <assert.h>
+#include "print.h"
 
 Vector *matrix_row_new()
 {
@@ -72,6 +73,14 @@ int_signed matrix_repr_n_rows(const MatrixRepr *matrix)
     return vector_size(matrix->rows);
 }
 
+boolean matrix_repr_is_square(const MatrixRepr *matrix)
+{
+    if (matrix_repr_n_rows(matrix) == matrix_repr_n_cols(matrix))
+        return TRUE;
+    
+    return FALSE;
+}
+
 boolean matrix_repr_equal_size(const MatrixRepr *lhs, const MatrixRepr *rhs)
 {
     if (lhs->n_cols != rhs->n_cols)
@@ -91,128 +100,50 @@ Computation *matrix_repr_at(const MatrixRepr *matrix, int_signed j, int_signed k
     return value;
 }
 
-boolean matrix_repr_set(MatrixRepr *matrix, Computation *value, int_signed j, int_signed k)
+Computation *matrix_repr_nth(const MatrixRepr *matrix, int_signed n)
 {
-    Vector *row;
-    Computation *old_value;
+    int_signed j;
+    int_signed k;
+    int_signed n_cols;
 
-    row = matrix_repr_get_row(matrix, j);
-    old_value = vector_at(row, k);
-    computation_delete(&old_value);
-    vector_set(row, value, k);
+    n_cols = matrix_repr_n_cols(matrix);
+
+    j = n / n_cols;
+    k = n % n_cols;
+
+    return matrix_repr_at(matrix, j, k);
+}
+
+boolean matrix_repr_set_nth(MatrixRepr *matrix, Computation *value, int_signed n)
+{
+    int_signed j;
+    int_signed k;
+    int_signed n_cols;
+
+    n_cols = matrix_repr_n_cols(matrix);
+
+    j = n / n_cols;
+    k = n % n_cols;
+
+    matrix_repr_set(matrix, value, j, k);
 
     return TRUE;
 }
 
-static Vector *_process_elements(const Vector *elements, const VariableTable *v_table)
+boolean matrix_repr_set(MatrixRepr *matrix, Computation *value, int_signed j, int_signed k)
 {
     Vector *row;
-    // Variable *variable;
-    String *element;
-    int_signed n;
-    int_signed length;
-    Computation *computation;
+    Computation *old_value;
+    Computation *new_value;
 
-    row = matrix_row_new();
-    n = 0;
-    length = vector_size(elements);
-    while (n < length)
-    {
-        element = vector_at(elements, n);
-        // variable = variable_create_with_name(element, v_table, NULL);
-        // vector_push(row, variable);
-        computation = _parse(element, v_table);
-        vector_push(row, computation);
-        n ++;
-    }
-
-    return row;
-}
-
-Vector *matrix_row_from_string(String *string, const VariableTable *v_table)
-{
-    int_signed n;
-    String *substring;
-    Vector *elements;
-    Vector *row;
-
-    n = find_matching_bracket_str(string, TERMINALS[O_BRACKET], TERMINALS[C_BRACKET]);
-    if (n == NOT_FOUND || n < 2)
-        return NULL;
-
-    substring = string_substring(string, 1, n - 1);
-    elements = string_split(substring, TERMINALS[COMMA]);
-
-    row = _process_elements(elements, v_table);
-    if (row)
-    {
-        _string_shift(string, n);
-    }
-    else assert(0);
-
-    string_delete(&substring);
-    vector_delete(&elements);
-
-    return row;
-}
-
-MatrixRepr *matrix_repr_add_row(MatrixRepr *matrix, Vector *row)
-{
-    if (matrix->n_cols == -1)
-    {
-        vector_push(matrix->rows, row);
-        matrix->n_cols = vector_size(row);
-    }
-    else if (matrix->n_cols == vector_size(row))
-        vector_push(matrix->rows, row);
-    else
-        assert(0);
-
-    return matrix;
-}
-
-static MatrixRepr *_get_matrix(String *string, const VariableTable *v_table)
-{
-    MatrixRepr *matrix;
-    Vector *rows;
-    Vector *row;
-    int_signed n;
-    int_signed length;
-
-    matrix = matrix_repr_new();
-    rows = string_split(string, TERMINALS[SEMICOLON]);
-    length = vector_size(rows);
-    n = 0;
-
-    while (n < length)
-    {
-        row = matrix_row_from_string(vector_at(rows, n), v_table);
-        matrix_repr_add_row(matrix, row);
-        n ++;
-    }
-
-    vector_delete(&rows);
-
-    return matrix;
-}
-
-MatrixRepr *matrix_repr_from_string(String *string, const VariableTable *v_table)
-{
-    MatrixRepr *matrix;
-    int_signed index;
-    String *substring;
-
-    index = find_matching_bracket_str(string, TERMINALS[O_BRACKET], TERMINALS[C_BRACKET]);
-    if (index == NOT_FOUND || index < 4)
-        return NULL;
+    row = matrix_repr_get_row(matrix, j);
+    old_value = vector_at(row, k);
+    new_value = computation_copy(value);
+    vector_set(row, new_value, k);
     
-    substring = string_substring(string, 1, index - 1);
-    _string_shift(string, index + 1);
-    
-    matrix = _get_matrix(substring, v_table);
-    string_delete(&substring);
+    // computation_delete(&old_value);
 
-    return matrix;
+    return TRUE;
 }
 
 void matrix_repr_delete(MatrixRepr **matrix)
@@ -225,7 +156,40 @@ void matrix_repr_delete(MatrixRepr **matrix)
     *matrix = NULL;
 }
 
+static void _copy_iterate(MatrixRepr *copy, const MatrixRepr *matrix, int_signed n_rows, int_signed n_cols)
+{
+    int_signed j;
+    int_signed k;
+    Computation *value;
+
+    j = 0;
+    while (j < n_rows)
+    {
+        k = 0;
+        while (k < n_cols)
+        {
+            value = matrix_repr_at(matrix, j, k);
+            value = computation_copy(value);
+            matrix_repr_set(copy, value, j, k);
+
+            k ++;
+        }
+
+        j ++;
+    }
+}
+
 MatrixRepr *matrix_repr_copy(const MatrixRepr *matrix)
 {
-    return (MatrixRepr *)matrix;
+    MatrixRepr *copy;
+    int_signed n_rows;
+    int_signed n_cols;
+
+    n_rows = matrix_repr_n_rows(matrix);
+    n_cols = matrix_repr_n_cols(matrix);
+    copy = matrix_repr_new_fixed_size(n_rows, n_cols);
+
+    _copy_iterate(copy, matrix, n_rows, n_cols);
+
+    return copy;
 }

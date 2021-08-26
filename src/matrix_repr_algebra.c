@@ -95,6 +95,19 @@ MatrixRepr *matrix_repr_add(MatrixRepr *lhs, MatrixRepr *rhs)
     return matrix;
 }
 
+MatrixRepr *matrix_repr_subtract(MatrixRepr *lhs, MatrixRepr *rhs)
+{
+    MatrixRepr *matrix;
+
+    if (!matrix_repr_equal_size(lhs, rhs))
+        return NULL;
+    
+    matrix = matrix_repr_new_fixed_size(matrix_repr_n_rows(lhs), lhs->n_cols);
+    matrix = _matrix_operation(matrix, lhs, rhs, _subtract_jk);
+
+    return matrix;
+}
+
 MatrixRepr *matrix_repr_mult(MatrixRepr *lhs, MatrixRepr *rhs)
 {
     MatrixRepr *matrix;
@@ -135,8 +148,69 @@ MatrixRepr *matrix_repr_scale(MatrixRepr *matrix, Number *number)
     return matrix;
 }
 
-MatrixRepr *matrix_repr_subtract(MatrixRepr *lhs, MatrixRepr *rhs);
-MatrixRepr *matrix_repr_divide(MatrixRepr *lhs, MatrixRepr *rhs);
-MatrixRepr *matrix_repr_mod(MatrixRepr *lhs, MatrixRepr *rhs);
-MatrixRepr *matrix_repr_power(MatrixRepr *lhs, MatrixRepr *rhs);
-MatrixRepr *matrix_repr_factorial(MatrixRepr *lhs, MatrixRepr *rhs);
+//this is a placeholder
+MatrixRepr *matrix_repr_power(MatrixRepr *lhs, Number *number)
+{
+    MatrixRepr *matrix;
+    MatrixRepr *pointer;
+    int_signed m;
+    int_signed n;
+
+    if (number_get_type(number) != NT_INT)
+        return NULL;
+
+    n = number_get_int(number);
+
+    if (!matrix_repr_is_square(lhs))
+        return NULL;
+    if (n < 0)
+        return NULL;
+    if (n == 0)
+        return matrix_repr_I(lhs->n_cols);
+    if (n == 1)
+        return matrix_repr_copy(lhs);
+
+    m = 0;
+    matrix = matrix_repr_copy(lhs);
+    pointer = matrix;
+    while (m < n)
+    {
+        matrix = matrix_repr_mult(matrix, lhs);
+        matrix_repr_delete(&pointer);
+        pointer = matrix;
+
+        m ++;
+    }
+
+    return matrix;
+}
+
+MatrixRepr *matrix_repr_I(int_signed size)
+{
+    MatrixRepr *matrix;
+    Computation *item;
+    int_signed j;
+    int_signed k;
+
+    matrix = matrix_repr_new_fixed_size(size, size);
+    j = 0;
+    while (j < size)
+    {
+        k = 0;
+        while (k < size)
+        {
+            if (k == j)
+                item = computation_new(node_new(number_new_int(1), NT_NUMBER));
+            else
+                item = computation_new(node_new(number_new_int(0), NT_NUMBER));
+
+            matrix_repr_set(matrix, item, j, k);
+
+            k ++;
+        }
+
+        j ++;
+    }
+
+    return matrix;
+}

@@ -10,6 +10,7 @@ extern const char *valid_ass_strings[];
 extern const char *valid_sequence_basic[];
 extern const char *valid_sequence[];
 extern const char *valid_sequences[][SEQUENCE_LENGTH];
+extern const char *valid_matrix_sequences[][SEQUENCE_LENGTH];
 
 void test_syntax(const char **strings);
 void test_computation(const char **strings);

@@ -2,7 +2,10 @@
 #include "frontend_declarations.h"
 #include "terminals.h"
 
+#include "print.h"//
+
 #include <assert.h>
+#include <stdio.h> //
 
 static String *_get_arg_name(String *string)
 {
@@ -19,15 +22,21 @@ Variable *variable_create_with_name(String *string, const VariableTable *v_table
 {
     Computation *argument;
     Variable *variable;
-    Number *value;
+    Entity *value;
 
     argument = _parse(string, v_table);
     argument = computation_resolve(argument, NULL, v_table);
-    value = computation_eval(argument, v_table, NULL);
-    computation_delete(&argument);
 
-    argument = computation_new(node_new(value, NT_NUMBER));
-    variable = variable_new_from_computation(name, argument);
+    // print_computation(argument);
+    // fflush(NULL);
+
+    value = computation_evalG(argument, v_table, NULL);
+    // computation_delete(&argument);
+
+    if (entity_get_type(value) == ET_COMPUTATION)
+        assert(0);
+
+    variable = variable_new(name, value);
 
     if (string_length(string))
         assert(0);
@@ -64,6 +73,10 @@ static Variable *_create_parametrized(String *string, const VariableTable *v_tab
     _string_shift(string, string_length(arg_name) + 3);
 
     argument = _parse(string, v_table);
+//
+    // print_computation(argument);
+    // fflush(NULL);
+//
     argument = computation_resolve(argument, arg_name, v_table);
     variable = variable_new_from_computation(name, argument);
     string_delete(&arg_name);

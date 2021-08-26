@@ -1,7 +1,6 @@
 #include "print.h"
 #include "frontend_definitions.h"
 #include "frontend_declarations.h"
-// #include "why_print.h"
 #include "terminals.h"
 #include "node.h"
 #include "operator.h"
@@ -10,6 +9,7 @@
 #include "number.h"
 #include "variable_table.h"
 #include "why_tree.h"
+#include "entity.h"
 
 #include <stdio.h>
 #include <unistd.h>
@@ -208,14 +208,14 @@ void print_matrix_row(const Vector *row)
 void print_matrix_repr(const MatrixRepr *matrix)
 {
     int_signed n;
-    int_signed length;
+    int_signed n_rows;
     Vector *row;
 
     if (!matrix)
         return ;
 
-    length = matrix_repr_n_cols(matrix);
-    if (!length)
+    n_rows = matrix_repr_n_rows(matrix);
+    if (!n_rows)
         return ;
     
     printf("[");
@@ -223,7 +223,7 @@ void print_matrix_repr(const MatrixRepr *matrix)
     print_matrix_row(row);
 
     n = 1;
-    while (n < length)
+    while (n < n_rows)
     {
         printf(";");
         row = matrix_repr_get_row(matrix, n);
@@ -243,5 +243,5 @@ void print_entity(const Entity *entity)
         return ;
     
     print_function = functions[entity_get_type(entity)];
-    print_function(entity); //
+    print_function(entity->number);
 }
