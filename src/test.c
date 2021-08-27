@@ -24,9 +24,9 @@ const char *valid_ass_strings[] = {"a(y) = 43*y/(4%2*y)", "f(x) = 1", "f(x) = x"
 "f(x) = x^x",
 "cock(ass) = ass^ass", 0};
 
-const char *valid_sequence_basic[] = {"f(x) = x", "y = f(1)", 0};
+const char *valid_sequence_basic[] = {"A = [[1]]", "B = 2*A", 0};
 
-const char *valid_sequence[] = {"[[1]] + [[1]]", 0};
+const char *valid_sequence[] = {"A = [[1,1];[1,0]]", "A^87*[[1];[0]]", 0};
 
 const char *valid_sequences[][SEQUENCE_LENGTH] = {{"x = 1", "y = x + x", 0},
 {"var = pi", "var2 = var*var + 1", 0},
@@ -46,6 +46,16 @@ const char *valid_sequences[][SEQUENCE_LENGTH] = {{"x = 1", "y = x + x", 0},
 {"p(x) = pi + x + x^2", "p(1)", 0},
 {"cos(2*pi*sin(-pi+2*pi))*cos(pi)^2+sin(pi)^2-sin(-pi/2)", 0},
 {"f(x) = x + x", "g(x) = 2*x", "w(x) = f(x) + g(x)", "k = w(1)", 0},
+{"f(x) = 2!*sin(x^2)^2", 0},
+{"ffff(x) = x^2 + sin(x)*cos(x)", 0},
+{"f(x) = 2!*sin(x^2)^2", "g(x) = x^2 + sin(x)*cos(x)", 0},
+{"f(x) = 2!*sin(x^2)^2", "g(x) = x^2 + sin(x)*cos(x)", "w(x) = f(g(x))", "w(1)", 0},
+{"f(x) = x^2", "g(x) = x + 1", "h(x) = f(g(x))", "h(x) = g(f(x))", 0},
+{"f(x) = x^2", "g(x) = sin(f(x))", 0},
+{"f(x) = x^2", "g(x) = f(sin(x))", 0},
+{"f(a) = a + a", "g(x) = f(sin(x))", "g(pi/2)", 0},
+{"f = pi", "f = i", 0},
+{"f(x) = x", "g(x) = x * x", "f(x) = g(x)", 0},
 {0}};
 
 const char *valid_matrix_strings[] = {"[[0]]", "[[0,1]]", "[[-1,10]]",
@@ -69,6 +79,20 @@ const char *valid_matrix_sequences[][SEQUENCE_LENGTH] = {{"[[0]]", 0},
 {"A = [[0,0]]", 0},
 {"A = [[1,0];[0,1]]", "B = A + [[1,0];[0,1]]", 0},
 {"A = [[1,0];[0,1]]", "B = 2*A", 0},
+{"A = [[pi, -i];[i, -pi]]", "B = [[1, 0];[0, 1]]", "A * B", 0},
+{"a(x) = [[cos(x), -sin(x)];[sin(x), cos(x)]]", "a(pi/2)", "a(pi/4 + pi/4)", 0},
+{"a(x) = [[cos(x), -sin(x)];[sin(x), cos(x)]]", "b(x) = a", "b(pi/2)", 0},
+{"a(x) = [[cos(x), -sin(x)];[sin(x), cos(x)]]", "b(x) = a(x)", "c(x) = a(x) * b(x)", "c(pi)", 0},
+{"A(x) = [[x^2 + sin(x)*cos(x), 2!*sin(x^2)^2]]", 0},
+{"A = [[1];[1]]", "B = [[pi, pi]]", "B * A", 0},
+{"A = [[1,0];[0,1]]", "b = [[1];[1]]", "A * b", 0},
+{"A = [[1,0];[0,1]]", "B = [[pi,pi];[pi,pi]]", "A*B", 0},
+{"A = [[1,1];[1,0]]", "A^20", 0}, //22nd fib number
+{"A = [[1,1];[1,0]]", "A^20*[[1];[0]]", 0},
+{"A = [[1]]", "f(x) = x + x", "f(A)", 0},
+{"A(x) = [[sin(x)]]", "B(x) = A(x) + A(x)", "B(pi/2)", 0},
+{"A(x) = [[cos(x), -sin(x)];[sin(x), cos(x)]]", "B(x) = x^2", "A(pi/2)", "B(A(pi/2))", 0},
+{"[[0,-1];[1,0]]^2", 0},
 {0}};
 
 void test_syntax(const char **strings)

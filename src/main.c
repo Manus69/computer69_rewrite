@@ -81,13 +81,33 @@ void test()
     vector_delete(&v);
 }
 
+#include <limits.h>
+
+void fib_test()
+{
+    int_signed n;
+    int_unsigned _fib;
+
+    n = 0;
+    while (n < 150)
+    {
+        _fib = fib(n);
+        if (_fib > ULLONG_MAX / 2)
+            printf("n = %Ld -----------------", n);
+        
+        printf("n = %Ld, %Lu\n", n, _fib);
+        
+        n ++;
+    }
+}
+
 //user defined names must be case insensitive
 //NT enums have the same prefix
 //format all headers
 //add sqrt()
 //order all reserved symbols (reserved symols, function names, etc) and make a binary lookup
-//develop a convention about whether constructors copy or not
 //unfuck memory managment
+//be careful around things of the form f(x) = ... ; g(x) = f with no arg; this must be checked
 
 int main()
 {
@@ -96,12 +116,13 @@ int main()
 
     start = clock();
 
-    // test_sequence(valid_matrix_strings);
-    // test_sequence(valid_sequence);
     // test_sequence(valid_sequence_basic);
-    test_all_sequences(valid_sequences);
-    test_all_sequences(valid_matrix_sequences);
+    test_sequence(valid_sequence);
+    // test_all_sequences(valid_sequences);
+    // test_all_sequences(valid_matrix_sequences);
     // test();
+
+    // printf("%Lu\n", fib(89));
 
     end = clock();
 

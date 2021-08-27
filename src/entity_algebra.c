@@ -139,7 +139,7 @@ Entity *entity_power(Entity *lhs, Entity *rhs)
 
         return entity_new_from_number(number, FALSE);
     }
-    else if (lhs->type == ET_MATRIX && rhs->type == ET_NUMBER && number_get_type(rhs->number))
+    else if (lhs->type == ET_MATRIX && rhs->type == ET_NUMBER)
     {
         matrix = matrix_repr_power(lhs->matrix, rhs->number);
 

@@ -68,7 +68,7 @@ Number *number_subtract(Number *lhs, Number *rhs)
 
     if (!rhs)
     {
-        return number_copy(number_scale(lhs, -1));
+        return number_scale(lhs, -1);
     }
 
     type = _promote(lhs, rhs);
@@ -142,13 +142,11 @@ Number *number_factorial(Number *lhs, const Number *rhs)
 Number *number_scale(Number *number, real factor)
 {
     if (number->type == NT_INT)
-        number->n *= factor;
+        return number_new_int(number->n * factor);
     else if (number->type == NT_REAL)
-        number->x *= factor;
+        return number_new_real(number->x * factor);
     else
-        number->z = complex_scale(number->z, factor);
-
-    return number;
+        return number_new_complex(complex_scale(number->z, factor));
 }
 
 Number *number_trig_function(const Number *number, real (*trig_function)(real))

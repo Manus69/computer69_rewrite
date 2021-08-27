@@ -33,7 +33,18 @@ Variable *variable_create_with_name(String *string, const VariableTable *v_table
     // fflush(NULL);
 
     value = computation_evalG(argument, v_table, NULL);
+
+    #if DBG
+    print_entity(value);
+    printf("\n");
+    #endif
+    
     computation_delete(&argument);
+
+    #if DBG
+    print_entity(value);
+    printf("\n");
+    #endif
 
     if (entity_get_type(value) == ET_COMPUTATION)
         assert(0);

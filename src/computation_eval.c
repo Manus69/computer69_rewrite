@@ -195,6 +195,19 @@ Number *computation_eval(const Computation *computation, const VariableTable *v_
     return result;
 }
 
+static Entity *_eval_wildcard(Entity *wc_value)
+{
+    if (!wc_value)
+        return NULL;
+    
+    if (wc_value->type == ET_NUMBER)
+        return entity_new_from_number(wc_value->number, TRUE);
+    if (wc_value->type == ET_MATRIX)
+        return entity_new_from_matrix(wc_value->matrix, TRUE);
+
+    assert(0);
+}
+
 Entity *computation_evalG(const Computation *computation, const VariableTable *v_table, Entity *wc_value)
 {
     Entity *(*function)();
@@ -215,10 +228,8 @@ Entity *computation_evalG(const Computation *computation, const VariableTable *v
         return _eval_functionG(computation, v_table, wc_value);
     if (computation->node->type == NT_IDENTIFIER)
         return _eval_idG(computation);
-    if (computation->node->type == NT_WILDCARD && wc_value && wc_value->type == ET_NUMBER)
-        return entity_new_from_number(wc_value->number, TRUE);
-    if (computation->node->type != NT_OPERATOR)
-        assert(0);
+    if (computation->node->type == NT_WILDCARD)
+        return _eval_wildcard(wc_value);
     
     lhs_value = computation->lhs ? computation_evalG(computation->lhs, v_table, wc_value) : NULL;
     rhs_value = computation->rhs ? computation_evalG(computation->rhs, v_table, wc_value) : NULL;
@@ -230,7 +241,18 @@ Entity *computation_evalG(const Computation *computation, const VariableTable *v
         result->number = number_demote_if_possible(result->number);
 
     entity_delete(&lhs_value);
+
+    #if DBG
+    print_entity(result);
+    printf("\n");
+    #endif
+
     entity_delete(&rhs_value);
+
+    #if DBG
+    print_entity(result);
+    printf("\n");
+    #endif
 
     return result;
 }

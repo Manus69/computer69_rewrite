@@ -3,6 +3,8 @@
 #include <limits.h>
 #include <assert.h>
 
+#define LIMIT 90
+
 int_unsigned factorial(int_unsigned n)
 {
     if (n == 0)
@@ -48,4 +50,28 @@ int_unsigned round_to_int(real x)
 real absolute_value(real x)
 {
     return x < 0 ? -x : x;
+}
+
+int_unsigned fib(int_unsigned n)
+{
+    static int_unsigned values[LIMIT];
+    int_unsigned value;
+
+    if (n >= LIMIT)
+        return 0;
+    
+    if (n == 0)
+        return 0;
+    if (n == 1)
+        return 1;
+
+    if (values[n])
+        return values[n];
+    else
+    {
+        value = fib(n - 1) + fib(n - 2);
+        values[n] = value;
+
+        return value;
+    }
 }

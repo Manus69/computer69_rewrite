@@ -16,6 +16,7 @@ real power(real base, int_unsigned n);
 int_signed power_int(int_signed base, int_unsigned n);
 int_unsigned round_to_int(real x);
 real absolute_value(real x);
+int_unsigned fib(int_unsigned n);
 
 //
 real math_id(real x);
