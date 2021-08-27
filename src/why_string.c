@@ -106,6 +106,23 @@ char *string_get_characters(const String *string)
     return string->characters;
 }
 
+char *string_slice_index(const String *string, int_signed left_index, int_signed length)
+{
+    char *slice;
+
+    if (length + left_index > string->length)
+        length = string->length - left_index;
+
+    slice = cstr_substring(string->characters + left_index, length);
+
+    return slice;
+}
+
+char *string_slice(const String *string, int_signed length)
+{
+    return string_slice_index(string, 0, length);
+}
+
 int_signed string_length(const String *string)
 {
     return string->length;
@@ -281,6 +298,14 @@ String *string_substring_from(const String *string, int_signed left_index)
         return NULL;
 
     return string_substring(string, left_index, string->length - left_index);
+}
+
+String *string_substring_from_allocated(const String *string, int_signed left_index)
+{
+    if (string->length <= left_index)
+        return NULL;
+    
+    return string_substring_allocated(string, left_index, string->length - left_index);
 }
 
 static inline void _insert(char *string, int_signed n, char c)

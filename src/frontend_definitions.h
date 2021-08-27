@@ -3,6 +3,8 @@
 
 #include "why_tree_interface.h"
 
+#define DBG 0
+
 typedef struct Number Number;
 typedef struct MatrixRepr MatrixRepr;
 typedef struct Operator Operator;

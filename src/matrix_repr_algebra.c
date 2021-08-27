@@ -89,7 +89,7 @@ MatrixRepr *matrix_repr_add(MatrixRepr *lhs, MatrixRepr *rhs)
     if (!matrix_repr_equal_size(lhs, rhs))
         return NULL;
     
-    matrix = matrix_repr_new_fixed_size(matrix_repr_n_rows(lhs), lhs->n_cols);
+    matrix = matrix_repr_new_fixed_size(lhs->n_rows, lhs->n_cols);
     matrix = _matrix_operation(matrix, lhs, rhs, _add_jk);
 
     return matrix;
@@ -102,7 +102,7 @@ MatrixRepr *matrix_repr_subtract(MatrixRepr *lhs, MatrixRepr *rhs)
     if (!matrix_repr_equal_size(lhs, rhs))
         return NULL;
     
-    matrix = matrix_repr_new_fixed_size(matrix_repr_n_rows(lhs), lhs->n_cols);
+    matrix = matrix_repr_new_fixed_size(lhs->n_rows, lhs->n_cols);
     matrix = _matrix_operation(matrix, lhs, rhs, _subtract_jk);
 
     return matrix;
@@ -191,6 +191,7 @@ MatrixRepr *matrix_repr_I(int_signed size)
     Computation *item;
     int_signed j;
     int_signed k;
+    Node *node;
 
     matrix = matrix_repr_new_fixed_size(size, size);
     j = 0;
@@ -199,10 +200,8 @@ MatrixRepr *matrix_repr_I(int_signed size)
         k = 0;
         while (k < size)
         {
-            if (k == j)
-                item = computation_new(node_new(number_new_int(1), NT_NUMBER));
-            else
-                item = computation_new(node_new(number_new_int(0), NT_NUMBER));
+            node = node_new(number_new_int(k == j), NT_NUMBER, FALSE);
+            item = computation_new(node, FALSE);
 
             matrix_repr_set(matrix, item, j, k);
 

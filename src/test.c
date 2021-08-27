@@ -26,7 +26,7 @@ const char *valid_ass_strings[] = {"a(y) = 43*y/(4%2*y)", "f(x) = 1", "f(x) = x"
 
 const char *valid_sequence_basic[] = {"f(x) = x", "y = f(1)", 0};
 
-const char *valid_sequence[] = {"A(x) = [[cos(x), -sin(x)];[sin(x), cos(x)]]", "A(pi/2)", 0};
+const char *valid_sequence[] = {"[[1]] + [[1]]", 0};
 
 const char *valid_sequences[][SEQUENCE_LENGTH] = {{"x = 1", "y = x + x", 0},
 {"var = pi", "var2 = var*var + 1", 0},
@@ -59,7 +59,11 @@ const char *valid_matrix_sequences[][SEQUENCE_LENGTH] = {{"[[0]]", 0},
 {"a(x) = [[x]]", 0},
 {"a(x) = [[sin(x)]]", 0},
 {"A(x) = [[cos(x), -sin(x)];[sin(x), cos(x)]]", "A(pi/2)", 0},
+{"A(x) = [[cos(x)]]", 0},
+{"A(x) = [[cos(x), sin(x)]]", 0},
+{"A(x) = [[cos(x)];[sin(x)]]", 0},
 {"f(y) = y + 1", "g(w) = w^2", "A(x) = [[g(f(x))]]", 0},
+{"[[1]] + [[1]]", 0},
 {0}};
 
 void test_syntax(const char **strings)
@@ -171,7 +175,7 @@ void test_sequence(const char **strings)
             v_table = v_table_new(variable);
         else if ((v = v_table_search(v_table, variable_get_name(variable))))
         {
-            v = variable_assign(v, variable_get_value(variable));
+            v = variable_assign(v, variable_get_value(variable), TRUE);
             variable_delete(&variable);
         }
         else if (!v_table_insert_report(v_table, variable))
@@ -184,7 +188,7 @@ void test_sequence(const char **strings)
         n ++;
     }
 
-    // v_table_delete(&v_table);
+    v_table_delete(&v_table);
 }
 
 void test_all_sequences(const char *array[][SEQUENCE_LENGTH])

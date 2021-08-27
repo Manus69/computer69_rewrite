@@ -6,7 +6,8 @@
 
 struct Variable
 {
-    String          *name;
+    // String          *name;
+    char            *name;
     Entity          *entity;
 };
 

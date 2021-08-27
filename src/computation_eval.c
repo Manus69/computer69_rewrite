@@ -14,14 +14,14 @@ number_mult, number_divide, number_mod, number_power, number_factorial, 0};
 static const void *op_functionsG[] = {entity_add, entity_subtract, 
 entity_mult, entity_divide, entity_mod, entity_power, entity_factorial, 0};
 
-static Number *_get_value(const String *id)
+static Number *_get_value(const char *id)
 {
     if (!id)
         return NULL;
 
-    if (string_is_identical_to(id, "pi"))
+    if (cstr_compare(id, "pi") == 0)
         return number_new_real(PI);
-    else if (string_is_identical_to(id, "e"))
+    else if (cstr_compare(id, "e") == 0)
         return number_new_real(E);
     
     assert(0);
@@ -58,7 +58,7 @@ static Entity *_eval_btfG(const Computation *computation, const VariableTable *v
         result = _process_btf(computation, v_table, wc_value->number);
     else assert(0);
 
-    return entity_new_from_number(result);
+    return entity_new_from_number(result, FALSE);
 }
 
 static Number *_process_function(const Computation *computation, const VariableTable *v_table, Number *wc_value)
@@ -87,6 +87,30 @@ static Number *_process_function(const Computation *computation, const VariableT
     assert(0);
 }
 
+static Entity *_eval_matrix(MatrixRepr *matrix, const VariableTable *v_table, Entity *wc_value)
+{
+    int_signed n;
+    // MatrixRepr *matrix;
+    Computation *value;
+    Number *number;
+
+    if (wc_value && wc_value->type != ET_NUMBER)
+        assert(0);
+    
+    // matrix = computation->node->matrix;
+    n = 0;
+    while ((value = matrix_repr_nth(matrix, n)))
+    {
+        number = computation_eval(value, v_table, wc_value ? wc_value->number : NULL);
+        value = computation_new(node_new(number, NT_NUMBER, FALSE), FALSE);
+        matrix_repr_set_nth(matrix, value, n);
+
+        n ++;
+    }
+
+    return entity_new_from_matrix(matrix, TRUE);
+}
+
 static Entity *_eval_functionG(const Computation *computation, const VariableTable *v_table, Entity *wc_value)
 {
     Entity *lhs_value;
@@ -100,10 +124,14 @@ static Entity *_eval_functionG(const Computation *computation, const VariableTab
         lhs_value = computation_evalG(computation->lhs, v_table, wc_value);
         argument = variable_get_value(variable);
 
-        if (entity_get_type(argument) != ET_COMPUTATION)
-            assert(0);
-        
-        result = computation_evalG(argument->computation, v_table, lhs_value);
+        // if (entity_get_type(argument) != ET_COMPUTATION)
+        //     assert(0);
+        if (argument->type == ET_COMPUTATION)
+            result = computation_evalG(argument->computation, v_table, lhs_value);
+        else if (argument->type == ET_MATRIX)
+            result = _eval_matrix(argument->matrix, v_table, lhs_value);
+        else assert(0);
+
         if (result->type == ET_NUMBER)
             result->number = number_demote_if_possible(result->number);
         entity_delete(&lhs_value);
@@ -125,7 +153,7 @@ static Number *_process_id(const Computation *computation)
 
 static Entity *_eval_idG(const Computation *computation)
 {
-    return entity_new_from_number(_process_id(computation));
+    return entity_new_from_number(_process_id(computation), FALSE);
 }
 
 Number *computation_eval(const Computation *computation, const VariableTable *v_table, Number *wc_value)
@@ -164,30 +192,6 @@ Number *computation_eval(const Computation *computation, const VariableTable *v_
     return result;
 }
 
-static Entity *_eval_matrix(const Computation *computation, const VariableTable *v_table, Entity *wc_value)
-{
-    int_signed n;
-    MatrixRepr *matrix;
-    Computation *value;
-    Number *number;
-
-    if (wc_value && wc_value->type != ET_NUMBER)
-        assert(0);
-    
-    matrix = computation->node->matrix;
-    n = 0;
-    while ((value = matrix_repr_nth(matrix, n)))
-    {
-        number = computation_eval(value, v_table, wc_value ? wc_value->number : NULL);
-        value = computation_new(node_new(number, NT_NUMBER));
-        matrix_repr_set_nth(matrix, value, n);
-
-        n ++;
-    }
-
-    return entity_new_from_matrix(matrix);
-}
-
 Entity *computation_evalG(const Computation *computation, const VariableTable *v_table, Entity *wc_value)
 {
     Entity *(*function)();
@@ -199,9 +203,9 @@ Entity *computation_evalG(const Computation *computation, const VariableTable *v
         assert(0);
 
     if (computation->node->type == NT_NUMBER)
-        return entity_new_from_number(number_copy(computation->node->number));
+        return entity_new_from_number(computation->node->number, TRUE);
     if (computation->node->type == NT_MATRIX)
-        return _eval_matrix(computation, v_table, wc_value);
+        return _eval_matrix(computation->node->matrix, v_table, wc_value);
     if (computation->node->type == NT_BUILTIN_FUNCTION)
         return _eval_btfG(computation, v_table, wc_value);
     if (computation->node->type == NT_FUNCTION)
@@ -209,7 +213,7 @@ Entity *computation_evalG(const Computation *computation, const VariableTable *v
     if (computation->node->type == NT_IDENTIFIER)
         return _eval_idG(computation);
     if (computation->node->type == NT_WILDCARD && wc_value && wc_value->type == ET_NUMBER)
-        return entity_new_from_number(number_copy(wc_value->number));
+        return entity_new_from_number(wc_value->number, TRUE);
     if (computation->node->type != NT_OPERATOR)
         assert(0);
     

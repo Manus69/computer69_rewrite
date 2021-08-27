@@ -1,24 +1,26 @@
 #include "variable.h"
 #include "frontend_declarations.h"
 #include "terminals.h"
+#include "computation.h"
+#include "node.h"
 
 #include "print.h"//
 
 #include <assert.h>
 #include <stdio.h> //
 
-static String *_get_arg_name(String *string)
+static char *_get_arg_name(String *string)
 {
     int_signed n;
-    String *arg_name;
+    char *arg_name;
 
     n = find_matching_bracket_str(string, TERMINALS[O_PAREN], TERMINALS[C_PAREN]);
-    arg_name = string_substring(string, 1, n - 1);
+    arg_name = string_slice_index(string, 1, n - 1);
 
     return arg_name;
 }
 
-Variable *variable_create_with_name(String *string, const VariableTable *v_table, String *name)
+Variable *variable_create_with_name(String *string, const VariableTable *v_table, char *name)
 {
     Computation *argument;
     Variable *variable;
@@ -31,12 +33,12 @@ Variable *variable_create_with_name(String *string, const VariableTable *v_table
     // fflush(NULL);
 
     value = computation_evalG(argument, v_table, NULL);
-    // computation_delete(&argument);
+    computation_delete(&argument);
 
     if (entity_get_type(value) == ET_COMPUTATION)
         assert(0);
 
-    variable = variable_new(name, value);
+    variable = variable_new(name, value, FALSE);
 
     if (string_length(string))
         assert(0);
@@ -46,9 +48,9 @@ Variable *variable_create_with_name(String *string, const VariableTable *v_table
 
 static Variable *_create_constant(String *string, const VariableTable *v_table, int_signed name_length)
 {
-    String *name;
+    char *name;
 
-    name = string_substring_allocated(string, 0, name_length);
+    name = string_slice(string, name_length);
     _string_shift(string, name_length + 1);
 
     return variable_create_with_name(string, v_table, name);
@@ -56,12 +58,13 @@ static Variable *_create_constant(String *string, const VariableTable *v_table, 
 
 static Variable *_create_parametrized(String *string, const VariableTable *v_table, int_signed name_length)
 {
-    String *name;
-    String *arg_name;
+    char *name;
+    char *arg_name;
     Computation *argument;
     Variable *variable;
+    Entity *value;
     
-    name = string_substring_allocated(string, 0, name_length);
+    name = string_slice(string, name_length);
     if (check_reserved_symbols(name))
         assert(0);
 
@@ -70,16 +73,44 @@ static Variable *_create_parametrized(String *string, const VariableTable *v_tab
     if (v_table_search(v_table, arg_name))
         assert(0);
     
-    _string_shift(string, string_length(arg_name) + 3);
+    _string_shift(string, cstr_length(arg_name) + 3);
 
     argument = _parse(string, v_table);
-//
-    // print_computation(argument);
-    // fflush(NULL);
-//
+
+    #if DBG
+    print_computation(argument);
+    printf("\n");
+    #endif
+
     argument = computation_resolve(argument, arg_name, v_table);
-    variable = variable_new_from_computation(name, argument);
-    string_delete(&arg_name);
+
+    #if DBG
+    print_computation(argument);
+    printf("\n");
+    #endif
+
+    cstr_delete(&arg_name);
+    // value = entity_new_from_computation(argument, TRUE);
+
+    if (argument->node->type == NT_NUMBER)
+    {
+        value = entity_new_from_number(argument->node->number, TRUE);
+        computation_delete(&argument);
+    }
+    else if (argument->node->type == NT_MATRIX)
+    {
+        value = entity_new_from_matrix(argument->node->matrix, TRUE);
+        // computation_delete(&argument);
+    }
+    else
+    {
+        value = entity_new_from_computation(argument, FALSE);
+        // value = entity_new_from_computation(argument, TRUE);
+
+    }
+
+    // computation_delete(&argument);
+    variable = variable_new(name, value, FALSE);
 
     if (string_length(string))
         assert(0);

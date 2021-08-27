@@ -68,7 +68,7 @@ void *memory_zero(int_unsigned size)
     return object;
 }
 
-void memory_free(void **item)
+void memory_delete(void **item)
 {
     free(*item);
     *item = NULL;

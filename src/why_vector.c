@@ -88,6 +88,9 @@ void *vector_set(Vector *vector, void *item, int_signed index)
 {
     void *return_value;
 
+    if (index >= vector->current_index)
+        return NULL;
+
     return_value = vector_at(vector, index);
     vector->items[index] = item;
 
@@ -97,18 +100,10 @@ void *vector_set(Vector *vector, void *item, int_signed index)
 static boolean _reallocate_array(Vector *vector)
 {
     int_signed new_capacity;
-    // int_signed n;
     void **new_array;
 
     new_capacity = vector->capacity * 2;
     new_array = _get_array(new_capacity);
-
-    // n = 0;
-    // while (n < vector->current_index)
-    // {
-    //     new_array[n] = vector->items[n];
-    //     n ++;
-    // }
     new_array = memory_copy(new_array, vector->items, vector->current_index * sizeof(void *));
 
     free(vector->items);
@@ -146,4 +141,28 @@ void *vector_pop(Vector *vector)
 void vector_swap(Vector *vector, int_signed m, int_signed n)
 {
     SWAP(vector->items[m], vector->items[n], void *);
+}
+
+Vector *vector_copy(const Vector *vector)
+{
+    Vector *copy;
+    void *item;
+    int_signed n;
+    int_signed length;
+
+    if (!vector)
+        return NULL;
+    
+    copy = vector_new(vector->copy, vector->delete);
+    n = 0;
+    length = vector->current_index;
+    while (n < length)
+    {
+        item = copy->copy(vector->items[n]);
+        vector_push(copy, item);
+
+        n ++;
+    }
+
+    return copy;
 }

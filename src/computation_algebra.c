@@ -7,7 +7,7 @@ static Node *_get_op_node(OPERATOR_TYPE type)
     Operator *operator;
 
     operator = operator_new_from_type(type);
-    node = node_new(operator, NT_OPERATOR);
+    node = node_new(operator, NT_OPERATOR, FALSE);
 
     return node;
 }
@@ -18,7 +18,7 @@ static Computation *_computation_combine(Computation *lhs, Computation *rhs, OPE
     Node *root_node;
 
     root_node = _get_op_node(type);
-    result = computation_new(root_node);
+    result = computation_new(root_node, FALSE);
     result->lhs = computation_copy(lhs);
     result->rhs = computation_copy(rhs);
 
@@ -29,7 +29,7 @@ Computation *computation_increment(Computation *lhs, Computation *rhs)
 {
     Computation *root;
 
-    root = computation_new(_get_op_node(OT_PLUS));
+    root = computation_new(_get_op_node(OT_PLUS), FALSE);
     root->lhs = lhs;
     root->rhs = rhs;
 
@@ -75,7 +75,7 @@ Computation *computation_scale(Computation *computation, Number *number)
 {
     Computation *factor;
 
-    factor = computation_new(node_new(number_copy(number), NT_NUMBER));
+    factor = computation_new(node_new(number, NT_NUMBER, TRUE), FALSE);
 
     return computation_mult(computation, factor);
 }

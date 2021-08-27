@@ -13,12 +13,12 @@ void v_table_delete(VariableTable **v_table)
     return tree_delete(v_table, variable_delete);
 }
 
-int_signed match_variable(const Variable *variable, const String *name)
+int_signed match_variable(const Variable *variable, const char *name)
 {
-    return string_compare_length(variable->name, name, 0);
+    return cstr_compare(variable->name, name);
 }
 
-Variable *v_table_search(const VariableTable *v_table, const String *name)
+Variable *v_table_search(const VariableTable *v_table, const char *name)
 {
     return tree_search_function(v_table, name, match_variable);
 }

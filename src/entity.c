@@ -12,19 +12,19 @@ Entity *entity_new(const void *stuff, ENTITY_TYPE type)
     return entity;
 }
 
-Entity *entity_new_from_number(const Number *number)
+Entity *entity_new_from_number(const Number *number, boolean copy)
 {
-    return entity_new(number, ET_NUMBER);
+    return entity_new(copy ? number_copy(number) : number, ET_NUMBER);
 }
 
-Entity *entity_new_from_matrix(const MatrixRepr *matrix)
+Entity *entity_new_from_matrix(const MatrixRepr *matrix, boolean copy)
 {
-    return entity_new(matrix, ET_MATRIX);
+    return entity_new(copy ? matrix_repr_copy(matrix) : matrix, ET_MATRIX);
 }
 
-Entity *entity_new_from_computation(const Computation *computation)
+Entity *entity_new_from_computation(const Computation *computation, boolean copy)
 {
-    return entity_new(computation, ET_COMPUTATION);
+    return entity_new(copy ? computation_copy(computation) : computation, ET_COMPUTATION);
 }
 
 ENTITY_TYPE entity_get_type(const Entity *entity)
@@ -34,27 +34,17 @@ ENTITY_TYPE entity_get_type(const Entity *entity)
 
 Entity *entity_copy(const Entity *entity)
 {
-    Number *number;
-    MatrixRepr *matrix;
-    Computation *computation;
-
     if (entity->type == ET_NUMBER)
     {
-        number = number_copy(entity->number);
-
-        return entity_new_from_number(number);
+        return entity_new_from_number(entity->number, TRUE);
     }
     else if (entity->type == ET_MATRIX)
     {
-        matrix = matrix_repr_copy(entity->matrix);
-
-        return entity_new_from_matrix(matrix);
+        return entity_new_from_matrix(entity->matrix, TRUE);
     }
     else if (entity->type == ET_COMPUTATION)
     {
-        computation = computation_copy(entity->computation);
-
-        return entity_new_from_computation(computation);
+        return entity_new_from_computation(entity->computation, TRUE);
     }
 
     return NULL;
@@ -76,30 +66,25 @@ void entity_delete(Entity **entity)
     *entity = NULL;
 }
 
-
-Computation *computation_from_entity(Entity *entity)
+Computation *computation_from_entity(Entity *entity, boolean copy)
 {
     ENTITY_TYPE type;
     Node *node;
-    MatrixRepr *matrix;
-    Number *number;
 
     type = entity_get_type(entity);
     if (type == ET_COMPUTATION)
-        return computation_copy(entity->computation);
+        return copy ? computation_copy(entity->computation) : entity->computation;
     else if (type == ET_NUMBER)
     {
-        number = number_copy(entity->number);
-        node = node_new(number, NT_NUMBER);
+        node = node_new(entity->number, NT_NUMBER, copy);
 
-        return computation_new(node);
+        return computation_new(node, FALSE);
     }
     else if (type == ET_MATRIX)
     {
-        matrix = matrix_repr_copy(entity->matrix);
-        node = node_new(matrix, NT_MATRIX);
+        node = node_new(entity->matrix, NT_MATRIX, copy);
 
-        return computation_new(node);
+        return computation_new(node, FALSE);
     }
 
     return NULL;

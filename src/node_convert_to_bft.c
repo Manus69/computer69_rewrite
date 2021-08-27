@@ -1,14 +1,14 @@
 #include "frontend_declarations.h"
 #include "node.h"
 
-static int_signed _determine_bft(const String *string)
+static int_signed _determine_bft(const char *string)
 {
     int_signed type;
 
     type = 0;
     while (FUNCTION_STRINGS[type])
     {
-        if (string_is_identical_to(string, FUNCTION_STRINGS[type]))
+        if (cstr_compare(string, FUNCTION_STRINGS[type]) == 0)
             return type;
         
         type ++;
@@ -28,7 +28,7 @@ Node *node_convert_to_bft(Node *node)
     if (type == NOT_FOUND)
         return NULL;
     
-    string_delete(&node->identifier);
+    cstr_delete(&node->identifier);
     node->type = NT_BUILTIN_FUNCTION;
     node->bf_type = type;
 

@@ -17,7 +17,7 @@ static Variable *_check_if_variable(Computation *computation, const VariableTabl
     return variable ? variable : NULL;
 }
 
-static void _resolve_matrix(MatrixRepr *matrix, const String *wc_identifier, const VariableTable *v_table)
+static void _resolve_matrix(MatrixRepr *matrix, const char *wc_identifier, const VariableTable *v_table)
 {
     Computation *computation;
     int_signed j;
@@ -44,7 +44,7 @@ static void _resolve_matrix(MatrixRepr *matrix, const String *wc_identifier, con
     }
 }
 
-static Computation *_resolve_node(Computation *computation, const String *wc_identifier, const VariableTable *v_table)
+static Computation *_resolve_node(Computation *computation, const char *wc_identifier, const VariableTable *v_table)
 {
     Variable *variable;
     Entity *value;
@@ -53,13 +53,12 @@ static Computation *_resolve_node(Computation *computation, const String *wc_ide
     if (variable)
     {
         computation_delete(&computation);
-        // computation = computation_copy(variable_get_value(variable));
         value = variable_get_value(variable);
-        computation = computation_from_entity(value);
+        computation = computation_from_entity(value, TRUE);
     }
     else if (computation->node->type == NT_IDENTIFIER)
     {
-        if (string_is_identical(wc_identifier, computation->node->identifier))
+        if (cstr_compare(wc_identifier, computation->node->identifier) == 0)
             node_convert_to_wildcard(computation->node);
     }
     else if (computation->node->type == NT_MATRIX)
@@ -70,7 +69,7 @@ static Computation *_resolve_node(Computation *computation, const String *wc_ide
     return computation;
 }
 
-Computation *computation_resolve(Computation *computation, const String *wc_identifier, const VariableTable *v_table)
+Computation *computation_resolve(Computation *computation, const char *wc_identifier, const VariableTable *v_table)
 {
     if (!computation)
         return NULL;

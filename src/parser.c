@@ -47,7 +47,7 @@ Computation *get_function(String *string, const VariableTable *v_table)
 
     node_convert_to_bft(identifier_node); //
 
-    identifier = computation_new(identifier_node);
+    identifier = computation_new(identifier_node, FALSE);
     identifier->lhs = argument;
 
     return identifier;
@@ -59,7 +59,7 @@ Computation *get_identifier(String *string)
 
     node = node_get_identifier(string);
 
-    return node ? computation_new(node) : NULL;
+    return node ? computation_new(node, FALSE) : NULL;
 }
 
 Computation *get_term(String *string, const VariableTable *v_table)
@@ -72,11 +72,11 @@ Computation *get_term(String *string, const VariableTable *v_table)
     
     node = node_get_number(string);
     if (node)
-        return computation_new(node);
+        return computation_new(node, FALSE);
     
     node = node_get_matrix(string, v_table);
     if (node)
-        return computation_new(node);
+        return computation_new(node, FALSE);
 
     term = get_stuff_in_parens(string, v_table);
     if (term)
@@ -99,7 +99,7 @@ Computation *get_operator(String *string)
 
     op_node = node_get_operator(string);
 
-    return op_node ? computation_new(op_node) : NULL;
+    return op_node ? computation_new(op_node, FALSE) : NULL;
 }
 
 static Computation *process_u_minus(String *string, const VariableTable *v_table)
@@ -132,6 +132,9 @@ static Computation *get_partial_tree(String *string, const VariableTable *v_tabl
     Computation *root;
     Computation *lhs;
     Computation *new_root;
+
+    if (!string)
+        return NULL;
 
     if (string_at(string, 0) == TERMINALS[MINUS])
         return process_u_minus(string, v_table);

@@ -33,6 +33,12 @@ char *cstr_copy(const char *string)
     return cstr_substring(string, cstr_length(string));
 }
 
+void cstr_delete(char **string)
+{
+    free(*string);
+    *string = NULL;
+}
+
 int_signed cstr_compare_length(const char *lhs, const char *rhs, int_signed length)
 {
     int_signed n;

@@ -46,3 +46,25 @@ int_unsigned id_function_name_str(const String *string)
 {
     return id_function_name(string_get_characters(string));
 }
+
+int_unsigned id_matrix(const String *string)
+{
+    int_signed index;
+
+    index = find_matching_bracket_str(string, TERMINALS[O_BRACKET], TERMINALS[C_BRACKET]);
+    if (index == NOT_FOUND || index < 4)
+        return 0;
+
+    return index + 1;
+}
+
+int_unsigned id_row(const String *string)
+{
+    int_signed index;
+
+    index = find_matching_bracket_str(string, TERMINALS[O_BRACKET], TERMINALS[C_BRACKET]);
+    if (index == NOT_FOUND || index < 2)
+        return 0;
+    
+    return index + 1;
+}

@@ -2,12 +2,12 @@
 #include "frontend_declarations.h"
 #include "node.h"
 
-Computation *computation_new(Node *node)
+Computation *computation_new(Node *node, boolean copy)
 {
     Computation *computation;
 
     computation = allocate(sizeof(Computation));
-    computation->node = node;
+    computation->node = copy ? node_copy(node) : node;
     computation->lhs = NULL;
     computation->rhs = NULL;
 
@@ -69,9 +69,14 @@ Computation *computation_copy(const Computation *computation)
     if (!computation)
         return NULL;
 
-    copy = computation_new(node_copy(computation->node));
+    copy = computation_new(computation->node, TRUE);
     copy->lhs = computation_copy(computation->lhs);
     copy->rhs = computation_copy(computation->rhs);
 
     return copy;
+}
+
+void *computation_copy_wrapper(Computation *computation)
+{
+    return computation_copy(computation);
 }

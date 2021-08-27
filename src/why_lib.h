@@ -15,8 +15,8 @@
 #include "why_cstring.h"
 
 Vector *string_split(String *string, char delimiter);
-Vector *string_split2(String *string, char delimiter);
-Vector *string_split_cstar(char *c_string, char delimiter);
+// Vector *string_split_cstar(char *c_string, char delimiter);
+Vector *cstr_split(char *string, char delimiter);
 String *get_line(int file_descriptor);
 String *get_all_lines(int file_descriptor);
 

@@ -54,13 +54,16 @@ void print_node(const Node *node)
     else if (type == NT_OPERATOR)
         print_operator(node->operator);
     else if (type == NT_IDENTIFIER)
-        print_string(node->identifier);
+        print_cstring(node->identifier);
     else if (type == NT_WILDCARD)
         print_cstring(WC_SYMBOL);
     else if (type == NT_FUNCTION)
-        print_string(node->identifier);
+        print_cstring(node->identifier);
     else if (type == NT_BUILTIN_FUNCTION)
         print_cstring(FUNCTION_STRINGS[node->bf_type]);
+    else if (type == NT_MATRIX)
+        print_matrix_repr(node->matrix);
+    else assert(0);
 }
 
 void _default_print(const Computation *computation)
@@ -175,7 +178,7 @@ void print_variable(const Variable *variable)
         return ;
     }
 
-    print_string(variable->name);
+    print_cstring(variable->name);
     if (variable_get_type(variable) == VT_COMPUTATION)
         printf("(%s)", WC_SYMBOL);
 
@@ -194,14 +197,27 @@ void print_v_table(const VariableTable *v_table)
     print_v_table(v_table->right);
 }
 
-void print_matrix_row(const Vector *row)
+void print_matrix_row(const MatrixRepr *matrix, int_signed j)
 {
-    if (!row)
+    int_signed k;
+    Computation *item;
+
+    if (!matrix)
         return ;
 
     printf("[");
-    // print_vector(row, print_variable, ",");
-    print_vector(row, print_computation, ",");
+    item = matrix_repr_at(matrix, j, 0);
+    print_computation(item);
+    k = 1;
+
+    while (k < matrix_repr_n_cols(matrix))
+    {
+        printf("%s", ",");
+        item = matrix_repr_at(matrix, j, k);
+        print_computation(item);
+
+        k ++;
+    }
     printf("]");
 }
 
@@ -209,25 +225,24 @@ void print_matrix_repr(const MatrixRepr *matrix)
 {
     int_signed n;
     int_signed n_rows;
-    Vector *row;
+    int_signed n_cols;
 
     if (!matrix)
         return ;
 
     n_rows = matrix_repr_n_rows(matrix);
-    if (!n_rows)
+    n_cols = matrix_repr_n_cols(matrix);
+    if (!n_rows || !n_cols)
         return ;
     
     printf("[");
-    row = matrix_repr_get_row(matrix, 0);
-    print_matrix_row(row);
+    print_matrix_row(matrix, 0);
 
     n = 1;
     while (n < n_rows)
     {
         printf(";");
-        row = matrix_repr_get_row(matrix, n);
-        print_matrix_row(row);
+        print_matrix_row(matrix, n);
         n ++;
     }
     printf("]");

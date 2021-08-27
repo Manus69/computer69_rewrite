@@ -60,7 +60,25 @@ void matrix_test()
 
 void test()
 {
-    ;
+    Vector *v;
+    String *str;
+
+    str = string_new("this is a test");
+    v = string_split(str, ' ');
+    string_delete(&str);
+
+    print_vector(v, print_string, "-----");
+    printf("\n");
+
+    str = vector_at(v, 3);
+    print_string_n(str);
+    _string_shift(str, 2);
+    print_string_n(str);
+
+    print_vector(v, print_string, "-----");
+    printf("\n");
+
+    vector_delete(&v);
 }
 
 //user defined names must be case insensitive
@@ -79,9 +97,10 @@ int main()
     start = clock();
 
     // test_sequence(valid_matrix_strings);
-    // test_sequence(valid_sequence);
+    test_sequence(valid_sequence);
+    // test_sequence(valid_sequence_basic);
     // test_all_sequences(valid_sequences);
-    test_all_sequences(valid_matrix_sequences);
+    // test_all_sequences(valid_matrix_sequences);
     // test();
 
     end = clock();

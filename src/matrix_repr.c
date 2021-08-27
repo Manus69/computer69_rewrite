@@ -6,61 +6,38 @@
 #include <assert.h>
 #include "print.h"
 
-Vector *matrix_row_new()
-{
-    // return vector_new(copy_shallow, variable_delete);
-    return vector_new(copy_shallow, computation_delete);
-}
-
-MatrixRepr *matrix_repr_new()
+MatrixRepr *matrix_repr_new(void *(*copy)())
 {
     MatrixRepr *matrix;
 
     matrix = allocate(sizeof(MatrixRepr));
-    matrix->rows = vector_new(copy_shallow, vector_delete);
-    matrix->n_cols = -1;
+    matrix->items = vector_new(copy, computation_delete);
+    matrix->n_rows = 1;
+    matrix->n_cols = 0;
 
     return matrix;
-}
-
-static Vector *_row_of_zeroes(int_signed size)
-{
-    int_signed n;
-    Vector *row;
-
-    n = 0;
-    row = matrix_row_new();
-    while (n < size)
-    {
-        vector_push(row, NULL);
-        n ++;
-    }
-
-    return row;
 }
 
 MatrixRepr *matrix_repr_new_fixed_size(int_signed n_rows, int_signed n_cols)
 {
-    Vector *row;
     MatrixRepr *matrix;
-    int_signed j;
+    int_signed n;
+    int_signed size;
 
-    matrix = matrix_repr_new();
-    j = 0;
-    while (j < n_rows)
+    size = n_rows * n_cols;
+    n = 0;
+    matrix = matrix_repr_new(COPY_FUNCTION);
+
+    while (n < size)
     {
-        row = _row_of_zeroes(n_cols);
-        matrix_repr_add_row(matrix, row);
-
-        j ++;
+        vector_push(matrix->items, NULL);
+        n ++;
     }
     
-    return matrix;
-}
+    matrix->n_rows = n_rows;
+    matrix->n_cols = n_cols;
 
-Vector *matrix_repr_get_row(const MatrixRepr *matrix, int_signed n)
-{
-    return vector_at(matrix->rows, n);
+    return matrix;
 }
 
 int_signed matrix_repr_n_cols(const MatrixRepr *matrix)
@@ -70,12 +47,12 @@ int_signed matrix_repr_n_cols(const MatrixRepr *matrix)
 
 int_signed matrix_repr_n_rows(const MatrixRepr *matrix)
 {
-    return vector_size(matrix->rows);
+    return matrix->n_rows;
 }
 
 boolean matrix_repr_is_square(const MatrixRepr *matrix)
 {
-    if (matrix_repr_n_rows(matrix) == matrix_repr_n_cols(matrix))
+    if (matrix->n_cols == matrix->n_rows)
         return TRUE;
     
     return FALSE;
@@ -86,64 +63,44 @@ boolean matrix_repr_equal_size(const MatrixRepr *lhs, const MatrixRepr *rhs)
     if (lhs->n_cols != rhs->n_cols)
         return FALSE;
     
-    return matrix_repr_n_rows(lhs) == matrix_repr_n_rows(rhs);
+    return lhs->n_rows== rhs->n_rows;
 }
 
 Computation *matrix_repr_at(const MatrixRepr *matrix, int_signed j, int_signed k)
 {
-    Vector *row;
     Computation *value;
+    int_signed n;
 
-    row = matrix_repr_get_row(matrix, j);
-    value = vector_at(row, k);
+    n = j * matrix->n_cols + k;
+    value = vector_at(matrix->items, n);
 
     return value;
 }
 
 Computation *matrix_repr_nth(const MatrixRepr *matrix, int_signed n)
 {
-    int_signed j;
-    int_signed k;
-    int_signed n_cols;
-
-    n_cols = matrix_repr_n_cols(matrix);
-
-    j = n / n_cols;
-    k = n % n_cols;
-
-    return matrix_repr_at(matrix, j, k);
+    return vector_at(matrix->items, n);
 }
 
-boolean matrix_repr_set_nth(MatrixRepr *matrix, Computation *value, int_signed n)
+boolean matrix_repr_push(MatrixRepr *matrix, Computation *value)
 {
-    int_signed j;
-    int_signed k;
-    int_signed n_cols;
-
-    n_cols = matrix_repr_n_cols(matrix);
-
-    j = n / n_cols;
-    k = n % n_cols;
-
-    matrix_repr_set(matrix, value, j, k);
-
-    return TRUE;
+    return vector_push(matrix->items, value);
 }
 
-boolean matrix_repr_set(MatrixRepr *matrix, Computation *value, int_signed j, int_signed k)
+Computation *matrix_repr_set(MatrixRepr *matrix, Computation *value, int_signed j, int_signed k)
 {
-    Vector *row;
     Computation *old_value;
-    Computation *new_value;
+    int_signed n;
 
-    row = matrix_repr_get_row(matrix, j);
-    old_value = vector_at(row, k);
-    new_value = computation_copy(value);
-    vector_set(row, new_value, k);
-    
-    // computation_delete(&old_value);
+    n = j * matrix->n_cols + k;
+    old_value = vector_set(matrix->items, value, n);
 
-    return TRUE;
+    return old_value;
+}
+
+Computation *matrix_repr_set_nth(MatrixRepr *matrix, Computation *value, int_signed n)
+{
+    return vector_set(matrix->items, value, n);
 }
 
 void matrix_repr_delete(MatrixRepr **matrix)
@@ -151,45 +108,19 @@ void matrix_repr_delete(MatrixRepr **matrix)
     if (!matrix || !*matrix)
         return ;
 
-    vector_delete(&(*matrix)->rows);
+    vector_delete(&(*matrix)->items);
     free(*matrix);
     *matrix = NULL;
-}
-
-static void _copy_iterate(MatrixRepr *copy, const MatrixRepr *matrix, int_signed n_rows, int_signed n_cols)
-{
-    int_signed j;
-    int_signed k;
-    Computation *value;
-
-    j = 0;
-    while (j < n_rows)
-    {
-        k = 0;
-        while (k < n_cols)
-        {
-            value = matrix_repr_at(matrix, j, k);
-            value = computation_copy(value);
-            matrix_repr_set(copy, value, j, k);
-
-            k ++;
-        }
-
-        j ++;
-    }
 }
 
 MatrixRepr *matrix_repr_copy(const MatrixRepr *matrix)
 {
     MatrixRepr *copy;
-    int_signed n_rows;
-    int_signed n_cols;
-
-    n_rows = matrix_repr_n_rows(matrix);
-    n_cols = matrix_repr_n_cols(matrix);
-    copy = matrix_repr_new_fixed_size(n_rows, n_cols);
-
-    _copy_iterate(copy, matrix, n_rows, n_cols);
+    
+    copy = matrix_repr_new(COPY_FUNCTION);
+    copy->items = vector_copy(matrix->items);
+    copy->n_cols = matrix->n_cols;
+    copy->n_rows = matrix->n_rows;
 
     return copy;
 }

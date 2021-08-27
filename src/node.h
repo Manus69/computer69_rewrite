@@ -11,7 +11,8 @@ struct Node
         Number *number;
         Operator *operator;
         MatrixRepr *matrix;
-        String *identifier;
+        // String *identifier;
+        char *identifier;
         BULITIN_FUNCTION_TYPE bf_type;
     };
     
