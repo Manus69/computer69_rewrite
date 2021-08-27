@@ -200,21 +200,21 @@ void print_v_table(const VariableTable *v_table)
 void print_matrix_row(const MatrixRepr *matrix, int_signed j)
 {
     int_signed k;
-    Computation *item;
+    Entity *item;
 
     if (!matrix)
         return ;
 
     printf("[");
     item = matrix_repr_at(matrix, j, 0);
-    print_computation(item);
+    print_entity(item);
     k = 1;
 
     while (k < matrix_repr_n_cols(matrix))
     {
         printf("%s", ",");
         item = matrix_repr_at(matrix, j, k);
-        print_computation(item);
+        print_entity(item);
 
         k ++;
     }

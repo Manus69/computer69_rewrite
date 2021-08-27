@@ -34,6 +34,9 @@ ENTITY_TYPE entity_get_type(const Entity *entity)
 
 Entity *entity_copy(const Entity *entity)
 {
+    if (!entity)
+        return NULL;
+    
     if (entity->type == ET_NUMBER)
     {
         return entity_new_from_number(entity->number, TRUE);
@@ -48,6 +51,11 @@ Entity *entity_copy(const Entity *entity)
     }
 
     return NULL;
+}
+
+void *entity_copy_wrapper(const Entity *entity)
+{
+    return entity_copy(entity);
 }
 
 static void *destructors[] = {number_delete, matrix_repr_delete, computation_delete, 0};

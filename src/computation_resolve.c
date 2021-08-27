@@ -1,6 +1,7 @@
 #include "frontend_declarations.h"
 #include "computation.h"
 #include "node.h"
+#include "entity.h"
 
 static Variable *_check_if_variable(Computation *computation, const VariableTable *v_table)
 {
@@ -19,7 +20,7 @@ static Variable *_check_if_variable(Computation *computation, const VariableTabl
 
 static void _resolve_matrix(MatrixRepr *matrix, const char *wc_identifier, const VariableTable *v_table)
 {
-    Computation *computation;
+    Entity *item;
     int_signed j;
     int_signed k;
     int_signed n_rows;
@@ -33,9 +34,11 @@ static void _resolve_matrix(MatrixRepr *matrix, const char *wc_identifier, const
         k = 0;
         while (k < n_cols)
         {
-            computation = matrix_repr_at(matrix, j, k);
-            computation = computation_resolve(computation, wc_identifier, v_table);
-            matrix_repr_set(matrix, computation, j, k);
+            item = matrix_repr_at(matrix, j, k);
+            if (item->type == ET_COMPUTATION)
+                item->computation = computation_resolve(item->computation, wc_identifier, v_table);
+            
+            matrix_repr_set(matrix, item, j, k);
 
             k ++;
         }

@@ -91,7 +91,7 @@ static Entity *_eval_matrix(MatrixRepr *matrix, const VariableTable *v_table, En
 {
     int_signed n;
     // MatrixRepr *matrix;
-    Computation *value;
+    Entity *value;
     Number *number;
 
     if (wc_value && wc_value->type != ET_NUMBER)
@@ -101,9 +101,12 @@ static Entity *_eval_matrix(MatrixRepr *matrix, const VariableTable *v_table, En
     n = 0;
     while ((value = matrix_repr_nth(matrix, n)))
     {
-        number = computation_eval(value, v_table, wc_value ? wc_value->number : NULL);
-        value = computation_new(node_new(number, NT_NUMBER, FALSE), FALSE);
-        matrix_repr_set_nth(matrix, value, n);
+        if (value->type == ET_COMPUTATION)
+        {
+            number = computation_eval(value->computation, v_table, wc_value ? wc_value->number : NULL);
+            value = entity_new_from_number(number, FALSE);
+            matrix_repr_set_nth(matrix, value, n);
+        }     
 
         n ++;
     }

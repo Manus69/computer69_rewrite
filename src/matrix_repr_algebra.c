@@ -1,38 +1,41 @@
 #include "frontend_declarations.h"
 #include "matrix_repr.h"
+#include "entity.h"
 
-static Computation *_add_jk(const MatrixRepr *lhs, const MatrixRepr *rhs, int_signed j, int_signed k)
+#include <assert.h>
+
+static Entity *_add_jk(const MatrixRepr *lhs, const MatrixRepr *rhs, int_signed j, int_signed k)
 {
-    Computation *result;
-    Computation *_lhs;
-    Computation *_rhs;
+    Entity *result;
+    Entity *_lhs;
+    Entity *_rhs;
 
     _lhs = matrix_repr_at(lhs, j, k);
     _rhs = matrix_repr_at(rhs, j, k);
-    result = computation_add(_lhs, _rhs);
+    result = entity_add(_lhs, _rhs);
 
     return result;
 }
 
-static Computation *_subtract_jk(const MatrixRepr *lhs, const MatrixRepr *rhs, int_signed j, int_signed k)
+static Entity *_subtract_jk(const MatrixRepr *lhs, const MatrixRepr *rhs, int_signed j, int_signed k)
 {
-    Computation *result;
-    Computation *_lhs;
-    Computation *_rhs;
+    Entity *result;
+    Entity *_lhs;
+    Entity *_rhs;
 
     _lhs = matrix_repr_at(lhs, j, k);
     _rhs = matrix_repr_at(rhs, j, k);
-    result = computation_subtract(_lhs, _rhs);
+    result = entity_subtract(_lhs, _rhs);
 
     return result;
 }
 
-static Computation *_multiply_jk(const MatrixRepr *lhs, const MatrixRepr *rhs, int_signed j, int_signed k)
+static Entity *_multiply_jk(const MatrixRepr *lhs, const MatrixRepr *rhs, int_signed j, int_signed k)
 {
-    Computation *result;
-    Computation *product;
-    Computation *_lhs;
-    Computation *_rhs;
+    Entity *result;
+    Entity *product;
+    Entity *_lhs;
+    Entity *_rhs;
     int_signed w;
 
     if (!lhs->n_cols)
@@ -40,7 +43,7 @@ static Computation *_multiply_jk(const MatrixRepr *lhs, const MatrixRepr *rhs, i
     
     _lhs = matrix_repr_at(lhs, j, 0);
     _rhs = matrix_repr_at(rhs, 0, k);
-    product = computation_mult(_lhs, _rhs);
+    product = entity_mult(_lhs, _rhs);
     result = product;
     w = 1;
 
@@ -48,20 +51,20 @@ static Computation *_multiply_jk(const MatrixRepr *lhs, const MatrixRepr *rhs, i
     {
         _lhs = matrix_repr_at(lhs, j, w);
         _rhs = matrix_repr_at(rhs, w, k);
-        product = computation_mult(_lhs, _rhs);        
-        result = computation_increment(result, product);
+        product = entity_mult(_lhs, _rhs);        
+        result = entity_increment(result, product);
         w ++;
     }
 
     return result;
 }
 
-static MatrixRepr *_matrix_operation(MatrixRepr *matrix, MatrixRepr *lhs, MatrixRepr *rhs, Computation *(*combine_jk)())
+static MatrixRepr *_matrix_operation(MatrixRepr *matrix, MatrixRepr *lhs, MatrixRepr *rhs, Entity *(*combine_jk)())
 {
     int_signed j;
     int_signed k;
     int_signed n_rows;
-    Computation *value;
+    Entity *value;
 
     j = 0;
     n_rows = matrix_repr_n_rows(matrix);
@@ -123,7 +126,7 @@ MatrixRepr *matrix_repr_mult(MatrixRepr *lhs, MatrixRepr *rhs)
 
 MatrixRepr *matrix_repr_scale(MatrixRepr *matrix, Number *number)
 {
-    Computation *value;
+    Entity *value;
     int_signed j;
     int_signed k;
     int_signed n_rows;
@@ -135,8 +138,13 @@ MatrixRepr *matrix_repr_scale(MatrixRepr *matrix, Number *number)
         k = 0;
         while (k < matrix->n_cols)
         {
-            value = matrix_repr_at(matrix, j, k);
-            value = computation_scale(value, number);
+            value = matrix_repr_at(matrix, j, k); //this will leak
+            if (value->type == ET_COMPUTATION)
+                value->computation = computation_scale(value->computation, number);
+            else if (value->type == ET_NUMBER)
+                value->number = number_mult(value->number, number);
+            else assert(0);
+
             matrix_repr_set(matrix, value, j, k);
 
             k ++;
@@ -188,10 +196,9 @@ MatrixRepr *matrix_repr_power(MatrixRepr *lhs, Number *number)
 MatrixRepr *matrix_repr_I(int_signed size)
 {
     MatrixRepr *matrix;
-    Computation *item;
+    Entity *item;
     int_signed j;
     int_signed k;
-    Node *node;
 
     matrix = matrix_repr_new_fixed_size(size, size);
     j = 0;
@@ -200,9 +207,7 @@ MatrixRepr *matrix_repr_I(int_signed size)
         k = 0;
         while (k < size)
         {
-            node = node_new(number_new_int(k == j), NT_NUMBER, FALSE);
-            item = computation_new(node, FALSE);
-
+            item = entity_new_from_number(number_new_int(k == j), FALSE);
             matrix_repr_set(matrix, item, j, k);
 
             k ++;

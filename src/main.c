@@ -97,10 +97,10 @@ int main()
     start = clock();
 
     // test_sequence(valid_matrix_strings);
-    test_sequence(valid_sequence);
+    // test_sequence(valid_sequence);
     // test_sequence(valid_sequence_basic);
-    // test_all_sequences(valid_sequences);
-    // test_all_sequences(valid_matrix_sequences);
+    test_all_sequences(valid_sequences);
+    test_all_sequences(valid_matrix_sequences);
     // test();
 
     end = clock();

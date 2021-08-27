@@ -11,7 +11,7 @@ MatrixRepr *matrix_repr_new(void *(*copy)())
     MatrixRepr *matrix;
 
     matrix = allocate(sizeof(MatrixRepr));
-    matrix->items = vector_new(copy, computation_delete);
+    matrix->items = vector_new(copy, entity_delete);
     matrix->n_rows = 1;
     matrix->n_cols = 0;
 
@@ -66,9 +66,9 @@ boolean matrix_repr_equal_size(const MatrixRepr *lhs, const MatrixRepr *rhs)
     return lhs->n_rows== rhs->n_rows;
 }
 
-Computation *matrix_repr_at(const MatrixRepr *matrix, int_signed j, int_signed k)
+Entity *matrix_repr_at(const MatrixRepr *matrix, int_signed j, int_signed k)
 {
-    Computation *value;
+    Entity *value;
     int_signed n;
 
     n = j * matrix->n_cols + k;
@@ -77,19 +77,19 @@ Computation *matrix_repr_at(const MatrixRepr *matrix, int_signed j, int_signed k
     return value;
 }
 
-Computation *matrix_repr_nth(const MatrixRepr *matrix, int_signed n)
+Entity *matrix_repr_nth(const MatrixRepr *matrix, int_signed n)
 {
     return vector_at(matrix->items, n);
 }
 
-boolean matrix_repr_push(MatrixRepr *matrix, Computation *value)
+boolean matrix_repr_push(MatrixRepr *matrix, Entity *value)
 {
     return vector_push(matrix->items, value);
 }
 
-Computation *matrix_repr_set(MatrixRepr *matrix, Computation *value, int_signed j, int_signed k)
+Entity *matrix_repr_set(MatrixRepr *matrix, Entity *value, int_signed j, int_signed k)
 {
-    Computation *old_value;
+    Entity *old_value;
     int_signed n;
 
     n = j * matrix->n_cols + k;
@@ -98,7 +98,7 @@ Computation *matrix_repr_set(MatrixRepr *matrix, Computation *value, int_signed 
     return old_value;
 }
 
-Computation *matrix_repr_set_nth(MatrixRepr *matrix, Computation *value, int_signed n)
+Entity *matrix_repr_set_nth(MatrixRepr *matrix, Entity *value, int_signed n)
 {
     return vector_set(matrix->items, value, n);
 }

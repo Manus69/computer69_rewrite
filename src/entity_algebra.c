@@ -1,6 +1,8 @@
 #include "frontend_declarations.h"
 #include "entity.h"
 
+#include <assert.h>
+
 Entity *entity_add(Entity *lhs, Entity *rhs)
 {
     Number *number;
@@ -21,6 +23,27 @@ Entity *entity_add(Entity *lhs, Entity *rhs)
 
         return entity_new_from_matrix(matrix, FALSE);
     }
+}
+
+Entity *entity_increment(Entity *lhs, Entity *rhs)
+{
+    if (lhs->type != rhs->type)
+        return NULL;
+    
+    if (lhs->type == ET_NUMBER)
+    {
+        lhs->number = number_increment(lhs->number, rhs->number);
+
+        return lhs;
+    }
+    else if (lhs->type == ET_COMPUTATION)
+    {
+        lhs->computation = computation_increment(lhs->computation, rhs->computation);
+
+        return lhs;
+    }
+    
+    assert(0);
 }
 
 Entity *entity_mult(Entity *lhs, Entity *rhs)

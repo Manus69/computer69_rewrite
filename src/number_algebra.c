@@ -30,6 +30,22 @@ Number *number_add(Number *lhs, Number *rhs)
 
 }
 
+Number *number_increment(Number *lhs, Number *rhs)
+{
+    NUMBER_TYPE type;
+
+    type = _promote(lhs, rhs);
+
+    if (type == NT_INT)
+        lhs->n += rhs->n;
+    else if (type == NT_REAL)
+        lhs->x += rhs->x;
+    else
+        lhs->z = complex_add(lhs->z, rhs->z);
+
+    return lhs;
+}
+
 Number *number_mult(Number *lhs, Number *rhs)
 {
     NUMBER_TYPE type;
