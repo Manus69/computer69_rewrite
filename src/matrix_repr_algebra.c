@@ -52,7 +52,9 @@ static Entity *_multiply_jk(const MatrixRepr *lhs, const MatrixRepr *rhs, int_si
         _lhs = matrix_repr_at(lhs, j, w);
         _rhs = matrix_repr_at(rhs, w, k);
         product = entity_mult(_lhs, _rhs);        
-        result = entity_increment(result, product);
+        result = entity_increment(result, product); //this is spooky
+
+        entity_delete(&product);
         w ++;
     }
 

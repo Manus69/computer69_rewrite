@@ -168,5 +168,4 @@ boolean         id_find_roots(const String *string);
 char            *check_reserved_symbols(const char *string);
 void            *get_bft_pointer(BULITIN_FUNCTION_TYPE type);
 
-
 #endif

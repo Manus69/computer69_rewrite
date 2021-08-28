@@ -27,6 +27,7 @@ static MatrixRepr *_process_row(MatrixRepr *matrix, String *row_string, const Va
         item = entity_new_from_computation(_parse(item_string, v_table), FALSE);
         matrix_repr_push(matrix, item);
 
+        // entity_delete(&item);
         n ++;
     }
 

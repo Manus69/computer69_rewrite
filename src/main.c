@@ -43,21 +43,6 @@ void variable_test()
     string_delete(&string);
 }
 
-void matrix_test()
-{
-    String *string;
-
-    // string = string_new_no_space("[1, 1, pi]");
-    string = string_new_no_space("[[x];[pi]]");
-    MatrixRepr *matrix = matrix_repr_from_string(string, NULL);
-
-    string_delete(&string);
-
-    print_matrix_repr(matrix);
-
-    matrix_repr_delete(&matrix);
-}
-
 void test()
 {
     Vector *v;
@@ -83,22 +68,25 @@ void test()
 
 #include <limits.h>
 
-void fib_test()
+void matrix_test()
 {
-    int_signed n;
-    int_unsigned _fib;
+    MatrixRepr *A;
+    MatrixRepr *B;
+    MatrixRepr *result;
+    int_signed size;
+    NUMBER_TYPE type;
 
-    n = 0;
-    while (n < 150)
-    {
-        _fib = fib(n);
-        if (_fib > ULLONG_MAX / 2)
-            printf("n = %Ld -----------------", n);
-        
-        printf("n = %Ld, %Lu\n", n, _fib);
-        
-        n ++;
-    }
+    size = 2;
+    type = NT_REAL;
+    A = generate_random_matrix(size, size, type);
+    B = generate_random_matrix(size, size, type);
+    result = matrix_repr_mult(A, B);
+
+    print_matrix_repr(result);
+
+    matrix_repr_delete(&A);
+    matrix_repr_delete(&B);
+    matrix_repr_delete(&result);
 }
 
 //user defined names must be case insensitive
@@ -108,6 +96,8 @@ void fib_test()
 //order all reserved symbols (reserved symols, function names, etc) and make a binary lookup
 //unfuck memory managment
 //be careful around things of the form f(x) = ... ; g(x) = f with no arg; this must be checked
+//max size for matrices?
+//some increment functions allocate, others do not
 
 int main()
 {
@@ -117,12 +107,11 @@ int main()
     start = clock();
 
     // test_sequence(valid_sequence_basic);
-    test_sequence(valid_sequence);
+    // test_sequence(valid_sequence);
     // test_all_sequences(valid_sequences);
     // test_all_sequences(valid_matrix_sequences);
     // test();
-
-    // printf("%Lu\n", fib(89));
+    // matrix_test();
 
     end = clock();
 

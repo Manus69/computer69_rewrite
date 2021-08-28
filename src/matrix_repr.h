@@ -3,8 +3,8 @@
 
 #include "why_vector_interface.h"
 
-// #define COPY_FUNCTION computation_copy_wrapper
 #define COPY_FUNCTION entity_copy_wrapper
+// #define COPY_FUNCTION copy_shallow
 
 struct MatrixRepr
 {

@@ -18,4 +18,6 @@ void test_assignment(const char **strings);
 void test_sequence(const char **strings);
 void test_all_sequences(const char *array[][SEQUENCE_LENGTH]);
 
+MatrixRepr *generate_random_matrix(int_signed n_rows, int_signed n_cols, NUMBER_TYPE type);
+
 #endif
