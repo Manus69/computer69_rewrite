@@ -105,6 +105,10 @@ Entity *matrix_repr_set_nth(MatrixRepr *matrix, Entity *value, int_signed n)
 
 void matrix_repr_delete(MatrixRepr **matrix)
 {
+    #if NO_DELETE
+    return;
+    #endif
+    
     if (!matrix || !*matrix)
         return ;
 

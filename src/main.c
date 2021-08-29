@@ -108,8 +108,8 @@ int main()
 
     // test_sequence(valid_sequence_basic);
     // test_sequence(valid_sequence);
-    // test_all_sequences(valid_sequences);
-    // test_all_sequences(valid_matrix_sequences);
+    test_all_sequences(valid_sequences);
+    test_all_sequences(valid_matrix_sequences);
     // test();
     // matrix_test();
 

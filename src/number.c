@@ -190,6 +190,10 @@ Number *number_copy(const Number *number)
 
 void number_delete(Number **number)
 {
+    #if NO_DELETE
+    return ;
+    #endif
+    
     if (!number || !*number)
         return ;
 

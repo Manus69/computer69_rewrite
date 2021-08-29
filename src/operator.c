@@ -74,6 +74,10 @@ OPERATOR_TYPE operator_get_type(const Operator *operator)
 
 void operator_delete(Operator **operator)
 {
+    #if NO_DELETE
+    return ;
+    #endif
+    
     if (!operator || !*operator)
         return ;
     

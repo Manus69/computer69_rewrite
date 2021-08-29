@@ -111,13 +111,10 @@ static Variable *_create_parametrized(String *string, const VariableTable *v_tab
     else if (argument->node->type == NT_MATRIX)
     {
         value = entity_new_from_matrix(argument->node->matrix, TRUE);
-        // computation_delete(&argument);
     }
     else
     {
         value = entity_new_from_computation(argument, FALSE);
-        // value = entity_new_from_computation(argument, TRUE);
-
     }
 
     // computation_delete(&argument);

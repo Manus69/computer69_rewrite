@@ -18,6 +18,10 @@ void computation_delete(Computation **computation)
 {
     Computation *cmp;
 
+    #if NO_DELETE
+    return ;
+    #endif
+
     if (!computation || !*computation)
         return ;
 

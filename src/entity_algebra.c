@@ -7,6 +7,7 @@ Entity *entity_add(Entity *lhs, Entity *rhs)
 {
     Number *number;
     MatrixRepr *matrix;
+    Computation *computation;
 
     if (lhs->type != rhs->type)
         return NULL;
@@ -17,12 +18,20 @@ Entity *entity_add(Entity *lhs, Entity *rhs)
 
         return entity_new_from_number(number, FALSE);
     }
+    else if (lhs->type == ET_COMPUTATION)
+    {
+        computation = computation_add(lhs->computation, rhs->computation);
+
+        return entity_new_from_computation(computation, FALSE);
+    }
     else
     {
         matrix = matrix_repr_add(lhs->matrix, rhs->matrix);
 
         return entity_new_from_matrix(matrix, FALSE);
     }
+
+    return NULL;
 }
 
 Entity *entity_increment(Entity *lhs, Entity *rhs)
@@ -50,6 +59,7 @@ Entity *entity_mult(Entity *lhs, Entity *rhs)
 {
     Number *number;
     MatrixRepr *matrix;
+    Computation *_computation;
 
     if (lhs->type == ET_NUMBER && rhs->type == ET_NUMBER)
     {
@@ -69,6 +79,12 @@ Entity *entity_mult(Entity *lhs, Entity *rhs)
 
         return entity_new_from_matrix(matrix, FALSE);
     }
+    else if (lhs->type == ET_COMPUTATION && rhs->type == ET_COMPUTATION)
+    {
+        _computation = computation_mult(lhs->computation, rhs->computation);
+
+        return entity_new_from_computation(_computation, FALSE);
+    }
 
     return NULL;
 }
@@ -83,6 +99,14 @@ Entity *entity_subtract(Entity *lhs, Entity *rhs)
         number = number_subtract(lhs->number, NULL);
 
         return entity_new_from_number(number, FALSE);
+    }
+    else if (lhs->type == ET_COMPUTATION && !rhs)
+    {
+        return entity_new_from_computation(computation_subtract(lhs->computation, NULL), FALSE);
+    }
+    else if (lhs->type == ET_COMPUTATION && rhs->type == ET_COMPUTATION)
+    {
+        return entity_new_from_computation(computation_subtract(lhs->computation, rhs->computation), FALSE);
     }
     else if (lhs->type == ET_NUMBER && rhs->type == ET_NUMBER)
     {
@@ -110,6 +134,10 @@ Entity *entity_divide(Entity *lhs, Entity *rhs)
 
         return entity_new_from_number(number, FALSE);
     }
+    if (lhs->type == ET_COMPUTATION && rhs->type == ET_COMPUTATION)
+    {
+        return entity_new_from_computation(computation_divide(lhs->computation, rhs->computation), FALSE);
+    }
 
     return NULL;
 }
@@ -124,6 +152,10 @@ Entity *entity_mod(Entity *lhs, Entity *rhs)
 
         return entity_new_from_number(number, FALSE);
     }
+    if (lhs->type == ET_COMPUTATION && rhs->type == ET_COMPUTATION)
+    {
+        return entity_new_from_computation(computation_mod(lhs->computation, rhs->computation), FALSE);
+    }
 
     return NULL;
 }
@@ -132,6 +164,7 @@ Entity *entity_power(Entity *lhs, Entity *rhs)
 {
     Number *number;
     MatrixRepr *matrix;
+    Computation *_computation;
 
     if (lhs->type == ET_NUMBER && rhs->type == ET_NUMBER)
     {
@@ -145,6 +178,16 @@ Entity *entity_power(Entity *lhs, Entity *rhs)
 
         return entity_new_from_matrix(matrix, FALSE);
     }
+    else if (lhs->type == ET_COMPUTATION && rhs->type == ET_NUMBER)
+    {
+        ;
+    }
+    else if (lhs->type == ET_COMPUTATION && rhs->type == ET_COMPUTATION)
+    {
+        _computation = computation_power(lhs->computation, rhs->computation);
+
+        return entity_new_from_computation(_computation, FALSE);
+    }
 
     return NULL;
 }
@@ -152,12 +195,19 @@ Entity *entity_power(Entity *lhs, Entity *rhs)
 Entity *entity_factorial(Entity *lhs, Entity *rhs)
 {
     Number *number;
+    Computation *_computation;
 
     if (lhs->type == ET_NUMBER && !rhs)
     {
         number = number_factorial(lhs->number, NULL);
 
         return entity_new_from_number(number, FALSE);
+    }
+    if (lhs->type == ET_COMPUTATION && !rhs)
+    {
+        _computation = computation_factorial(lhs->computation, NULL);
+
+        return entity_new_from_computation(_computation, FALSE);
     }
 
     return NULL;

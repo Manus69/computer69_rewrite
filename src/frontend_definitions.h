@@ -4,6 +4,7 @@
 #include "why_tree_interface.h"
 
 #define DBG 0
+#define NO_DELETE 1
 
 typedef struct Number Number;
 typedef struct MatrixRepr MatrixRepr;

@@ -45,6 +45,7 @@ Operator        *operator_copy(const Operator *operator);
 //matrix representation
 MatrixRepr      *matrix_repr_new(void *(*copy)());
 Vector          *matrix_row_new();
+MatrixRepr      *matrix_repr_replace_wc(MatrixRepr *matrix, Computation *value);
 Vector          *matrix_repr_get_row(const MatrixRepr *matrix, int_signed n);
 boolean         matrix_repr_push(MatrixRepr *matrix, Entity *value);
 int_signed      matrix_repr_n_cols(const MatrixRepr *matrix);
@@ -89,6 +90,7 @@ Computation     *computation_insert_root(Computation *root, Computation *new_roo
 Computation     *computation_swap_root(Computation *root, Computation *new_root);
 Computation     *computation_get_lhs(const Computation *computation);
 Computation     *computation_get_rhs(const Computation *computation);
+Computation     *computation_replace_wc(Computation *_computation, Computation *value);
 Computation     *computation_resolve(Computation *computation, const char *wc_identifier, const VariableTable *v_table);
 void            computation_traverse(Computation *computation, void (*function)());
 Node            *computation_get_node(const Computation *computation);

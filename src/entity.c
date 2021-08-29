@@ -64,6 +64,10 @@ void entity_delete(Entity **entity)
 {
     void (*destructor)();
 
+    #if NO_DELETE
+    return ;
+    #endif
+
     if (!entity || !*entity)
         return ;
     

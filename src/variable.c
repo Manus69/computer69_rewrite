@@ -14,6 +14,10 @@ Variable *variable_new(char *name, Entity *entity, boolean copy)
 
 void variable_delete(Variable **variable)
 {
+    #if NO_DELETE
+    return ;
+    #endif
+    
     if (!variable || !*variable)
         return ;
     
@@ -55,14 +59,6 @@ Variable *variable_copy(const Variable *variable)
 
     return copy;
 }
-
-// Variable *variable_assign_computation(Variable *variable, const Computation *value)
-// {
-//     entity_delete(&variable->entity);
-//     variable->entity = entity_new_from_computation(computation_copy(value));
-
-//     return variable;
-// }
 
 Variable *variable_assign(Variable *variable, Entity *value, boolean copy)
 {

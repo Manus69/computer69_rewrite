@@ -2,6 +2,9 @@
 #include "computation.h"
 #include "node.h"
 #include "entity.h"
+#include "variable.h"
+
+#include <assert.h>
 
 static Variable *_check_if_variable(Computation *computation, const VariableTable *v_table)
 {
@@ -10,12 +13,12 @@ static Variable *_check_if_variable(Computation *computation, const VariableTabl
     if (!computation)
         return NULL;
 
-    if (computation->node->type != NT_IDENTIFIER)
+    if (computation->node->type != NT_IDENTIFIER && computation->node->type != NT_FUNCTION)
         return NULL;
     
     variable = v_table_search(v_table, computation->node->identifier);
     
-    return variable ? variable : NULL;
+    return variable;
 }
 
 static void _resolve_matrix(MatrixRepr *matrix, const char *wc_identifier, const VariableTable *v_table)
@@ -51,13 +54,35 @@ static Computation *_resolve_node(Computation *computation, const char *wc_ident
 {
     Variable *variable;
     Entity *value;
+    Computation *copy;
+    MatrixRepr *matrix;
 
     variable = _check_if_variable(computation, v_table);
     if (variable)
     {
-        computation_delete(&computation);
-        value = variable_get_value(variable);
-        computation = computation_from_entity(value, TRUE);
+        if (variable_get_type(variable) == VT_CONSTANT)
+        {
+            computation_delete(&computation);
+            value = variable_get_value(variable);
+            computation = computation_from_entity(value, TRUE);
+        }
+        else if (variable_get_type(variable) == VT_COMPUTATION)
+        {
+            copy = computation_copy(variable->entity->computation);
+            copy = computation_replace_wc(copy, computation->lhs);
+
+            computation = copy;
+        }
+        else if (variable_get_type(variable) == VT_MATRIX)
+        {
+            matrix = matrix_repr_copy(variable->entity->matrix);
+            matrix = matrix_repr_replace_wc(matrix, computation->lhs);
+
+            computation_delete(&computation->lhs);
+            computation_delete(&computation);
+
+            computation = computation_from_entity(entity_new_from_matrix(matrix, FALSE), FALSE);            
+        }
     }
     else if (computation->node->type == NT_IDENTIFIER)
     {
@@ -65,9 +90,9 @@ static Computation *_resolve_node(Computation *computation, const char *wc_ident
             node_convert_to_wildcard(computation->node);
     }
     else if (computation->node->type == NT_MATRIX)
-    {
         _resolve_matrix(computation->node->matrix, wc_identifier, v_table);
-    }
+    else if (computation->node->type == NT_IDENTIFIER || computation->node->type == NT_FUNCTION)
+        assert(0);
 
     return computation;
 }

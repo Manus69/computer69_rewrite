@@ -68,6 +68,10 @@ void node_delete(Node **node)
 {
     void (*destructor)();
 
+    #if NO_DELETE
+    return ;
+    #endif
+
     if (!node || !*node)
         return ;
 
