@@ -10,7 +10,7 @@ Computation *computation_replace_wc(Computation *_computation, Computation *valu
     
     if (_computation->node->type == NT_WILDCARD)
     {
-        computation_delete(&_computation);
+        // computation_delete(&_computation);
 
         return value;
     }

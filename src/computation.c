@@ -1,6 +1,7 @@
 #include "computation.h"
 #include "frontend_declarations.h"
 #include "node.h"
+#include "data_interface.h"
 
 Computation *computation_new(Node *node, boolean copy)
 {
@@ -10,6 +11,9 @@ Computation *computation_new(Node *node, boolean copy)
     computation->node = copy ? node_copy(node) : node;
     computation->lhs = NULL;
     computation->rhs = NULL;
+
+    data_add_pointer(data, computation, sizeof(Computation));
+    // vector_push(data_vector, computation);
 
     return computation;
 }
@@ -76,6 +80,8 @@ Computation *computation_copy(const Computation *computation)
     copy = computation_new(computation->node, TRUE);
     copy->lhs = computation_copy(computation->lhs);
     copy->rhs = computation_copy(computation->rhs);
+
+    // vector_push(data_vector, copy);
 
     return copy;
 }

@@ -146,7 +146,7 @@ void            v_table_delete(VariableTable **v_table);
 int_signed      match_variable(const Variable *variable, const char *name);
 Variable        *v_table_search(const VariableTable *v_table, const char *name);
 VariableTable   *v_table_insert(VariableTable *v_table, const Variable *variable);
-boolean         v_table_insert_report(VariableTable *v_table, const Variable *variable);
+VariableTable   *v_table_insert_report(VariableTable *v_table, const Variable *variable);
 
 //parser
 Computation     *parse(String *string, const VariableTable *v_table);

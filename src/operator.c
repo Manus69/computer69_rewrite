@@ -3,6 +3,7 @@
 #include "why_memory.h"
 #include "terminals.h"
 #include "why_cstring.h"
+#include "data_interface.h"
 
 #include <assert.h>
 
@@ -43,6 +44,9 @@ Operator *operator_new_from_type(OPERATOR_TYPE type)
     op->type = type;
     op->precedence = _get_precedence(type);
 
+    data_add_pointer(data, op, sizeof(Operator));
+    // vector_push(data_vector, op);
+
     return op;
 }
 
@@ -77,7 +81,7 @@ void operator_delete(Operator **operator)
     #if NO_DELETE
     return ;
     #endif
-    
+
     if (!operator || !*operator)
         return ;
     
@@ -91,6 +95,9 @@ Operator *operator_copy(const Operator *operator)
 
     copy = allocate(sizeof(Operator));
     copy = memory_copy(copy, operator, sizeof(Operator));
+
+    data_add_pointer(data, copy, sizeof(Operator));
+    // vector_push(data_vector, copy);
 
     return copy;
 }

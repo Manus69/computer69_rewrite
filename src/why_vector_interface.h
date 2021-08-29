@@ -3,11 +3,12 @@
 
 #include "why_definitions.h"
 
-#define V_CAPACITY_DEFAULT (1 << 1)
+#define V_CAPACITY_DEFAULT (1 << 3)
 
 typedef struct Vector Vector;
 
 Vector      *vector_new(void *(*copy)(), void (*delete_)());
+Vector      *vector_new_with_capacity(void *(copy)(), void (*delete)(), int_signed capacity);
 Vector      *vector_copy(const Vector *vector);
 boolean     vector_push(Vector *vector, void *item);
 int_signed  vector_size(const Vector *vector);
@@ -17,5 +18,5 @@ void        *vector_pop(Vector *vector);
 void        vector_map(Vector *vector, void (*function)());
 void        vector_swap(Vector *vector, int_signed m, int_signed n);
 void        vector_delete(Vector **vector);
-
+void        vector_delete_no_content(Vector **vector);
 #endif

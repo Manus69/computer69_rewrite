@@ -28,23 +28,9 @@ Variable *variable_create_with_name(String *string, const VariableTable *v_table
 
     argument = _parse(string, v_table);
     argument = computation_resolve(argument, NULL, v_table);
-
-    // print_computation(argument);
-    // fflush(NULL);
-
     value = computation_evalG(argument, v_table, NULL);
-
-    #if DBG
-    print_entity(value);
-    printf("\n");
-    #endif
     
-    computation_delete(&argument);
-
-    #if DBG
-    print_entity(value);
-    printf("\n");
-    #endif
+    // computation_delete(&argument);
 
     if (entity_get_type(value) == ET_COMPUTATION)
         assert(0);
@@ -87,26 +73,14 @@ static Variable *_create_parametrized(String *string, const VariableTable *v_tab
     _string_shift(string, cstr_length(arg_name) + 3);
 
     argument = _parse(string, v_table);
-
-    #if DBG
-    print_computation(argument);
-    printf("\n");
-    #endif
-
     argument = computation_resolve(argument, arg_name, v_table);
 
-    #if DBG
-    print_computation(argument);
-    printf("\n");
-    #endif
-
     cstr_delete(&arg_name);
-    // value = entity_new_from_computation(argument, TRUE);
 
     if (argument->node->type == NT_NUMBER)
     {
         value = entity_new_from_number(argument->node->number, TRUE);
-        computation_delete(&argument);
+        // computation_delete(&argument);
     }
     else if (argument->node->type == NT_MATRIX)
     {

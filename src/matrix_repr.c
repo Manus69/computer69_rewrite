@@ -2,6 +2,7 @@
 #include "frontend_declarations.h"
 #include "frontend_declarations.h"
 #include "terminals.h"
+#include "data_interface.h"
 
 #include <assert.h>
 #include "print.h"
@@ -14,6 +15,10 @@ MatrixRepr *matrix_repr_new(void *(*copy)())
     matrix->items = vector_new(copy, entity_delete);
     matrix->n_rows = 1;
     matrix->n_cols = 0;
+
+    data_add_pointer(data, matrix, sizeof(MatrixRepr));
+    data_add_vector_pointer(data, matrix->items);
+    // vector_push(data_vector, matrix);
 
     return matrix;
 }
@@ -84,6 +89,8 @@ Entity *matrix_repr_nth(const MatrixRepr *matrix, int_signed n)
 
 boolean matrix_repr_push(MatrixRepr *matrix, Entity *value)
 {
+    data_increment_bytes(data, sizeof(void *));
+    
     return vector_push(matrix->items, value);
 }
 
@@ -108,7 +115,7 @@ void matrix_repr_delete(MatrixRepr **matrix)
     #if NO_DELETE
     return;
     #endif
-    
+
     if (!matrix || !*matrix)
         return ;
 
@@ -125,6 +132,8 @@ MatrixRepr *matrix_repr_copy(const MatrixRepr *matrix)
     copy->items = vector_copy(matrix->items);
     copy->n_cols = matrix->n_cols;
     copy->n_rows = matrix->n_rows;
+
+    data_add_vector_pointer(data, copy->items);
 
     return copy;
 }

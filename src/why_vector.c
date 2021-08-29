@@ -18,19 +18,25 @@ static void **_get_array(int_signed size)
     return array;
 }
 
-Vector *vector_new(void *(*copy)(), void (*delete)())
+
+Vector *vector_new_with_capacity(void *(copy)(), void (*delete)(), int_signed capacity)
 {
     Vector *vector;
 
     vector = allocate(sizeof(Vector));
-    vector->items = _get_array(V_CAPACITY_DEFAULT);
+    vector->items = _get_array(capacity);
     vector->copy = copy;
     vector->delete = delete;
     vector->current_index = 0;
-    vector->capacity = V_CAPACITY_DEFAULT;
+    vector->capacity = capacity;
     vector->compare = NULL;
 
     return vector;
+}
+
+Vector *vector_new(void *(*copy)(), void (*delete)())
+{
+    return vector_new_with_capacity(copy, delete, V_CAPACITY_DEFAULT);
 }
 
 void vector_map(Vector *vector, void (*function)())
@@ -66,6 +72,16 @@ void vector_delete(Vector **vector)
         return ;
     
     _delete_items(*vector);
+    free((*vector)->items);
+    free(*vector);
+    *vector = NULL;
+}
+
+void vector_delete_no_content(Vector **vector)
+{
+    if (!vector || !*vector)
+        return ;
+    
     free((*vector)->items);
     free(*vector);
     *vector = NULL;

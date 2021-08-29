@@ -2,6 +2,7 @@
 #define FRONTEND_DEFINITIONS_H
 
 #include "why_tree_interface.h"
+#include "why_vector_interface.h"
 
 #define DBG 0
 #define NO_DELETE 1
@@ -13,6 +14,7 @@ typedef struct Node Node;
 typedef struct Computation Computation;
 typedef struct Variable Variable;
 typedef struct Entity Entity;
+typedef struct Data Data;
 
 typedef Tree VariableTable;
 
@@ -23,6 +25,9 @@ typedef enum NODE_TYPE NODE_TYPE;
 typedef enum VARIABLE_TYPE VARIABLE_TYPE;
 typedef enum BULITIN_FUNCTION_TYPE BULITIN_FUNCTION_TYPE;
 typedef enum ENTITY_TYPE ENTITY_TYPE;
+
+extern Vector *data_vector;
+extern Data *data;
 
 enum NUMBER_TYPE
 {

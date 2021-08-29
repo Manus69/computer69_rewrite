@@ -3,9 +3,12 @@
 #include "frontend_definitions.h"
 #include "frontend_declarations.h"
 #include "test.h"
+#include "data_interface.h"
 
 #include <stdio.h>
 #include <time.h>
+
+Data *data;
 
 void parse_test()
 {
@@ -76,7 +79,7 @@ void matrix_test()
     int_signed size;
     NUMBER_TYPE type;
 
-    size = 2;
+    size = 200;
     type = NT_REAL;
     A = generate_random_matrix(size, size, type);
     B = generate_random_matrix(size, size, type);
@@ -94,10 +97,11 @@ void matrix_test()
 //format all headers
 //add sqrt()
 //order all reserved symbols (reserved symols, function names, etc) and make a binary lookup
-//unfuck memory managment
 //be careful around things of the form f(x) = ... ; g(x) = f with no arg; this must be checked
 //max size for matrices?
 //some increment functions allocate, others do not
+//no () after matrix function assignment
+//polynomial with real coefficients only?
 
 int main()
 {
@@ -106,12 +110,22 @@ int main()
 
     start = clock();
 
+    // data_vector = get_data_vector();
+
+    data = data_init();
+
     // test_sequence(valid_sequence_basic);
     // test_sequence(valid_sequence);
     test_all_sequences(valid_sequences);
-    test_all_sequences(valid_matrix_sequences);
+    // test_all_sequences(valid_matrix_sequences);
     // test();
     // matrix_test();
+
+    printf("MEMORY USAGE: %Ld\n", data_get_bytes(data));
+
+    data_delete(&data);
+
+    // vector_delete(&data_vector);
 
     end = clock();
 

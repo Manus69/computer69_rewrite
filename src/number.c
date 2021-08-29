@@ -3,6 +3,7 @@
 #include "why_string_interface.h"
 #include "why_conversion.h"
 #include "why_cstring.h"
+#include "data_interface.h"
 
 #include <assert.h>
 
@@ -13,6 +14,9 @@ Number *number_new_int(int_signed n)
     number = allocate(sizeof(Number));
     number->n = n;
     number->type = NT_INT;
+
+    data_add_pointer(data, number, sizeof(Number));
+    // vector_push(data_vector, number);
 
     return number;
 }
@@ -34,6 +38,9 @@ Number *number_new_real(real x)
     number->x = x;
     number->type = NT_REAL;
 
+    data_add_pointer(data, number, sizeof(Number));
+    // vector_push(data_vector, number);
+
     return number;
 }
 
@@ -53,6 +60,9 @@ Number *number_new_complex(Complex z)
     number = allocate(sizeof(Number));
     number->z = z;
     number->type = NT_COMPLEX;
+
+    data_add_pointer(data, number, sizeof(Number));
+    // vector_push(data_vector, number);
 
     return number;
 }
@@ -185,6 +195,9 @@ Number *number_copy(const Number *number)
     copy = allocate(sizeof(Number));
     copy = memory_copy(copy, number, sizeof(Number));
 
+    data_add_pointer(data, copy, sizeof(Number));
+    // vector_push(data_vector, copy);
+
     return copy;
 }
 
@@ -193,7 +206,7 @@ void number_delete(Number **number)
     #if NO_DELETE
     return ;
     #endif
-    
+
     if (!number || !*number)
         return ;
 

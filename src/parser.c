@@ -112,7 +112,7 @@ static Computation *process_u_minus(String *string, const VariableTable *v_table
     term = get_term(string, v_table);
     if (!term)
     {
-        computation_delete(&minus);
+        // computation_delete(&minus);
         return NULL;
     }
 

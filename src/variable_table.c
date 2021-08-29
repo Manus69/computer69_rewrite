@@ -2,10 +2,18 @@
 #include "frontend_declarations.h"
 #include "why_definitions.h"
 #include "variable.h"
+#include "data_interface.h"
 
 VariableTable *v_table_new(const Variable *variable)
 {
-    return tree_new(variable, variable_compare);
+    VariableTable *v_table;
+
+    v_table = tree_new(variable, variable_compare);
+
+    data_add_pointer(data, v_table, sizeof(void *));
+    // vector_push(data_vector, v_table);
+
+    return v_table;
 }
 
 void v_table_delete(VariableTable **v_table)
@@ -13,7 +21,7 @@ void v_table_delete(VariableTable **v_table)
     #if NO_DELETE
     return ;
     #endif
-    
+
     return tree_delete(v_table, variable_delete);
 }
 
@@ -29,15 +37,26 @@ Variable *v_table_search(const VariableTable *v_table, const char *name)
 
 VariableTable *v_table_insert(VariableTable *v_table, const Variable *variable)
 {
+    void *result;
+
     if (!v_table)
         return v_table_new(variable);
     
-    tree_insert(v_table, variable);
+    result = tree_insert(v_table, variable);
     
+    data_add_pointer(data, result, sizeof(void *));
+    // vector_push(data_vector, result);
+
     return v_table;
 }
 
-boolean v_table_insert_report(VariableTable *v_table, const Variable *variable)
+Tree *v_table_insert_report(VariableTable *v_table, const Variable *variable)
 {
-    return tree_insert(v_table, variable);
+    void *pointer;
+
+    pointer = tree_insert(v_table, variable);
+
+    data_add_pointer(data, pointer, sizeof(void *));
+
+    return pointer;
 }

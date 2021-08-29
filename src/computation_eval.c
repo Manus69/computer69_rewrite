@@ -39,7 +39,8 @@ static Number *_eval_btf(const Computation *computation, const VariableTable *v_
     {
         result = function(lhs_value);
         result = number_demote_if_possible(result);
-        number_delete(&lhs_value);
+
+        // number_delete(&lhs_value);
 
         return result;
     }
@@ -79,7 +80,8 @@ static Number *_eval_function(const Computation *computation, const VariableTabl
         
         result = computation_eval(value->computation, v_table, lhs_value);
         result = number_demote_if_possible(result);
-        number_delete(&lhs_value);
+
+        // number_delete(&lhs_value);
 
         return result;
     }
@@ -135,7 +137,8 @@ static Entity *_eval_functionG(const Computation *computation, const VariableTab
 
         if (result->type == ET_NUMBER)
             result->number = number_demote_if_possible(result->number);
-        entity_delete(&lhs_value);
+        
+        // entity_delete(&lhs_value);
 
         return result;
     }
@@ -187,8 +190,8 @@ Number *computation_eval(const Computation *computation, const VariableTable *v_
     result = function(lhs_value, rhs_value);
     result = number_demote_if_possible(result);
 
-    number_delete(&lhs_value);
-    number_delete(&rhs_value);
+    // number_delete(&lhs_value);
+    // number_delete(&rhs_value);
 
     return result;
 }
@@ -241,19 +244,8 @@ Entity *computation_evalG(const Computation *computation, const VariableTable *v
     if (result && result->type == ET_NUMBER)
         result->number = number_demote_if_possible(result->number);
 
-    entity_delete(&lhs_value);
-
-    #if DBG
-    print_entity(result);
-    printf("\n");
-    #endif
-
-    entity_delete(&rhs_value);
-
-    #if DBG
-    print_entity(result);
-    printf("\n");
-    #endif
+    // entity_delete(&lhs_value);
+    // entity_delete(&rhs_value);
 
     return result;
 }

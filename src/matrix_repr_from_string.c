@@ -85,17 +85,7 @@ MatrixRepr *matrix_repr_from_string(String *string, const VariableTable *v_table
     substring = string_substring(string, 1, length - 2);
     rows = string_split(substring, TERMINALS[SEMICOLON]);
 
-    #if DBG
-    print_vector(rows, print_string, "---");
-    printf("\n");
-    #endif
-
     matrix = _process_rows(rows, v_table);
-    
-    #if DBG
-    print_matrix_repr(matrix);
-    printf("\n");
-    #endif
 
     _string_shift(string, length);
     

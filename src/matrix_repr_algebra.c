@@ -54,7 +54,7 @@ static Entity *_multiply_jk(const MatrixRepr *lhs, const MatrixRepr *rhs, int_si
         product = entity_mult(_lhs, _rhs);        
         result = entity_increment(result, product); //this is spooky
 
-        entity_delete(&product);
+        // entity_delete(&product);
         w ++;
     }
 

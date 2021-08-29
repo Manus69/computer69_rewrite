@@ -1,5 +1,6 @@
 #include "frontend_declarations.h"
 #include "entity.h"
+#include "data_interface.h"
 
 Entity *entity_new(const void *stuff, ENTITY_TYPE type)
 {
@@ -8,6 +9,9 @@ Entity *entity_new(const void *stuff, ENTITY_TYPE type)
     entity = allocate(sizeof(Entity));
     entity->number = (void *)stuff;
     entity->type = type;
+
+    data_add_pointer(data, entity, sizeof(Entity));    
+    // vector_push(data_vector, entity);
 
     return entity;
 }

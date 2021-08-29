@@ -26,10 +26,15 @@ const char *valid_ass_strings[] = {"a(y) = 43*y/(4%2*y)", "f(x) = 1", "f(x) = x"
 
 const char *valid_sequence_basic[] = {"A = [[1]]", "B = 2*A", 0};
 
-// const char *valid_sequence[] = {"f(x) = x", "g(x) = f(x)", "f(x) = g(x)", "f(1)", 0};
-const char *valid_sequence[] = {"a(x) = [[cos(x)]]", "b(x) = a(x)", "c(x) = a(x) * b(x)", "c(pi)", 0};
+const char *valid_sequence[] = {"f(x) = x", "f(1)", 0};
+// const char *valid_sequence[] = {"0", 0};
 
-const char *valid_sequences[][SEQUENCE_LENGTH] = {{"x = 1", "y = x + x", 0},
+const char *valid_sequences[][SEQUENCE_LENGTH] = {
+{"0", 0},
+{"cos(2*pi*sin(-pi+2*pi))", 0},
+{"-sin(2*cos(0))/sin(pi/2)", 0},
+{"2-2*2-2^3+1", 0},
+{"x = 1", "y = x + x", 0},
 {"x = 1", "x = x + 1", 0},
 {"var = pi", "var2 = var*var + 1", 0},
 {"f(x) = x", "y = f(1)", 0},
@@ -69,6 +74,9 @@ const char *valid_sequences[][SEQUENCE_LENGTH] = {{"x = 1", "y = x + x", 0},
 {"f(x) = x^2", "g(x) = f(x + 1)", 0},
 {"f(x) = x + x", "g(x) = f(x)", "f(x) = g(x)", "f(1)", 0},
 {"f(x) = (x + 1)^2", "f(1)", "g(X) = f(X - 1)", "g(0)", 0},
+{"f(x) = x^2 + x + 1", "f(i)", 0},
+{"f(x) = sin(x) + x^10", "f(pi)", 0},
+{"P(z) = z^7 + 5*z^3 + 1", "P(i)", 0},
 {0}};
 
 const char *valid_matrix_strings[] = {"[[0]]", "[[0,1]]", "[[-1,10]]",
@@ -109,6 +117,9 @@ const char *valid_matrix_sequences[][SEQUENCE_LENGTH] = {{"[[0]]", 0},
 {"[[0,-1];[1,0]]^2", 0},
 {"[[5,2,6,1];[0,6,2,0];[3,8,1,4];[1,8,5,6]]*[[7,5,8,0];[1,8,2,6];[9,4,3,8];[5,3,7,9]]", 0},
 //[[96,68,69,69];[24,56,18,52];[58,95,71,92];[90,107,81,142]]
+{"a = 1", "a = [[sin(pi)];[cos(pi)]]", 0},
+{"a = [[1,0];[0,1]]", "a = i", "a + a", 0},
+{"a = [[1,0];[0,1]]", "a(x) = x^2", "a(2)", 0},
 {0}};
 
 void test_syntax(const char **strings)
@@ -234,10 +245,6 @@ void test_sequence(const char **strings)
         }
 
         v_table = _insert_into_table(variable, v_table);
-        
-        // printf("TABLE:\n");
-        // print_v_table(v_table);
-        // printf("\n");
 
         n ++;
     }

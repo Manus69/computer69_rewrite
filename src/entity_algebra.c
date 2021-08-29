@@ -180,7 +180,7 @@ Entity *entity_power(Entity *lhs, Entity *rhs)
     }
     else if (lhs->type == ET_COMPUTATION && rhs->type == ET_NUMBER)
     {
-        ;
+        ; //why?
     }
     else if (lhs->type == ET_COMPUTATION && rhs->type == ET_COMPUTATION)
     {

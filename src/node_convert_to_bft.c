@@ -28,7 +28,7 @@ Node *node_convert_to_bft(Node *node)
     if (type == NOT_FOUND)
         return NULL;
     
-    cstr_delete(&node->identifier);
+    // cstr_delete(&node->identifier);
     node->type = NT_BUILTIN_FUNCTION;
     node->bf_type = type;
 

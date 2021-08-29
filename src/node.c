@@ -1,25 +1,32 @@
 #include "node.h"
 #include "why_memory.h"
 #include "frontend_declarations.h"
+#include "data_interface.h"
 
 #include <assert.h>
 
-Node *node_new(void *data, NODE_TYPE type, boolean copy)
+Node *node_new(void *object, NODE_TYPE type, boolean copy)
 {
     Node *node;
 
     node = allocate(sizeof(Node));
     
     if (type == NT_NUMBER)
-        node->number = copy ? number_copy(data) : data;
+        node->number = copy ? number_copy(object) : object;
     else if (type == NT_OPERATOR)
-        node->operator = copy ? operator_copy(data) : data;
+        node->operator = copy ? operator_copy(object) : object;
     else if (type == NT_WILDCARD || type == NT_FUNCTION || type == NT_IDENTIFIER)
-        node->identifier = copy ? cstr_copy(data) : data;
+    {
+        node->identifier = copy ? cstr_copy(object) : object;
+        data_add_pointer(data, node->identifier, sizeof(void *));
+    }
     else if (type == NT_MATRIX)
-        node->matrix = copy ? matrix_repr_copy(data) : data;
+        node->matrix = copy ? matrix_repr_copy(object) : object;
     
     node->type = type;
+
+    data_add_pointer(data, node, sizeof(Node));
+    // vector_push(data_vector, node);
 
     return node;
 }
@@ -36,8 +43,7 @@ Node *node_convert_to_wildcard(Node *node)
     if (node->type != NT_IDENTIFIER)
         return NULL;
     
-    // string_delete(&node->identifier);
-    cstr_delete(&node->identifier);
+    // cstr_delete(&node->identifier);
     node->type = NT_WILDCARD;
 
     return node;
@@ -139,12 +145,18 @@ Node *node_copy(const Node *node)
     else if (node->type == NT_NUMBER)
         new_node->number = number_copy(node->number);
     else if (node->type == NT_IDENTIFIER || node->type == NT_FUNCTION)
+    {
         new_node->identifier = cstr_copy(node->identifier);
+        data_add_pointer(data, new_node->identifier, sizeof(void *));
+    }
     else if (node->type == NT_MATRIX)
         new_node->matrix = matrix_repr_copy(node->matrix);
     else if (node->type == NT_BUILTIN_FUNCTION)
         new_node->bf_type = node->bf_type;
     // else assert(0);
+
+    data_add_pointer(data, new_node, sizeof(Node));
+    // vector_push(data_vector, new_node);
 
     return new_node;
 }

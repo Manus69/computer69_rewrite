@@ -1,5 +1,6 @@
 #include "variable.h"
 #include "frontend_declarations.h"
+#include "data_interface.h"
 
 Variable *variable_new(char *name, Entity *entity, boolean copy)
 {
@@ -9,6 +10,10 @@ Variable *variable_new(char *name, Entity *entity, boolean copy)
     variable->name = name;
     variable->entity = copy? entity_copy(entity) : entity;
 
+    data_add_pointer(data, variable, sizeof(Variable));
+    data_add_pointer(data, variable->name, sizeof(void *));
+    // vector_push(data_vector, variable);
+
     return variable;
 }
 
@@ -17,11 +22,10 @@ void variable_delete(Variable **variable)
     #if NO_DELETE
     return ;
     #endif
-    
+
     if (!variable || !*variable)
         return ;
     
-    // string_delete(&(*variable)->name);
     cstr_delete(&(*variable)->name);
     entity_delete(&(*variable)->entity);
 
@@ -57,12 +61,18 @@ Variable *variable_copy(const Variable *variable)
     copy->name = cstr_copy(variable->name);
     copy->entity = entity_copy(variable->entity);
 
+    data_add_pointer(data, copy, sizeof(variable));
+    data_add_pointer(data, copy->name, sizeof(void *));
+
+    // vector_push(data_vector, copy->name);
+    // vector_push(data_vector, copy);
+
     return copy;
 }
 
 Variable *variable_assign(Variable *variable, Entity *value, boolean copy)
 {
-    entity_delete(&variable->entity);
+    // entity_delete(&variable->entity);
     variable->entity = copy ? entity_copy(value) : value;
 
     return variable;
