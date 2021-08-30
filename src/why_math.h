@@ -2,6 +2,7 @@
 #define WHY_MATH_H
 
 #include "why_definitions.h"
+#include "why_vector_interface.h"
 
 #define EPSILON (((real)1) / (1 << 12))
 #define PI (real)3.1415926535
@@ -11,23 +12,24 @@ typedef struct Complex Complex;
 typedef struct Polynomial Polynomial;
 typedef struct Matrix Matrix;
 
-boolean within_delta(real x, real y, real delta);
-real math_mod(real x, real mod);
-int_unsigned factorial(int_unsigned n);
-real power(real base, int_unsigned n);
-int_signed power_int(int_signed base, int_unsigned n);
-int_unsigned round_to_int(real x);
-real absolute_value(real x);
-int_unsigned fib(int_unsigned n);
-boolean real_is_int(real x);
+boolean         within_delta(real x, real y, real delta);
+boolean         real_is_int(real x);
+real            math_mod(real x, real mod);
+real            power(real base, int_unsigned n);
+real            absolute_value(real x);
+int_signed      power_int(int_signed base, int_unsigned n);
+int_unsigned    factorial(int_unsigned n);
+int_unsigned    round_to_int(real x);
+int_unsigned    fib(int_unsigned n);
 
 //
-real math_id(real x);
-real math_sin(real x);
-real math_cos(real x);
-real math_tan(real x);
-real math_log(real x, int_unsigned base);
-real math_log2();
+real            math_sqrt(real a);
+real            math_id(real x);
+real            math_sin(real x);
+real            math_cos(real x);
+real            math_tan(real x);
+real            math_log(real x, int_unsigned base);
+real            math_log2();
 
 Complex complex_id(Complex z);
 Complex complex_sin(Complex z);
@@ -35,9 +37,10 @@ Complex complex_cos(Complex z);
 Complex complex_tan(Complex z);
 Complex complex_log(Complex z);
 
-
 //
 Complex complex(real re, real im);
+Complex *complex_new(real re, real im);
+Complex *complex_copy(Complex *z);
 Complex complex_zero();
 Complex complex_add(Complex lhs, Complex rhs);
 Complex complex_mult(Complex lhs, Complex rhs);
@@ -73,6 +76,8 @@ Polynomial *polynomial_differentiate(Polynomial *p);
 Complex polynomial_evaluate(Polynomial *p, Complex value);
 boolean polynomial_is_constant(const Polynomial *p);
 Complex polynomial_get_constant_coefficient(const Polynomial *p);
+boolean polynomial_is_real(const Polynomial *p);
+Vector *polynomial_roots(const Polynomial *p);
 
 //
 Matrix *matrix_new(int_signed n_rows, int_signed n_cols);

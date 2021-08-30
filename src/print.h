@@ -15,5 +15,6 @@ void print_v_table(const VariableTable *v_table);
 void print_matrix_row(const MatrixRepr *matrix, int_signed j);
 void print_matrix_repr(const MatrixRepr *matrix);
 void print_entity(const Entity *entity);
+void print_roots(const Vector *roots);
 
 #endif

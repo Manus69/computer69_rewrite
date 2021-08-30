@@ -1,12 +1,32 @@
 #include "why_math_complex.h"
 #include "why_math.h"
 #include "why_macros.h"
+#include "why_memory.h"
 
 #include <assert.h>
 
 Complex complex(real re, real im)
 {
     return (Complex){re, im};
+}
+
+Complex *complex_new(real re, real im)
+{
+    Complex *z;
+
+    z = allocate(sizeof(Complex));
+    z->re = re;
+    z->im = im;
+
+    return z;
+}
+
+Complex *complex_copy(Complex *z)
+{
+    if (!z)
+        return NULL;
+    
+    return complex_new(z->re, z->im);
 }
 
 Complex complex_zero()

@@ -112,26 +112,20 @@ void math_test()
 {
     real x;
     real _x;
-    real angle;
+    real a;
 
-    angle = 0;
-    while (angle <= 100 * PI)
+    a = 0;
+    while (a < 4)
     {
-        x = math_sin(angle);
-        _x = sin(angle);
+        x = math_sqrt(a);
+        _x = sqrt(a);
 
-        printf("angle = %Lf\n", angle);
-        printf("my sin: %Lf\nstock sin: %Lf\n\n", x, _x);
+        printf("a = %Lf\n", a);
+        printf("my sqrt: %Lf\n", x);
+        printf("stock sqrt: %Lf\n\n", _x);
 
-        x = math_cos(angle);
-        _x = cos(angle);
-
-        printf("angle = %Lf\n", angle);
-        printf("my cos: %Lf\nstock cos: %Lf\n\n", x, _x);
-
-        angle += PI / 4;
+        a += 1.0 / 2;
     }
-
 }
 
 //user defined names must be case insensitive
@@ -165,7 +159,7 @@ int main()
     test_all_sequences(valid_polynomial_sequences);
     // test();
     // matrix_test();
-    // math_test();
+    math_test();
     // polynomial_test();
 
     printf("\nMEMORY USAGE: %Ld\n", data_get_bytes(data));

@@ -5,6 +5,11 @@
 
 #define LIMIT 90
 
+real math_id(real x)
+{
+    return x;
+}
+
 boolean within_delta(real x, real y, real delta)
 {
     real diff;

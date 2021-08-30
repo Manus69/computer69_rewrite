@@ -184,3 +184,19 @@ Complex polynomial_get_constant_coefficient(const Polynomial *p)
 {
     return p->coefficients[0];
 }
+
+boolean polynomial_is_real(const Polynomial *p)
+{
+    int_signed n;
+
+    n = 0;
+    while (n <= p->degree)
+    {
+        if (!complex_is_real(p->coefficients[n]))
+            return FALSE;
+        
+        n ++;
+    }
+
+    return TRUE;
+}

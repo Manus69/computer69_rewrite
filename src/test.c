@@ -124,7 +124,9 @@ const char *valid_matrix_sequences[][SEQUENCE_LENGTH] = {{"[[0]]", 0},
 
 const char *valid_polynomial_sequences[][SEQUENCE_LENGTH] = {
 // {"x = 1 ?", 0},
-{"1 = 1 ?", 0},
+// {"1 = 1 ?", 0},
+{"x = x ?", 0},
+{"x^2 = 0 ?", 0},
 {0}};
 
 void test_syntax(const char **strings)

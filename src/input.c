@@ -42,6 +42,7 @@ static void _process_polynomial(Computation *lhs, Computation *rhs)
     Polynomial *p;
     Polynomial *_lhs;
     Polynomial *_rhs;
+    Vector *roots;
 
     _lhs = computation_to_polynomial(lhs);
     _rhs = computation_to_polynomial(rhs);
@@ -49,11 +50,12 @@ static void _process_polynomial(Computation *lhs, Computation *rhs)
 
     print_polynomial(p);
 
-    //goes on to find the roots
+    roots = polynomial_roots(p);
 
     polynomial_delete(&p);
     polynomial_delete(&_lhs);
     polynomial_delete(&_rhs);
+    vector_delete(&roots);
 }
 
 static void _process_find_roots(String *line, VariableTable *v_table)

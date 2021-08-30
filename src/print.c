@@ -260,3 +260,23 @@ void print_entity(const Entity *entity)
     print_function = functions[entity_get_type(entity)];
     print_function(entity->number);
 }
+
+void print_roots(const Vector *roots)
+{
+    int_signed n;
+    Complex *z;
+
+    if (!roots)
+        return ;
+    
+    printf("[");
+    n = 0;
+    while (n < vector_size(roots))
+    {
+        z = vector_at(roots, n);
+        print_complex(*z);
+
+        n ++;
+    }
+    printf("]");
+}

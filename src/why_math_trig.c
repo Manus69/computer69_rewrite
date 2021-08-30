@@ -7,11 +7,6 @@
 #define TWO_PI 2 * PI
 #define C_SIZE 12
 
-real math_id(real x)
-{
-    return x;
-}
-
 //maps angle closer to the origin and adjusts its sign
 static real _map_angle_sin(real x)
 {
