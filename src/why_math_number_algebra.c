@@ -51,6 +51,11 @@ boolean real_is_zero(real *x)
     return *x == 0;
 }
 
+boolean real_is_int(real x)
+{
+    return x == (int_signed)x;
+}
+
 void *real_add(real *x, real *y)
 {
     real *result;

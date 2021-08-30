@@ -5,6 +5,15 @@
 
 #define LIMIT 90
 
+boolean within_delta(real x, real y, real delta)
+{
+    real diff;
+
+    diff = x - y;
+      
+    return absolute_value(diff) < delta;
+}
+
 int_unsigned factorial(int_unsigned n)
 {
     if (n == 0)
@@ -74,4 +83,30 @@ int_unsigned fib(int_unsigned n)
 
         return value;
     }
+}
+
+static real math_mod_negative(real x, real mod)
+{
+    while (x < 0)
+        x += mod;
+    
+    return x;
+}
+
+//x = k m + r
+real math_mod(real x, real mod)
+{
+    if (mod <= 0)
+        assert(0);
+    
+    if (x < 0)
+        return math_mod_negative(x, mod);
+
+    if (x < mod)
+        return x;
+    
+    while (x >= mod)
+        x = x - mod;
+    
+    return x;
 }

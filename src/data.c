@@ -42,17 +42,22 @@ void data_add_pointer(Data *data, void *pointer, int_signed size)
     vector_push(data->data_vector, pointer);
     data->bytes_allocated += size;
 
+    #if CHECK_MEMORY
     if (data->bytes_allocated > DATA_SIZE_THRESHOLD)
         assert(0);
+    #endif
 }
 
 void data_add_vector_pointer(Data *data, void *pointer)
 {
     vector_push(data->vector_vector, pointer);
     data->bytes_allocated += 2 * sizeof(void *);
+    data->bytes_allocated += V_CAPACITY_DEFAULT * sizeof(void *);
 
+    #if CHECK_MEMORY
     if (data->bytes_allocated > DATA_SIZE_THRESHOLD)
         assert(0);
+    #endif
 }
 
 void data_increment_bytes(Data *data, int_signed n_bytes)

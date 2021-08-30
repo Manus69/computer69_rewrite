@@ -201,6 +201,17 @@ Number *number_copy(const Number *number)
     return copy;
 }
 
+Complex number_to_complex(const Number *number)
+{
+    if (number->type == NT_COMPLEX)
+        return number->z;
+    
+    if (number->type == NT_REAL)
+        return complex(number->x, 0);
+    
+    return complex(number->n, 0);
+}
+
 void number_delete(Number **number)
 {
     #if NO_DELETE

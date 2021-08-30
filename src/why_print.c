@@ -94,3 +94,53 @@ void print_vector(const Vector *vector, void (*print)(), const char *separator)
         n ++;
     }
 }
+
+static void _print_initial(const Polynomial *p, int_signed degree)
+{
+    Complex coefficient;
+
+    coefficient = polynomial_at(p, 0);
+    print_complex(coefficient);
+
+    if (degree < 1)
+        return ;
+    
+    coefficient = polynomial_at(p, 1);
+    printf(" + ");
+    if (coefficient.re != 1 && coefficient.im == 0)
+        print_complex(coefficient);
+    printf("x");
+}
+
+void print_polynomial(const Polynomial *p)
+{
+    int_signed n;
+    int_signed degree;
+    Complex coefficient;
+
+    if (!p)
+        return ;
+    
+    if (polynomial_get_degree(p) < 0)
+    {
+        printf("zero polynomial\n");
+
+        return ;
+    }
+
+    degree = polynomial_get_degree(p);
+    _print_initial(p, degree);
+
+    n = 2;
+    while (n <= degree)
+    {
+        coefficient = polynomial_at(p, n);
+        printf(" + ");
+        if (coefficient.re != 1 && coefficient.im == 0)
+            print_complex(coefficient);
+
+        printf("x^%Ld", n);
+
+        n ++;
+    }
+}

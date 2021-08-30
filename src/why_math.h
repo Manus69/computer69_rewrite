@@ -11,12 +11,15 @@ typedef struct Complex Complex;
 typedef struct Polynomial Polynomial;
 typedef struct Matrix Matrix;
 
+boolean within_delta(real x, real y, real delta);
+real math_mod(real x, real mod);
 int_unsigned factorial(int_unsigned n);
 real power(real base, int_unsigned n);
 int_signed power_int(int_signed base, int_unsigned n);
 int_unsigned round_to_int(real x);
 real absolute_value(real x);
 int_unsigned fib(int_unsigned n);
+boolean real_is_int(real x);
 
 //
 real math_id(real x);
@@ -51,6 +54,8 @@ real complex_mod_squared(Complex z);
 //
 Polynomial *polynomial_new(char *variable);
 Polynomial *polynomial_new_from_complex(Complex z);
+Polynomial *polynomial_new_from_complexG(Complex z, int_signed degree, char *variable);
+Polynomial *polynomial_new_from_coefficients(real coefficients[], int_signed size);
 Polynomial *polynomial_copy(const Polynomial *p);
 void polynomial_delete(Polynomial **p);
 int_signed polynomial_get_degree(const Polynomial *p);
@@ -59,12 +64,15 @@ Complex polynomial_at(const Polynomial *p, int_signed degree);
 boolean polynomial_set(Polynomial *p, Complex value, int_signed degree);
 Polynomial *polynomial_increment(Polynomial *p, Polynomial *q);
 Polynomial *polynomial_add(Polynomial *p, Polynomial *q);
+Polynomial *polynomial_subtract(Polynomial *p, Polynomial *q);
 Polynomial *polynomial_multiply(Polynomial *p, Polynomial *q);
 Polynomial *polynomial_scale(Polynomial *p, Complex factor);
 Polynomial *polynomial_exponentiate(Polynomial *p, int_signed power);
 Polynomial *polynomial_factor(Polynomial *p, Polynomial *q);
 Polynomial *polynomial_differentiate(Polynomial *p);
 Complex polynomial_evaluate(Polynomial *p, Complex value);
+boolean polynomial_is_constant(const Polynomial *p);
+Complex polynomial_get_constant_coefficient(const Polynomial *p);
 
 //
 Matrix *matrix_new(int_signed n_rows, int_signed n_cols);

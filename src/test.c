@@ -122,6 +122,11 @@ const char *valid_matrix_sequences[][SEQUENCE_LENGTH] = {{"[[0]]", 0},
 {"a = [[1,0];[0,1]]", "a(x) = x^2", "a(2)", 0},
 {0}};
 
+const char *valid_polynomial_sequences[][SEQUENCE_LENGTH] = {
+// {"x = 1 ?", 0},
+{"1 = 1 ?", 0},
+{0}};
+
 void test_syntax(const char **strings)
 {
     Computation *computation;
@@ -198,30 +203,11 @@ void test_assignment(const char **strings)
     }
 }
 
-static VariableTable *_insert_into_table(Variable *variable, VariableTable *v_table)
-{
-    Variable *v;
-
-    if (!v_table)
-        v_table = v_table_new(variable);
-    else if ((v = v_table_search(v_table, variable_get_name(variable))))
-    {
-        v = variable_assign(v, variable_get_value(variable), TRUE);
-        variable_delete(&variable);
-    }
-    else if (!v_table_insert_report(v_table, variable))
-        variable_delete(&variable);
-
-    return v_table;
-}
-
 void test_sequence(const char **strings)
 {
     String *string;
-    Variable *variable;
     VariableTable *v_table;
     int_signed n;
-    // Variable *v;
 
     n = 0;
     v_table = NULL;
@@ -230,26 +216,11 @@ void test_sequence(const char **strings)
         string = string_new_no_space(strings[n]);
         print_string_n(string);
 
-        variable = variable_create_from_string(string, v_table);
+        v_table = process_input_line(string, v_table);
 
-        print_variable(variable);
-        printf("\n");
         string_delete(&string);
-
-        if (variable_get_name(variable) == NULL)
-        {
-            variable_delete(&variable);
-            n ++;
-
-            continue ;
-        }
-
-        v_table = _insert_into_table(variable, v_table);
-
         n ++;
     }
-
-    v_table_delete(&v_table);
 }
 
 void test_all_sequences(const char *array[][SEQUENCE_LENGTH])

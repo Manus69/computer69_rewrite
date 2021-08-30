@@ -69,8 +69,6 @@ void test()
     vector_delete(&v);
 }
 
-#include <limits.h>
-
 void matrix_test()
 {
     MatrixRepr *A;
@@ -79,7 +77,7 @@ void matrix_test()
     int_signed size;
     NUMBER_TYPE type;
 
-    size = 200;
+    size = 100;
     type = NT_REAL;
     A = generate_random_matrix(size, size, type);
     B = generate_random_matrix(size, size, type);
@@ -92,6 +90,50 @@ void matrix_test()
     matrix_repr_delete(&result);
 }
 
+void polynomial_test()
+{
+    Polynomial *p;
+    Computation *cmp;
+    String *str;
+
+    str = string_new_no_space("2 - 1");
+    cmp = _parse(str, NULL);
+    cmp = computation_resolve(cmp, "x", NULL);
+    p = computation_to_polynomial(cmp);
+
+    print_polynomial(p);
+
+    polynomial_delete(&p);
+    string_delete(&str);
+}
+
+#include <math.h>
+void math_test()
+{
+    real x;
+    real _x;
+    real angle;
+
+    angle = 0;
+    while (angle <= 100 * PI)
+    {
+        x = math_sin(angle);
+        _x = sin(angle);
+
+        printf("angle = %Lf\n", angle);
+        printf("my sin: %Lf\nstock sin: %Lf\n\n", x, _x);
+
+        x = math_cos(angle);
+        _x = cos(angle);
+
+        printf("angle = %Lf\n", angle);
+        printf("my cos: %Lf\nstock cos: %Lf\n\n", x, _x);
+
+        angle += PI / 4;
+    }
+
+}
+
 //user defined names must be case insensitive
 //NT enums have the same prefix
 //format all headers
@@ -99,9 +141,12 @@ void matrix_test()
 //order all reserved symbols (reserved symols, function names, etc) and make a binary lookup
 //be careful around things of the form f(x) = ... ; g(x) = f with no arg; this must be checked
 //max size for matrices?
+//upper limit for all numbers?
 //some increment functions allocate, others do not
 //no () after matrix function assignment
-//polynomial with real coefficients only?
+//some print functions print retarded stuff like -0 etc.
+//destructive polynomial operations?
+//insert implicit stars before parsing?
 
 int main()
 {
@@ -114,22 +159,21 @@ int main()
 
     data = data_init();
 
-    // test_sequence(valid_sequence_basic);
     // test_sequence(valid_sequence);
-    test_all_sequences(valid_sequences);
+    // test_all_sequences(valid_sequences);
     // test_all_sequences(valid_matrix_sequences);
+    test_all_sequences(valid_polynomial_sequences);
     // test();
     // matrix_test();
+    // math_test();
+    // polynomial_test();
 
-    printf("MEMORY USAGE: %Ld\n", data_get_bytes(data));
+    printf("\nMEMORY USAGE: %Ld\n", data_get_bytes(data));
 
     data_delete(&data);
-
-    // vector_delete(&data_vector);
-
     end = clock();
 
-    printf("\nTIME ELAPSED: %f S\n", (end - start)/(double)CLOCKS_PER_SEC);
+    printf("TIME ELAPSED: %f S\n", (end - start)/(double)CLOCKS_PER_SEC);
 
     return 0;
 }

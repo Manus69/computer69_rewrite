@@ -32,6 +32,7 @@ boolean         number_is_zero(const Number *number);
 NUMBER_TYPE     number_get_type(const Number *number);
 int_signed      number_get_int(const Number *number);
 void            number_delete(Number **number);
+Complex         number_to_complex(const Number *number);
 
 //operator
 Operator        *operator_new(String *string);
@@ -106,6 +107,7 @@ Computation     *computation_power(Computation *lhs, Computation *rhs);
 Computation     *computation_factorial(Computation *lhs, Computation *rhs);
 Computation     *computation_increment(Computation *lhs, Computation *rhs);
 Computation     *computation_scale(Computation *computation, Number *number);
+Polynomial      *computation_to_polynomial(const Computation *_computation);
 
 //entity
 Entity          *entity_new(const void *stuff, ENTITY_TYPE type);
@@ -128,7 +130,6 @@ Computation     *computation_from_entity(Entity *entity, boolean copy);
 
 //variable
 Variable        *variable_new(char *name, Entity *entity, boolean copy);
-// Variable        *variable_new_from_computation(char *name, Computation *computation, boolean copy);
 VARIABLE_TYPE   variable_get_type(const Variable *variable);
 int_signed      variable_compare(const Variable *lhs, const Variable *rhs);
 Entity          *variable_get_value(const Variable *variable);
@@ -137,7 +138,6 @@ void            variable_delete(Variable **variable);
 Variable        *variable_create_from_string(String *string, const VariableTable *v_table);
 Variable        *variable_copy(const Variable *variable);
 Variable        *variable_assign(Variable *variable, Entity *value, boolean copy);
-// Variable        *variable_assign_computation(Variable *variable, const Computation *value);
 Variable        *variable_create_with_name(String *string, const VariableTable *v_table, char *name);
 
 //variable table
@@ -152,6 +152,13 @@ VariableTable   *v_table_insert_report(VariableTable *v_table, const Variable *v
 Computation     *parse(String *string, const VariableTable *v_table);
 Computation     *_parse(String *string, const VariableTable *v_table); // get rid of one of these later
 
+//input
+VariableTable   *process_input_line(String *line, VariableTable *v_table);
+boolean         id_assignment(const String *string);
+boolean         id_evaluation(const String *string);
+boolean         id_find_roots(const String *string);
+boolean         id_statement(const String *string);
+
 //support
 int_unsigned    id_identifier(const char *string);
 int_unsigned    id_function_name(const char *string);
@@ -162,10 +169,6 @@ int_unsigned    id_matrix(const String *string);
 int_signed      find_matching_bracket(const char *string, char o_symbol, char c_symbol);
 int_signed      find_matching_bracket_str(const String *string, char o_symbol, char c_symbol);
 String          *string_new_no_space(const char *characters);
-
-boolean         id_assignment(const String *string);
-boolean         id_evaluation(const String *string);
-boolean         id_find_roots(const String *string);
 
 char            *check_reserved_symbols(const char *string);
 void            *get_bft_pointer(BULITIN_FUNCTION_TYPE type);
