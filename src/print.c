@@ -270,9 +270,13 @@ void print_roots(const Vector *roots)
         return ;
     
     printf("[");
-    n = 0;
+    z = vector_at(roots, 0);
+    print_complex(*z);
+
+    n = 1;
     while (n < vector_size(roots))
     {
+        printf(", ");
         z = vector_at(roots, n);
         print_complex(*z);
 

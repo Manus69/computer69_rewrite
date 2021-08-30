@@ -7,7 +7,7 @@ static Vector *_solve_constant(const Polynomial *p)
 {
     Vector *root;
 
-    root = vector_new(copy_shallow, memory_delete);
+    root = vector_new_with_capacity(copy_shallow, memory_delete, 1);
 
     if (!complex_is_zero(p->coefficients[0]))
         return NULL;
@@ -31,7 +31,7 @@ static Vector *_solve_linear(const Polynomial *p)
     return roots;
 }
 
-//a0 + a1x + a2x^2 = 0
+//c + bx + ax^2 = 0
 static Vector *_solve_quadratic(const Polynomial *p)
 {
     Vector *roots;
@@ -50,15 +50,16 @@ static Vector *_solve_quadratic(const Polynomial *p)
     }
     else if (D > 0)
     {
-        x = -b + math_sqrt(D);
+        x = (-b + math_sqrt(D)) / (2 * a);
         vector_push(roots, complex_new(x, 0));
-        x = -b - math_sqrt(D);
+        x = (-b - math_sqrt(D)) / (2 * a);
+        vector_push(roots, complex_new(x, 0));
     } 
     else
     {
-        x = math_sqrt(-D);
-        vector_push(roots, complex_new(-b, x));
-        vector_push(roots, complex_new(-b, -x));
+        x = math_sqrt(-D) / (2 * a);
+        vector_push(roots, complex_new(-b / (2 * a), x));
+        vector_push(roots, complex_new(-b / (2 * a), -x));
     }
 
     return roots;
@@ -67,6 +68,9 @@ static Vector *_solve_quadratic(const Polynomial *p)
 Vector *polynomial_roots(const Polynomial *p)
 {
     if (!p)
+        return NULL;
+
+    if (p->degree < 0)
         return NULL;
 
     if (!polynomial_is_real(p))

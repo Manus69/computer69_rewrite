@@ -154,12 +154,12 @@ int main()
     data = data_init();
 
     // test_sequence(valid_sequence);
-    // test_all_sequences(valid_sequences);
-    // test_all_sequences(valid_matrix_sequences);
+    test_all_sequences(valid_sequences);
+    test_all_sequences(valid_matrix_sequences);
     test_all_sequences(valid_polynomial_sequences);
     // test();
     // matrix_test();
-    math_test();
+    // math_test();
     // polynomial_test();
 
     printf("\nMEMORY USAGE: %Ld\n", data_get_bytes(data));

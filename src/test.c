@@ -26,7 +26,7 @@ const char *valid_ass_strings[] = {"a(y) = 43*y/(4%2*y)", "f(x) = 1", "f(x) = x"
 
 const char *valid_sequence_basic[] = {"A = [[1]]", "B = 2*A", 0};
 
-const char *valid_sequence[] = {"f(x) = x", "f(1)", 0};
+const char *valid_sequence[] = {"x^2 = -1 ?", 0};
 // const char *valid_sequence[] = {"0", 0};
 
 const char *valid_sequences[][SEQUENCE_LENGTH] = {
@@ -123,10 +123,12 @@ const char *valid_matrix_sequences[][SEQUENCE_LENGTH] = {{"[[0]]", 0},
 {0}};
 
 const char *valid_polynomial_sequences[][SEQUENCE_LENGTH] = {
-// {"x = 1 ?", 0},
-// {"1 = 1 ?", 0},
+{"x = 1 ?", 0},
+{"1 = 1 ?", 0},
 {"x = x ?", 0},
 {"x^2 = 0 ?", 0},
+{"x^2 + 3*x - 4 = 0 ?", 0},
+{"x^2 = -1 ?", 0},
 {0}};
 
 void test_syntax(const char **strings)

@@ -93,6 +93,9 @@ Polynomial *polynomial_copy(const Polynomial *p)
 
 void polynomial_delete(Polynomial **p)
 {
+    if (!p || !*p)
+        return ;
+    
     free((*p)->coefficients);
     free((*p)->variable);
     free(*p);

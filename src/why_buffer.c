@@ -125,6 +125,7 @@ String *buffer_read_from(Buffer *buffer, int_signed n_bytes, boolean allocate_by
     bytes_availible = buffer_count_unread_bytes(buffer);
     if (!bytes_availible)
         return NULL;
+        
     if (n_bytes > bytes_availible)
         n_bytes = bytes_availible;
     
