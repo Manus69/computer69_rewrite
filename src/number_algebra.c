@@ -149,7 +149,7 @@ Number *number_scale(Number *number, real factor)
         return number_new_complex(complex_scale(number->z, factor));
 }
 
-Number *number_trig_function(const Number *number, real (*trig_function)(real))
+Number *number_function(const Number *number, real (*function)(real))
 {
     real arg;
 
@@ -158,27 +158,42 @@ Number *number_trig_function(const Number *number, real (*trig_function)(real))
     
     arg = number->type == NT_REAL ? number->x : number->n;
 
-    return number_new_real(trig_function(arg));
+    return number_new_real(function(arg));
 }
 
 Number *number_sin(const Number *number)
 {
-    return number_trig_function(number, math_sin);
+    return number_function(number, math_sin);
 }
 
 Number *number_cos(const Number *number)
 {
-    return number_trig_function(number, math_cos);
+    return number_function(number, math_cos);
 }
 
 Number *number_tan(const Number *number)
 {
-    return number_trig_function(number, math_tan);
+    return number_function(number, math_tan);
+}
+
+Number *number_sqrt(const Number *number)
+{
+    return number_function(number, math_sqrt);
 }
 
 Number *number_log(const Number *number)
 {
-    return number_trig_function(number, math_log2);
+    return number_function(number, math_log2);
+}
+
+Number *number_ln(const Number *number)
+{
+    return number_function(number, math_ln);
+}
+
+Number *number_exp(const Number *number)
+{
+    return number_function(number, math_exp);
 }
 
 Number *number_abs(Number *number)

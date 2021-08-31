@@ -114,15 +114,23 @@ void math_test()
     real _x;
     real a;
 
-    a = 0;
-    while (a < 4)
+    a = 1;
+    while (a < 10)
     {
         x = math_sqrt(a);
         _x = sqrt(a);
 
         printf("a = %Lf\n", a);
-        printf("my sqrt: %Lf\n", x);
-        printf("stock sqrt: %Lf\n\n", _x);
+        printf("my sqrt:    %.10Lf\n", x);
+        printf("stock sqrt: %.10Lf\n\n", _x);
+        x = math_exp(a);
+        _x = exp(a);
+        printf("my exp:     %.10Lf\n", x);
+        printf("stock exp:  %.10Lf\n\n", _x);
+        x = math_ln(a);
+        _x = log(a);
+        printf("my log:     %.10Lf\n", x);
+        printf("stock log:  %.10Lf\n\n", _x);
 
         a += 1.0 / 2;
     }
@@ -141,6 +149,11 @@ void math_test()
 //some print functions print retarded stuff like -0 etc.
 //destructive polynomial operations?
 //insert implicit stars before parsing?
+//unfuck enums, reserved strings and function names
+//implement log functions
+//"f(x) = sin(sqrt(4)*pi)" does not resolve to value "f(x) = ln(e)", etc
+//why is log(x) convergence so slow?
+//make a structure with strings, f_pointers, etc indexed by an enum
 
 int main()
 {
@@ -161,6 +174,8 @@ int main()
     // matrix_test();
     // math_test();
     // polynomial_test();
+
+    // printf("%Lf\n", math_log2(1024));
 
     printf("\nMEMORY USAGE: %Ld\n", data_get_bytes(data));
 

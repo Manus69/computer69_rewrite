@@ -77,6 +77,16 @@ const char *valid_sequences[][SEQUENCE_LENGTH] = {
 {"f(x) = x^2 + x + 1", "f(i)", 0},
 {"f(x) = sin(x) + x^10", "f(pi)", 0},
 {"P(z) = z^7 + 5*z^3 + 1", "P(i)", 0},
+{"tan(0)", 0},
+{"f(x) = sqrt(x)", "f(2)", 0},
+{"f(x) = sin(sqrt(4)*pi)", "f(pi)", 0},
+{"f(x) = sin(sqrt(x)*pi)", "f(4)", 0},
+{"f(x) = abs(sin(x))", "f(pi/2)", "f(-pi/2)", 0},
+{"f(x) = ln(e)", 0},
+{"f(x) = ln(1)", 0},
+{"ln(1)", "ln(e)", "ln(e^10)", 0},
+{"log(2)", "log(512)", "log(2048)", 0},
+{"f(x) = exp(x)", "g(x) = ln(x)", "w(x) = f(g(x))", "w(1)", "w(e)", 0},
 {0}};
 
 const char *valid_matrix_strings[] = {"[[0]]", "[[0,1]]", "[[-1,10]]",

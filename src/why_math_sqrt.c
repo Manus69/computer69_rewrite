@@ -2,9 +2,9 @@
 
 #include <assert.h>
 
-#define SQRT_EPSILON 1.0 / (1 << 12)
-#define SN_CUTOFF 3
-#define FACTOR (1 << 3)
+#define SQRT_EPSILON 1.0 / (1 << 20)
+#define SN_CUTOFF 100
+#define FACTOR (1 << 4)
 
 real math_sqrt(real a)
 {
@@ -22,8 +22,8 @@ real math_sqrt(real a)
     if (a < SN_CUTOFF)
         return math_sqrt(a * FACTOR * FACTOR) / FACTOR;
 
-    x0 = 1;
-    f = 1;
+    x0 = a > 1 ? a / 2 : 1;
+    f = x0 * x0 - a;
 
     while (!within_delta(f, 0, SQRT_EPSILON))
     {
