@@ -114,25 +114,24 @@ void math_test()
     real _x;
     real a;
 
-    a = 0.0001;
-    while (a < 1.0/2)
+    a = -100;
+    while (a < 0)
     {
-        x = math_sqrt(a);
-        _x = sqrt(a);
-
+        // x = math_sqrt(a);
+        // _x = sqrt(a);
         printf("a = %Lf\n", a);
-        printf("my sqrt:    %.10Lf\n", x);
-        printf("stock sqrt: %.10Lf\n\n", _x);
+        // printf("my sqrt:    %.10Lf\n", x);
+        // printf("stock sqrt: %.10Lf\n\n", _x);
         x = math_exp(a);
         _x = exp(a);
         printf("my exp:     %.10Lf\n", x);
         printf("stock exp:  %.10Lf\n\n", _x);
-        x = math_ln(a);
-        _x = log(a);
-        printf("my log:     %.10Lf\n", x);
-        printf("stock log:  %.10Lf\n\n", _x);
+        // x = math_ln(a);
+        // _x = log(a);
+        // printf("my log:     %.10Lf\n", x);
+        // printf("stock log:  %.10Lf\n\n", _x);
 
-        a += 1.0 / 10;
+        a += 1;
     }
 }
 
@@ -165,14 +164,16 @@ int main()
 
     data = data_init();
 
-    test_sequence(valid_sequence);
+    // test_sequence(valid_sequence);
     // test_all_sequences(valid_sequences);
     // test_all_sequences(valid_matrix_sequences);
     // test_all_sequences(valid_polynomial_sequences);
     // test();
     // matrix_test();
-    // math_test();
+    math_test();
     // polynomial_test();
+
+    // printf("%.15Lf\n", math_exp(2));
 
     printf("\nMEMORY USAGE: %Ld\n", data_get_bytes(data));
 

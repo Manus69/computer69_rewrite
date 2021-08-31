@@ -4,7 +4,7 @@
 #include "why_tree_interface.h"
 #include "why_vector_interface.h"
 
-#define DBG 0
+#define DBG 1
 #define NO_DELETE 1
 #define CHECK_MEMORY 1
 

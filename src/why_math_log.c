@@ -2,17 +2,26 @@
 
 #include <assert.h>
 
-#define N_TERMS (1 << 18)
+#define N_TERMS (1 << 6)
 #define LN2 (real)0.693147180559945309
+#define R_THRESHOLD (1 << 3)
+#define L_THRESHOLD 1
 
 //ln x = 2[(x - 1)/(x + 1) + 1/3((x - 1)/(x + 1))^3 + 1/5((x - 1)/(x + 1))^5 + ...]
-//x > 0
-//slow convergence
 real math_ln(real x)
 {
     int_signed n;
     real value;
     real w;
+
+    if (x <= 0)
+        assert(0);
+    
+    if (x > R_THRESHOLD)
+        return LN2 + math_ln(x / 2);
+
+    if (x < L_THRESHOLD)
+        return math_ln(2 * x) - LN2;
 
     n = N_TERMS;
     value = 0;
