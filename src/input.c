@@ -49,6 +49,7 @@ static void _process_polynomial(Computation *lhs, Computation *rhs)
     p = polynomial_subtract(_lhs, _rhs);
 
     print_polynomial(p);
+    // printf("\n");
 
     roots = polynomial_roots(p);
     printf("\n");

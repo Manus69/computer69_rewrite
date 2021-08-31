@@ -114,8 +114,8 @@ void math_test()
     real _x;
     real a;
 
-    a = 1;
-    while (a < 10)
+    a = 0.0001;
+    while (a < 1.0/2)
     {
         x = math_sqrt(a);
         _x = sqrt(a);
@@ -132,14 +132,13 @@ void math_test()
         printf("my log:     %.10Lf\n", x);
         printf("stock log:  %.10Lf\n\n", _x);
 
-        a += 1.0 / 2;
+        a += 1.0 / 10;
     }
 }
 
 //user defined names must be case insensitive
 //NT enums have the same prefix
 //format all headers
-//add sqrt()
 //order all reserved symbols (reserved symols, function names, etc) and make a binary lookup
 //be careful around things of the form f(x) = ... ; g(x) = f with no arg; this must be checked
 //max size for matrices?
@@ -150,10 +149,10 @@ void math_test()
 //destructive polynomial operations?
 //insert implicit stars before parsing?
 //unfuck enums, reserved strings and function names
-//implement log functions
 //"f(x) = sin(sqrt(4)*pi)" does not resolve to value "f(x) = ln(e)", etc
 //why is log(x) convergence so slow?
 //make a structure with strings, f_pointers, etc indexed by an enum
+//polynomials cant have symbols other than x 
 
 int main()
 {
@@ -166,16 +165,14 @@ int main()
 
     data = data_init();
 
-    // test_sequence(valid_sequence);
-    test_all_sequences(valid_sequences);
-    test_all_sequences(valid_matrix_sequences);
-    test_all_sequences(valid_polynomial_sequences);
+    test_sequence(valid_sequence);
+    // test_all_sequences(valid_sequences);
+    // test_all_sequences(valid_matrix_sequences);
+    // test_all_sequences(valid_polynomial_sequences);
     // test();
     // matrix_test();
     // math_test();
     // polynomial_test();
-
-    // printf("%Lf\n", math_log2(1024));
 
     printf("\nMEMORY USAGE: %Ld\n", data_get_bytes(data));
 
