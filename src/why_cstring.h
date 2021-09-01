@@ -12,6 +12,8 @@ char            *cstr_copy(const char *string);
 char            *cstr_concat_length(const char *lhs, int_signed lhs_len, const char *rhs, int_signed rhs_len);
 char            *cstr_concat(const char *lhs, const char *rhs);
 void            cstr_delete(char **string);
+void            cstr_to_lower(char *string);
+char            cstr_char_to_lower(char c);
 
 int_unsigned    id_digit(const char *string);
 int_unsigned    id_lower(const char *string);

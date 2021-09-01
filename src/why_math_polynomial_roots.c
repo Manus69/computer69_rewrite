@@ -3,8 +3,7 @@
 
 #include <assert.h>
 
-#define DBG 0
-#if DBG
+#if WHY_DBG
 #include <stdio.h>
 #endif
 
@@ -12,11 +11,10 @@ static Vector *_solve_constant(const Polynomial *p)
 {
     Vector *root;
 
-    root = vector_new_with_capacity(copy_shallow, memory_delete, 1);
-
     if (!complex_is_zero(p->coefficients[0]))
         return NULL;
 
+    root = vector_new_with_capacity(copy_shallow, memory_delete, 1);
     vector_push(root, complex_copy(&p->coefficients[0]));
 
     return root;
@@ -42,7 +40,7 @@ static Vector *_solve_quadratic(const Polynomial *p)
     Vector *roots;
     real a, b, c, x, D;
 
-    #if DBG
+    #if WHY_DBG
     _print_polynomialDBG(p);
     #endif
 

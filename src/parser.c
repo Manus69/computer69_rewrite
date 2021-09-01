@@ -145,7 +145,12 @@ static Computation *get_partial_tree(String *string, const VariableTable *v_tabl
     
     root = get_operator(string);
     if (!root)
-        return lhs;
+    {
+        if (!id_identifier_str(string) || !lhs->node->type == NT_NUMBER)
+            return lhs;
+
+        root = computation_new(node_new(operator_new_from_type(OT_STAR), NT_OPERATOR, FALSE), FALSE);
+    }
     
     root->lhs = lhs;
     while (!operator_is_binary(root->node->operator))
@@ -202,10 +207,16 @@ Computation *_parse(String *string, const VariableTable *v_table)
 
         if (!(next_op = get_operator(string)))
         {
-            last_op->rhs = term;
-            return root;
+            if (!id_identifier_str(string) || !term->node->type == NT_NUMBER)
+            {
+                last_op->rhs = term;
+                return root;
+            }
+            
+            next_op =
+            computation_new(node_new(operator_new_from_type(OT_STAR), NT_OPERATOR, FALSE), FALSE);
         }
-
+        
         if (_check_order(last_op, next_op))
         {
             last_op = _insert_in_order(last_op, next_op, term);

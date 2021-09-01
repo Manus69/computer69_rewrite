@@ -62,7 +62,6 @@ static Computation *_resolve_node(Computation *computation, const char *wc_ident
     {
         if (variable_get_type(variable) == VT_CONSTANT)
         {
-            // computation_delete(&computation);
             value = variable_get_value(variable);
             computation = computation_from_entity(value, TRUE);
         }
@@ -77,9 +76,6 @@ static Computation *_resolve_node(Computation *computation, const char *wc_ident
         {
             matrix = matrix_repr_copy(variable->entity->matrix);
             matrix = matrix_repr_replace_wc(matrix, computation->lhs);
-
-            // computation_delete(&computation->lhs);
-            // computation_delete(&computation);
 
             computation = computation_from_entity(entity_new_from_matrix(matrix, FALSE), FALSE);            
         }

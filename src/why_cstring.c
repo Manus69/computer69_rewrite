@@ -123,3 +123,28 @@ int_signed cstr_index_of(const char *string, char c)
 
     return NOT_FOUND;
 }
+
+char cstr_char_to_lower(char c)
+{
+    if (id_upper(&c))
+        return c + 'a' - 'A';
+    
+    return c;
+}
+
+void cstr_to_lower(char *string)
+{
+    int diff;
+
+    if (!string)
+        return;
+    
+    diff = 'a' - 'A';
+    while (*string)
+    {
+        if (id_upper(string))
+            *string = *string + diff;
+        
+        string ++;
+    }
+}

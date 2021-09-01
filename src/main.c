@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <time.h>
 #include <math.h>
+#include <limits.h>
 
 Data *data;
 
@@ -33,7 +34,7 @@ void variable_test()
     VariableTable *v_table;
     String *string;
 
-    string = string_new_no_space("sin(x) = x");
+    string = string_new_no_space_to_lower("sin(x) = x");
     v_table = v_table_new(NULL);
     v = variable_create_from_string(string, v_table);
 
@@ -97,7 +98,7 @@ void polynomial_test()
     Computation *cmp;
     String *str;
 
-    str = string_new_no_space("2 - 1");
+    str = string_new_no_space_to_lower("2 - 1");
     cmp = _parse(str, NULL);
     cmp = computation_resolve(cmp, "x", NULL);
     p = computation_to_polynomial(cmp);
@@ -174,9 +175,9 @@ void math_test()
 
 void run_tests()
 {
-    // test_all_sequences(valid_sequences);
-    // test_all_sequences(valid_matrix_sequences);
-    // test_all_sequences(valid_polynomial_sequences);
+    test_all_sequences(valid_sequences);
+    test_all_sequences(valid_matrix_sequences);
+    test_all_sequences(valid_polynomial_sequences);
 }
 
 //user defined names must be case insensitive
@@ -190,11 +191,9 @@ void run_tests()
 //no () after matrix function assignment
 //some print functions print retarded stuff like -0 etc.
 //destructive polynomial operations?
-//insert implicit stars before parsing?
 //unfuck enums, reserved strings and function names
 //"f(x) = sin(sqrt(4)*pi)" does not resolve to value "f(x) = ln(e)", etc
 //make a structure with strings, f_pointers, etc indexed by an enum
-//polynomials cant have symbols other than x 
 
 int main()
 {
@@ -208,12 +207,15 @@ int main()
     data = data_init();
 
     test_sequence(valid_sequence);
-    run_tests();
+    // run_tests();
     // matrix_test();
-    // math_test();
+    // math_test(); 
     // polynomial_test();
 
-    // printf("%.15Lf\n", math_exp(2));
+    // printf("%f\n", pow(2, 999999999999999999999999999999999999999.0));
+    // printf("%.15f\n", sqrt((real)__INT_MAX__));
+    // printf("%.15Lf\n", math_sqrt((real)__INT_MAX__));
+
 
     printf("\nMEMORY USAGE: %Ld\n", data_get_bytes(data));
 

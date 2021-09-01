@@ -211,7 +211,7 @@ const char *valid_cubics[] = {
 
 const char *valid_sequence_basic[] = {"A = [[1]]", "B = 2*A", 0};
 
-const char *valid_sequence[] = {"f(x) = 1 - x", "g(x) = x", "h(x) = f(x) + g(x)", "h(x) = 0?", 0};
+const char *valid_sequence[] = {"x + -x = -1?", 0};
 
 const char *valid_sequences[][SEQUENCE_LENGTH] = {
 {"0", 0},
@@ -332,21 +332,27 @@ const char *valid_polynomial_sequences[][SEQUENCE_LENGTH] = {
 {"f(x) = x^2 - 1", "f(x) = 0?", 0},
 {"x^2 - x - 1 = 0?", 0},
 {"f(x) = -x - 1", "g(x) = x^2", "h(x) = f(x) + g(x)", "h(x) = 0?", 0},
-// {"-999999999999999999999999999999999999999999999999999999x = x^20?", 0},
-// {"-X^10 = 0?", 0},
-// {"x^99999999999999999999999999 = -1?", 0},
-// {"x^3 - x^4 = 0?", 0},
-// {"0 = 5 * 5?", 0},
-// {"1 = 1?", 0},
-// {"1 = 3?", 0},
-// {"x = x?", 0},
-// {"-1x = 0?", 0},
-// {"x = 0?", 0},
-// {"a = -a?", 0},
-// {"K^1 = -99?", 0},
+{"x = x?", 0},
+{"1 = 0?", 0},
+{"2x + 3x^2 = 0?", 0},
+{"2*x + 3*x^2 = 0?", 0},
+{"-999999999999999999999999999999999999999999999999999999x = x^2?", 0},
+{"x^99999999999999999999999999 = -1?", 0},
+{"-X^2 = 0?", 0},
+{"x^2 - x^1 = 0?", 0},
+{"0 = 5 * 5?", 0},
+{"1 = 1?", 0},
+{"1 = 3?", 0},
+{"x = x?", 0},
+{"-1x = 0?", 0},
+{"x = 0?", 0},
+{"a = -a?", 0},
+{"K^1 = -99?", 0},
 // {"x + -x = -1?", 0},
-// {"x + x^3 + x^2 = -1?", 0},
-// {"7 = 0?", 0},
+{"x + x^2 + x^2 = -1?", 0},
+{"7 = 0?", 0},
+{"pi*x^2 - pi*x = 0?", 0},
+{"PI*x^2 - PI = 0?", 0},
 {0}};
 
 void test_syntax(const char **strings)
@@ -384,7 +390,7 @@ void test_computation(const char **strings)
     n = 0;
     while (strings[n])
     {
-        string = string_new_no_space(strings[n]);
+        string = string_new_no_space_to_lower(strings[n]);
         computation = _parse(string, NULL);
         computation = computation_resolve(computation, NULL, NULL);
         result = computation_eval(computation, NULL, NULL);
@@ -412,7 +418,7 @@ void test_assignment(const char **strings)
     n = 0;
     while (strings[n])
     {
-        string = string_new_no_space(strings[n]);
+        string = string_new_no_space_to_lower(strings[n]);
         variable = variable_create_from_string(string, NULL);
 
         print_variable(variable);
@@ -435,7 +441,7 @@ void test_sequence(const char **strings)
     v_table = NULL;
     while (strings[n])
     {
-        string = string_new_no_space(strings[n]);
+        string = string_new_no_space_to_lower(strings[n]);
         print_string_n(string);
 
         v_table = process_input_line(string, v_table);

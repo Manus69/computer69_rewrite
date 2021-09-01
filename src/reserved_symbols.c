@@ -23,3 +23,13 @@ char *check_reserved_symbols(const char *string)
 
     return NULL;
 }
+
+boolean is_pi(const char *string)
+{
+    return !cstr_compare(string, "pi");
+}
+
+boolean is_e(const char *string)
+{
+    return !cstr_compare(string, "e");
+}

@@ -37,7 +37,7 @@ int_signed find_matching_bracket_str(const String *string, char o_symbol, char c
     return find_matching_bracket(characters, o_symbol, c_symbol);
 }
 
-String *string_new_no_space(const char *literal)
+String *string_new_no_space_to_lower(const char *literal)
 {
     String *string;
     char *new_literal;
@@ -51,7 +51,7 @@ String *string_new_no_space(const char *literal)
     {
         if (!id_whitespace(literal))
         {
-            new_literal[n] = *literal;
+            new_literal[n] = cstr_char_to_lower(*literal);
             n ++;
         }
         literal ++;

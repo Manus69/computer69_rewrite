@@ -1,5 +1,7 @@
 #include "frontend_declarations.h"
 #include "terminals.h"
+#include "computation.h"
+#include "node.h"
 
 #include "print.h" //
 #include <assert.h>
@@ -55,11 +57,18 @@ static void _process_polynomial(Computation *lhs, Computation *rhs)
     #endif
 
     p = polynomial_subtract(_lhs, _rhs);
-
     roots = polynomial_roots(p);
-    printf("\n");
-    print_roots(roots);
-    printf("\n");
+
+    if (polynomial_is_zero(p))
+        print_root_messageAR();
+    else if (!roots)
+        print_root_messageNR();
+    else
+    {
+        printf("\n");
+        print_roots(roots);
+        printf("\n");
+    }
 
     polynomial_delete(&p);
     polynomial_delete(&_lhs);
@@ -67,11 +76,33 @@ static void _process_polynomial(Computation *lhs, Computation *rhs)
     vector_delete(&roots);
 }
 
+static char *_get_first_identifier(const Computation *_computation)
+{
+    char *_lhs;
+    // char *_rhs;
+
+    if (!_computation)
+        return NULL;
+    
+    if (_computation->node->type == NT_IDENTIFIER)
+    {
+        if (!check_reserved_symbols(_computation->node->identifier))
+            return _computation->node->identifier;
+    }
+
+    _lhs = _get_first_identifier(_computation->lhs);
+    if (_lhs)
+        return _lhs;
+    
+    return _get_first_identifier(_computation->rhs);
+}
+
 static void _process_find_roots(String *line, VariableTable *v_table)
 {
     Vector *strings;
     Computation *lhs;
     Computation *rhs;
+    char *id;
 
     strings = string_split(line, TERMINALS[EQUALS]);
     if (vector_size(strings) != 2)
@@ -79,8 +110,13 @@ static void _process_find_roots(String *line, VariableTable *v_table)
     
     lhs = _parse(vector_at(strings, 0), v_table);
     rhs = _parse(vector_at(strings, 1), v_table);
-    lhs = computation_resolve(lhs, "x", v_table);
-    rhs = computation_resolve(rhs, "x", v_table);
+
+    id = _get_first_identifier(lhs);
+    if (!id)
+        id = _get_first_identifier(rhs);
+    
+    lhs = computation_resolve(lhs, id, v_table);
+    rhs = computation_resolve(rhs, id, v_table);
 
     _process_polynomial(lhs, rhs);
     vector_delete(&strings);

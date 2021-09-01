@@ -215,3 +215,17 @@ boolean polynomial_is_real(const Polynomial *p)
 
     return TRUE;
 }
+
+boolean polynomial_is_zero(const Polynomial *p)
+{
+    if (!p)
+        return FALSE;
+    
+    if (p->degree < 0)
+        return TRUE;
+    
+    if (p->degree > 0)
+        return FALSE;
+
+    return complex_is_zero(p->coefficients[0]);
+}

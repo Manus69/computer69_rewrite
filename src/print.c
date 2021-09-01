@@ -284,3 +284,13 @@ void print_roots(const Vector *roots)
     }
     printf("]");
 }
+
+void print_root_messageAR()
+{
+    printf("[%s]\n", "Any number is a root");
+}
+
+void print_root_messageNR()
+{
+    printf("[%s]\n", "No roots");
+}

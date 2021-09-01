@@ -35,12 +35,12 @@ static Polynomial *_combine_polynomials(Polynomial *lhs, Operator *op, Polynomia
         result = polynomial_multiply(lhs, rhs);
     else if (op_type == OT_CARET)
     {
-        if (!polynomial_is_constant(rhs))
-            return NULL;
-
-        z = polynomial_get_constant_coefficient(rhs);
-        if (complex_is_real(z) && real_is_int(z.re) && z.re >= 0)
-            result = polynomial_exponentiate(lhs, z.re);
+        if (polynomial_is_constant(rhs))
+        {
+            z = polynomial_get_constant_coefficient(rhs);
+            if (complex_is_real(z) && real_is_int(z.re) && z.re >= 0)
+                result = polynomial_exponentiate(lhs, z.re);
+        }
     }
 
     polynomial_delete(&lhs);
@@ -68,6 +68,16 @@ Polynomial *computation_to_polynomial(const Computation *_computation)
     if (_computation->node->type == NT_WILDCARD)
     {
         return polynomial_new_from_complexG(complex(1, 0), 1, NULL);
+    }
+
+    if (_computation->node->type == NT_IDENTIFIER)
+    {
+        if (is_pi(_computation->node->identifier))
+            return polynomial_new_from_complex(complex(PI, 0));
+        if (is_e(_computation->node->identifier))
+            return polynomial_new_from_complex(complex(E, 0));
+        
+        assert(0);
     }
 
     if (_computation->node->type != NT_OPERATOR)

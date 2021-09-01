@@ -79,6 +79,7 @@ Complex         polynomial_evaluate(Polynomial *p, Complex value);
 boolean         polynomial_is_constant(const Polynomial *p);
 Complex         polynomial_get_constant_coefficient(const Polynomial *p);
 boolean         polynomial_is_real(const Polynomial *p);
+boolean         polynomial_is_zero(const Polynomial *p);
 Vector          *polynomial_roots(const Polynomial *p);
 
 //

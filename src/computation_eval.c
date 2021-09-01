@@ -19,9 +19,9 @@ static Number *_get_value(const char *id)
     if (!id)
         return NULL;
 
-    if (cstr_compare(id, "pi") == 0)
+    if (is_pi(id))
         return number_new_real(PI);
-    else if (cstr_compare(id, "e") == 0)
+    else if (is_e(id))
         return number_new_real(E);
     
     assert(0);
@@ -81,8 +81,6 @@ static Number *_eval_function(const Computation *computation, const VariableTabl
         result = computation_eval(value->computation, v_table, lhs_value);
         result = number_demote_if_possible(result);
 
-        // number_delete(&lhs_value);
-
         return result;
     }
 
@@ -92,14 +90,12 @@ static Number *_eval_function(const Computation *computation, const VariableTabl
 static Entity *_eval_matrix(MatrixRepr *matrix, const VariableTable *v_table, Entity *wc_value)
 {
     int_signed n;
-    // MatrixRepr *matrix;
     Entity *value;
     Number *number;
 
     if (wc_value && wc_value->type != ET_NUMBER)
         assert(0);
     
-    // matrix = computation->node->matrix;
     n = 0;
     while ((value = matrix_repr_nth(matrix, n)))
     {
@@ -138,8 +134,6 @@ static Entity *_eval_functionG(const Computation *computation, const VariableTab
         if (result->type == ET_NUMBER)
             result->number = number_demote_if_possible(result->number);
         
-        // entity_delete(&lhs_value);
-
         return result;
     }
 

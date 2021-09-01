@@ -1,8 +1,11 @@
-#include "why_math.h"
+#include "why_lib.h"
 #include "why_math_polynomial.h"
 #include "why_memory.h"
 #include "why_cstring.h"
-#include "why_macros.h"
+
+#if WHY_DBG
+#include "why_print.h"
+#endif
 
 Polynomial *polynomial_increment(Polynomial *p, Polynomial *q)
 {
@@ -26,10 +29,18 @@ Polynomial *polynomial_increment(Polynomial *p, Polynomial *q)
 
 Polynomial *polynomial_add(Polynomial *p, Polynomial *q)
 {
-    int_signed n;
-    Complex value;
     Polynomial *new_polynomial;
     Polynomial *larger_p;
+    Complex     value;
+    int_signed  n;
+
+    #if WHY_DBG
+    _print_polynomialDBG(p);
+    _print_polynomialDBG(q);
+    #endif
+
+    if (!p || !q)
+        return NULL;
 
     larger_p = p->degree > q->degree ? p : q; 
     new_polynomial = polynomial_copy(larger_p);
@@ -37,7 +48,7 @@ Polynomial *polynomial_add(Polynomial *p, Polynomial *q)
 
     while (n >= 0)
     {
-        if (!complex_is_zero(polynomial_at(q, n)))
+        if (!complex_is_zero(polynomial_at(q, n)) || !complex_is_zero(polynomial_at(p, n)))
         {
             value = complex_add(polynomial_at(p, n), polynomial_at(q, n));
             polynomial_set(new_polynomial, value, n);

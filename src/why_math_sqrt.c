@@ -1,6 +1,7 @@
 #include "why_lib.h"
 
 #include <assert.h>
+#include <limits.h>
 
 #define DBG 0
 #if DBG
@@ -30,6 +31,9 @@ real math_sqrt(real a)
     
     if (a < SN_CUTOFF)
         return math_sqrt(a * FACTOR * FACTOR) / FACTOR;
+
+    if (a > __INT_MAX__)
+        return 2 * math_sqrt(a / 4);
 
     x0 = a > 1 ? a / 2 : 1;
     f = x0 * x0 - a;
