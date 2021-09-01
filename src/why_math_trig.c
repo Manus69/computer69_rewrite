@@ -1,6 +1,5 @@
 #include "why_math.h"
 
-#include <math.h> /////
 #include <assert.h>
 
 #define TRIG_DELTA 1.0 / (1 << 12)

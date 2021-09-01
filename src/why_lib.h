@@ -14,6 +14,8 @@
 #include "why_print.h"
 #include "why_cstring.h"
 
+#define WHY_DBG 1
+
 Vector *string_split(String *string, char delimiter);
 // Vector *string_split_cstar(char *c_string, char delimiter);
 Vector *cstr_split(char *string, char delimiter);

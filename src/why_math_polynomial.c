@@ -2,8 +2,13 @@
 #include "why_math_polynomial.h"
 #include "why_memory.h"
 #include "why_cstring.h"
+#include "why_lib.h"
 
 #include <assert.h>
+
+#if WHY_DBG
+#include "why_print.h"
+#endif
 
 static void _array_init(Complex *array, int_signed n, int_signed size)
 {
@@ -49,6 +54,10 @@ Polynomial *polynomial_new_from_complex(Complex z)
 
     p = polynomial_new(NULL);
     polynomial_set(p, z, 0);
+
+    #if WHY_DBG
+    _print_polynomialDBG(p);
+    #endif
 
     return p;
 }
@@ -104,6 +113,9 @@ void polynomial_delete(Polynomial **p)
 
 int_signed polynomial_get_degree(const Polynomial *p)
 {
+    if (!p)
+        return -1;
+    
     return p->degree;
 }
 

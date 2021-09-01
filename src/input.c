@@ -46,10 +46,15 @@ static void _process_polynomial(Computation *lhs, Computation *rhs)
 
     _lhs = computation_to_polynomial(lhs);
     _rhs = computation_to_polynomial(rhs);
-    p = polynomial_subtract(_lhs, _rhs);
 
-    print_polynomial(p);
-    // printf("\n");
+    #if DBG
+    print_computation(lhs);
+    _print_polynomialDBG(_lhs);
+    print_computation(rhs);
+    _print_polynomialDBG(_rhs);
+    #endif
+
+    p = polynomial_subtract(_lhs, _rhs);
 
     roots = polynomial_roots(p);
     printf("\n");

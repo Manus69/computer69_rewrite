@@ -11,6 +11,11 @@ static Polynomial *_combine_polynomials(Polynomial *lhs, Operator *op, Polynomia
     Polynomial *result;
     Complex z;
 
+    #if DBG
+    _print_polynomialDBG(lhs);
+    _print_polynomialDBG(rhs);
+    #endif
+
     result = NULL;
     op_type = operator_get_type(op);
 

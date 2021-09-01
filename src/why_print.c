@@ -144,3 +144,20 @@ void print_polynomial(const Polynomial *p)
         n ++;
     }
 }
+
+void _print_polynomialDBG(const Polynomial *p)
+{
+    int_signed n;
+    int_signed degree;
+    Complex z;
+
+    n = 0;
+    degree = polynomial_get_degree(p);
+    while (n <= degree)
+    {
+        z = polynomial_at(p, n);
+        printf("%lld %Lf %Lf\n", n, z.re, z.im);
+        n ++;
+    }
+    printf("\n");
+}

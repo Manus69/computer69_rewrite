@@ -3,6 +3,11 @@
 
 #include <assert.h>
 
+#define DBG 0
+#if DBG
+#include <stdio.h>
+#endif
+
 static Vector *_solve_constant(const Polynomial *p)
 {
     Vector *root;
@@ -36,6 +41,10 @@ static Vector *_solve_quadratic(const Polynomial *p)
 {
     Vector *roots;
     real a, b, c, x, D;
+
+    #if DBG
+    _print_polynomialDBG(p);
+    #endif
 
     roots = vector_new_with_capacity(copy_shallow, memory_delete, 3);
     
