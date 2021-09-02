@@ -211,10 +211,11 @@ const char *valid_cubics[] = {
 
 const char *valid_sequence_basic[] = {"A = [[1]]", "B = 2*A", 0};
 
-const char *valid_sequence[] = {"x + -x = -1?", 0};
+const char *valid_sequence[] = {"--1", 0};
 
 const char *valid_sequences[][SEQUENCE_LENGTH] = {
 {"0", 0},
+{"-1", "--1", "---pi", "----e", "-i", "--i", 0},
 {"cos(2*pi*sin(-pi+2*pi))", 0},
 {"-sin(2*cos(0))/sin(pi/2)", 0},
 {"2-2*2-2^3+1", 0},
@@ -271,6 +272,7 @@ const char *valid_sequences[][SEQUENCE_LENGTH] = {
 {"ln(1)", "ln(e)", "ln(e^10)", 0},
 {"log(2)", "log(512)", "log(2048)", 0},
 {"f(x) = exp(x)", "g(x) = ln(x)", "w(x) = f(g(x))", "w(1)", "w(e)", 0},
+{"ln(--1)", 0},
 {0}};
 
 const char *valid_matrix_strings[] = {"[[0]]", "[[0,1]]", "[[-1,10]]",
@@ -348,87 +350,93 @@ const char *valid_polynomial_sequences[][SEQUENCE_LENGTH] = {
 {"x = 0?", 0},
 {"a = -a?", 0},
 {"K^1 = -99?", 0},
-// {"x + -x = -1?", 0},
+{"x + -x = -1?", 0},
 {"x + x^2 + x^2 = -1?", 0},
 {"7 = 0?", 0},
 {"pi*x^2 - pi*x = 0?", 0},
 {"PI*x^2 - PI = 0?", 0},
+{"x--x=0?", 0},
+{"---5=5?", 0},
+{"0 = 0.99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999x^1?", 0},
+{"x + -x = -1?", 0},
+{"x + x^3 + x^2 = -1?", 0},
+{"7 = 0?", 0},
+{"-7 = 0?", 0},
+{"0 = -3.9999999999999999999999999999999999999999x^1?", 0},
+{"a^0 = -1?", 0},
+{"5 * X^0 = 5 * X^0?", 0},
+{"4 * X^0 = 8 * X^0?", 0},
+{"5 * X^0 = 4 * X^0 + 7 * X^1?", 0},
+{"1x - x = -1x?", 0},
+{"5 * X^0 + 13 * X^1 + 3 * X^2 = 1 * X^0 + 1 * X^1?", 0},
+{"5 + 13 * x + 3x^2 = 1 + x ?", 0},
+{"  -x = 3.1  ?", 0},
+{"5 * X^0 + 13 * X^1 + 3 * X^2 = 1 * X^0 + 1 * X^1?", 0},
+{"-1 - 5 = 0?", 0},
+{"6 * X^0 + 11 * X^1 + 5 * X^2 = 1 * X^0 + 1 * X^1?", 0},
+{"5 * X^0 + 3 * X^1 + 3 * X^2 = 1 * X^0 + 0 * X^1?", 0},
+{"0.000001 = x?", 0},
+{"x = 0.0000000000000000000000000000000000001?", 0},
+{"-0.1 = x?", 0},
+{"-x = 9999999.99999999999999999999999999?", 0},
+{"0 + 0 = 0 * x + 0 * x^10?", 0},
+{"-13.5203 + 6.533X^2 - 3.64131X^3 = 0?", 0},
+{"-0.0000220921 + 11.4785X^2 = 0?", 0},
+{"-9.1 - 8.77x + 4x^3 = 0?", 0},
+{"c^2 - c^2 + c^2 + c^2 + 1.14124c^2 = -1?", 0},
+{"5x^3 + 4x^2 + 2x + 2 = 0?", 0},
+{"x^3 = 27?", 0},
+{"x^3 = 99999999999999999999999999999?", 0},
+{"x^3 - 6x^2 + 11x - 6 = 0?", 0},
+{"x^3 - 3 * x^2 + 3 * x - 1 = 0?", 0},
+{"a^3 - 5a^2 - 2a + 24 = 0?", 0},
+{"0 = X^3 + 4 * X^2 + X - 5?", 0},
+{"x^3 - 3x^2 - x + 1 = 0", 0},
+{"-13.2593 + 6.48091X - 8.58475X^2 + 0.0000267855X^3 = 0?", 0},
+{"9999999 + 9999999999x + 99999999x^2 = 0?", 0},
+{"999 + 999x + 999x^2 = 0?", 0},
+{"9999999 + 9999999999x + 99999999x^2 + 9999999 * x^3 = 0?", 0},
+{"-13.5203 + 6.533X^2 - 3.64131X^3 = 0?", 0},
+{"-1 + x^3 = x^2 + x^3 + x^3?", 0},
+{"A^17 = -1?", 0},
+{"-x = 0.0001x^10?", 0},
+{"-1 - -1 = C^31?", 0},
+{"0 = x^11?", 0},
+{"x^10 = 0?", 0},
+{"2 * X^4 = 0?", 0},
+{"-0x^0 = 0?", 0},
+{"-0 = x?", 0},
+{"0 = 0 * x + -0?", 0},
+{"x + -0 * x = -0?", 0},
+{"-13.2593 + 6.48091X - 8.58475X^2 + 0.0000267855X^3 = 0?", 0},
+{"37.7801 + 58.1269X - 50.5115X^2 - 141.452X^3 = 0?", 0},
+{"-121.34 - 76.7428X + 35.6213X^2 + 37.283X^3 = 0?", 0},
+{"76.7264 + 83.6769X^2 - 21.1039X^3 = 0?", 0},
+{"-13.5203 + 6.533X^2 - 3.64131X^3 = 0?", 0},
+{"-150281 - 308387X - 962354X^2 = 0?", 0},
+{"-0.00000220921 + 11.4785X^2 = 0?", 0},
+{"99999999999999999999999999999x^3 - 1 = 0?", 0},
+{"0 = X^3 - 3 * X^2 + 4 * X - 2?", 0},
+{"x^3 - 3x^2 + 4x - 2 = 0?", 0},
+{"x^3 - 15x - 4 = 0?", 0},
+{"x^3 - 3x + 1.412 = 0?", 0},
+{"-1 + x^3 = x^2 + x^3 + x^3 = 0?", 0},
+{"A^3 + A^3 = 125?", 0},
+{"126 = 1X^3?", 0},
+{"-125 = c^3?", 0},
+{"2x^3 - 5x^2 - 23x - 10 = 0?", 0},
+{"x^2 = 2?", 0},
 {0}};
 
-void test_syntax(const char **strings)
-{
-    Computation *computation;
-    String *string;
-    int_signed n;
-
-    n = 0;
-    while (strings[n])
-    {
-        string = string_new(strings[n]);
-        print_string(string);
-        fflush(NULL);
-        computation = parse(string, NULL);
-
-        printf(" => ");
-        print_computation(computation);
-        printf("\n");
-
-        computation_delete(&computation);
-        string_delete(&string);
-
-        n ++;
-    }
-}
-
-void test_computation(const char **strings)
+void test_statement(const char *characters)
 {
     String *string;
-    int_signed n;
-    Computation *computation;
-    Number *result;
 
-    n = 0;
-    while (strings[n])
-    {
-        string = string_new_no_space_to_lower(strings[n]);
-        computation = _parse(string, NULL);
-        computation = computation_resolve(computation, NULL, NULL);
-        result = computation_eval(computation, NULL, NULL);
+    string = string_new_no_space_to_lower(characters);
+    print_string_n(string);
 
-        printf("%s => ", strings[n]);
-        print_computation(computation);
-        printf(" => ");
-        print_number(result);
-        printf("\n");
-
-        string_delete(&string);
-        computation_delete(&computation);
-        number_delete(&result);
-
-        n ++;
-    }
-}
-
-void test_assignment(const char **strings)
-{
-    String *string;
-    Variable *variable;
-    int_signed n;
-
-    n = 0;
-    while (strings[n])
-    {
-        string = string_new_no_space_to_lower(strings[n]);
-        variable = variable_create_from_string(string, NULL);
-
-        print_variable(variable);
-        printf("\n");
-
-        variable_delete(&variable);
-        string_delete(&string);
-
-        n ++;
-    }
+    process_input_line(string, NULL);
+    string_delete(&string);
 }
 
 void test_sequence(const char **strings)
@@ -466,4 +474,68 @@ void test_all_sequences(const char *array[][SEQUENCE_LENGTH])
         n ++;
         sequence = array[n];
     }
+}
+
+void sqrt_test(real initial_value, real step, real terminal_value)
+{
+    real x, _x;
+
+    while (initial_value < terminal_value)
+    {
+        printf("a = %Lf\n", initial_value);
+        x = math_sqrt(initial_value);
+        printf("my sqrt:    %.10Lf\n", x);
+
+        _x = sqrt(initial_value);
+        printf("stock sqrt: %.10Lf\n\n", _x);
+
+        initial_value += step;
+    }
+}
+
+void log_test(real initial_value, real step, real terminal_value)
+{
+    real x, _x;
+
+    while (initial_value < terminal_value)
+    {
+        printf("a = %Lf\n", initial_value);
+        x = math_ln(initial_value);
+        printf("my log:    %.10Lf\n", x);
+
+        _x = log(initial_value);
+        printf("stock log: %.10Lf\n\n", _x);
+
+        initial_value += step;
+    }
+}
+
+void exp_test(real initial_value, real step, real terminal_value)
+{
+    real x, _x;
+
+    while (initial_value < terminal_value)
+    {
+        x = math_exp(initial_value);
+        _x = exp(initial_value);
+        printf("a = %Lf\n", initial_value);
+        printf("my exp:     %.10Lf\n", x);
+        printf("stock exp:  %.10Lf\n\n", _x);
+
+        initial_value += step;
+    }
+}
+
+void math_test()
+{
+    real initial_value;
+    real terminal_value;
+    real step;
+
+    initial_value = 0.1;
+    terminal_value = __INT_MAX__;
+    step = 10000;
+
+    // sqrt_test(initial_value, step, terminal_value);
+    log_test(initial_value, step, terminal_value);
 }

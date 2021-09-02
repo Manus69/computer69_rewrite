@@ -109,70 +109,6 @@ void polynomial_test()
     string_delete(&str);
 }
 
-void sqrt_test(real initial_value, real step, real terminal_value)
-{
-    real x, _x;
-
-    while (initial_value < terminal_value)
-    {
-        printf("a = %Lf\n", initial_value);
-        x = math_sqrt(initial_value);
-        printf("my sqrt:    %.10Lf\n", x);
-
-        _x = sqrt(initial_value);
-        printf("stock sqrt: %.10Lf\n\n", _x);
-
-        initial_value += step;
-    }
-}
-
-void log_test(real initial_value, real step, real terminal_value)
-{
-    real x, _x;
-
-    while (initial_value < terminal_value)
-    {
-        printf("a = %Lf\n", initial_value);
-        x = math_ln(initial_value);
-        printf("my log:    %.10Lf\n", x);
-
-        _x = log(initial_value);
-        printf("stock log: %.10Lf\n\n", _x);
-
-        initial_value += step;
-    }
-}
-
-void exp_test(real initial_value, real step, real terminal_value)
-{
-    real x, _x;
-
-    while (initial_value < terminal_value)
-    {
-        x = math_exp(initial_value);
-        _x = exp(initial_value);
-        printf("a = %Lf\n", initial_value);
-        printf("my exp:     %.10Lf\n", x);
-        printf("stock exp:  %.10Lf\n\n", _x);
-
-        initial_value += step;
-    }
-}
-
-void math_test()
-{
-    real initial_value;
-    real terminal_value;
-    real step;
-
-    initial_value = 0.1;
-    terminal_value = __INT_MAX__;
-    step = 10000;
-
-    // sqrt_test(initial_value, step, terminal_value);
-    log_test(initial_value, step, terminal_value);
-}
-
 void run_tests()
 {
     test_all_sequences(valid_sequences);
@@ -202,11 +138,10 @@ int main()
 
     start = clock();
 
-    // data_vector = get_data_vector();
-
     data = data_init();
 
-    test_sequence(valid_sequence);
+    test_statement("-9.1-8.77x+4x^3=0?");
+    // test_sequence(valid_sequence);
     // run_tests();
     // matrix_test();
     // math_test(); 

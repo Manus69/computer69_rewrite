@@ -66,6 +66,9 @@ Polynomial *polynomial_scale(Polynomial *p, Complex factor)
     int_signed n;
     Polynomial *copy;
 
+    if (!p)
+        return NULL;
+
     copy = polynomial_copy(p);
     n = 0;
     while (n <= p->degree)

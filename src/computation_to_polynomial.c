@@ -41,6 +41,8 @@ static Polynomial *_combine_polynomials(Polynomial *lhs, Operator *op, Polynomia
             if (complex_is_real(z) && real_is_int(z.re) && z.re >= 0)
                 result = polynomial_exponentiate(lhs, z.re);
         }
+        else if (polynomial_is_zero(rhs))
+            result = polynomial_new_from_complex(complex(1, 0));
     }
 
     polynomial_delete(&lhs);

@@ -89,6 +89,9 @@ Polynomial *polynomial_copy(const Polynomial *p)
 {
     Polynomial *new;
 
+    if (!p)
+        return NULL;
+
     if (p->degree == -1)
         return polynomial_new(cstr_copy(p->variable));
     
@@ -228,4 +231,12 @@ boolean polynomial_is_zero(const Polynomial *p)
         return FALSE;
 
     return complex_is_zero(p->coefficients[0]);
+}
+
+Complex polynomial_get_leading_coefficient(const Polynomial *p)
+{
+    if (p && p->degree >= 0)
+        return p->coefficients[p->degree];
+
+    assert(0);
 }

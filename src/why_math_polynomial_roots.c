@@ -44,7 +44,7 @@ static Vector *_solve_quadratic(const Polynomial *p)
     _print_polynomialDBG(p);
     #endif
 
-    roots = vector_new_with_capacity(copy_shallow, memory_delete, 3);
+    roots = vector_new_with_capacity(copy_shallow, memory_delete, 2);
     
     a = p->coefficients[2].re;
     b = p->coefficients[1].re;
@@ -72,6 +72,19 @@ static Vector *_solve_quadratic(const Polynomial *p)
     return roots;
 }
 
+static Vector *_solve_qubic(const Polynomial *p)
+{
+    Vector *roots;
+    real a_root;
+
+    a_root = polynomial_newtons(p);
+    roots = vector_new_with_capacity(copy_shallow, memory_delete, 3);
+
+    vector_push(roots, complex_new(a_root, 0));
+
+    return roots;
+}
+
 Vector *polynomial_roots(const Polynomial *p)
 {
     if (!p)
@@ -91,6 +104,9 @@ Vector *polynomial_roots(const Polynomial *p)
 
     if (p->degree == 2)
         return _solve_quadratic(p);
+
+    if (p->degree == 3)
+        return _solve_qubic(p);
 
     assert(0);
 }

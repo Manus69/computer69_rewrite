@@ -79,7 +79,6 @@ static void _process_polynomial(Computation *lhs, Computation *rhs)
 static char *_get_first_identifier(const Computation *_computation)
 {
     char *_lhs;
-    // char *_rhs;
 
     if (!_computation)
         return NULL;

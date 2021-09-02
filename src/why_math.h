@@ -66,6 +66,7 @@ void            polynomial_delete(Polynomial **p);
 int_signed      polynomial_get_degree(const Polynomial *p);
 char            *polynomial_get_variable(const Polynomial *p);
 Complex         polynomial_at(const Polynomial *p, int_signed degree);
+Complex         polynomial_get_leading_coefficient(const Polynomial *p);
 boolean         polynomial_set(Polynomial *p, Complex value, int_signed degree);
 Polynomial      *polynomial_increment(Polynomial *p, Polynomial *q);
 Polynomial      *polynomial_add(Polynomial *p, Polynomial *q);
@@ -74,13 +75,14 @@ Polynomial      *polynomial_multiply(Polynomial *p, Polynomial *q);
 Polynomial      *polynomial_scale(Polynomial *p, Complex factor);
 Polynomial      *polynomial_exponentiate(Polynomial *p, int_signed power);
 Polynomial      *polynomial_factor(Polynomial *p, Polynomial *q);
-Polynomial      *polynomial_differentiate(Polynomial *p);
-Complex         polynomial_evaluate(Polynomial *p, Complex value);
+Polynomial      *polynomial_differentiate(const Polynomial *p);
+Complex         polynomial_evaluate(const Polynomial *p, Complex value);
 boolean         polynomial_is_constant(const Polynomial *p);
 Complex         polynomial_get_constant_coefficient(const Polynomial *p);
 boolean         polynomial_is_real(const Polynomial *p);
 boolean         polynomial_is_zero(const Polynomial *p);
 Vector          *polynomial_roots(const Polynomial *p);
+real            polynomial_newtons(const Polynomial *p);
 
 //
 Matrix          *matrix_new(int_signed n_rows, int_signed n_cols);

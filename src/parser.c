@@ -7,6 +7,8 @@
 #include <assert.h>
 
 // static Computation *_parse(String *string);
+Computation *get_term(String *string, const VariableTable *v_table);
+Computation *get_operator(String *string);
 
 Computation *get_stuff_in_parens(String *string, const VariableTable *v_table)
 {
@@ -62,6 +64,28 @@ Computation *get_identifier(String *string)
     return node ? computation_new(node, FALSE) : NULL;
 }
 
+static Computation *_process_u_minus(String *string, const VariableTable *v_table)
+{
+    Computation *root;
+    Computation *minus;
+    Computation *term;
+
+    minus = get_operator(string);
+    term = get_term(string, v_table);
+    if (!term)
+        return NULL;
+
+    minus->lhs = term;
+
+    root = get_operator(string);
+    if (!root)
+        return minus;
+    
+    root->lhs = minus;
+
+    return root;
+}
+
 Computation *get_term(String *string, const VariableTable *v_table)
 {
     Node *node;
@@ -89,6 +113,9 @@ Computation *get_term(String *string, const VariableTable *v_table)
     term = get_identifier(string);
     if (term)
         return term;
+
+    if (string_at(string, 0) == TERMINALS[MINUS])
+        return _process_u_minus(string, v_table);
     
     return NULL;
 }
@@ -102,31 +129,6 @@ Computation *get_operator(String *string)
     return op_node ? computation_new(op_node, FALSE) : NULL;
 }
 
-static Computation *process_u_minus(String *string, const VariableTable *v_table)
-{
-    Computation *root;
-    Computation *minus;
-    Computation *term;
-
-    minus = get_operator(string);
-    term = get_term(string, v_table);
-    if (!term)
-    {
-        // computation_delete(&minus);
-        return NULL;
-    }
-
-    minus->lhs = term;
-
-    root = get_operator(string);
-    if (!root)
-        return minus;
-    
-    root->lhs = minus;
-
-    return root;
-}
-
 static Computation *get_partial_tree(String *string, const VariableTable *v_table)
 {
     Computation *root;
@@ -136,8 +138,8 @@ static Computation *get_partial_tree(String *string, const VariableTable *v_tabl
     if (!string)
         return NULL;
 
-    if (string_at(string, 0) == TERMINALS[MINUS])
-        return process_u_minus(string, v_table);
+    // if (string_at(string, 0) == TERMINALS[MINUS])
+    //     return _process_u_minus(string, v_table);
     
     lhs = get_term(string, v_table);
     if (!lhs)

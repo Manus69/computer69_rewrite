@@ -39,7 +39,7 @@ int_signed convert_to_int(const char *string)
     int_signed result;
 
     if (*string == '-')
-        return convert_to_int(++ string);
+        return -convert_to_int(++ string);
     
     result = 0;
     while (*string && id_digit(string))
