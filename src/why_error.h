@@ -4,6 +4,7 @@
 #include "why_definitions.h"
 
 extern byte WHY_ERROR;
+extern char *error_string;
 
 typedef enum WHY_ERROR_TYPE WHY_ERROR_TYPE;
 
@@ -18,10 +19,15 @@ enum WHY_ERROR_TYPE
     WHY_ERROR_MATH,
     WHY_ERROR_NAME,
     WHY_ERROR_EVAL,
+    WHY_ERROR_CONV,
 };
 
-void *error_set(byte type);
+void *error_set(byte type, const char *_error_message);
+void error_display();
+void error_reset();
 void error_display_message(const char *message);
 void *error_display_message_return(const char *message);
+void error_display_custom(const char *message);
+void *error_display_custom_return(const char *message);
 
 #endif

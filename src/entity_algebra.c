@@ -1,5 +1,6 @@
 #include "frontend_declarations.h"
 #include "entity.h"
+#include "why_error.h"
 
 #include <assert.h>
 
@@ -96,10 +97,12 @@ Entity *entity_subtract(Entity *lhs, Entity *rhs)
     Number *number;
     MatrixRepr *matrix;
 
+    if (!lhs)
+        return error_set(WHY_ERROR_MATH, NULL);
+    
     if (lhs->type == ET_NUMBER && !rhs)
     {
         number = number_subtract(lhs->number, NULL);
-
         return entity_new_from_number(number, FALSE);
     }
     else if (lhs->type == ET_COMPUTATION && !rhs)
@@ -113,13 +116,11 @@ Entity *entity_subtract(Entity *lhs, Entity *rhs)
     else if (lhs->type == ET_NUMBER && rhs->type == ET_NUMBER)
     {
         number = number_subtract(lhs->number, rhs->number);
-
         return entity_new_from_number(number, FALSE);
     }
     else if (lhs->type == ET_MATRIX && rhs->type == ET_MATRIX)
     {
         matrix = matrix_repr_subtract(lhs->matrix, rhs->matrix);
-
         return entity_new_from_matrix(matrix, FALSE);
     }
 

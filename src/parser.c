@@ -140,7 +140,7 @@ static Computation *get_partial_tree(String *string, const VariableTable *v_tabl
     
     lhs = get_term(string, v_table);
     if (!lhs)
-        return error_set(WHY_ERROR_PARSE);
+        return error_set(WHY_ERROR_PARSE, string_get_characters(string));
     
     root = get_operator(string);
     if (!root)
@@ -203,7 +203,7 @@ Computation *_parse(String *string, const VariableTable *v_table)
     while (string_length(string))
     {
         if(!(term = get_term(string, v_table)))
-            return error_set(WHY_ERROR_SYNTAX);
+            return error_set(WHY_ERROR_SYNTAX, string_get_characters(string));
 
         if (!(next_op = get_operator(string)))
         {

@@ -1,5 +1,6 @@
 #include "frontend_declarations.h"
 #include "number.h"
+#include "why_error.h"
 
 #include <assert.h>
 
@@ -18,6 +19,9 @@ static NUMBER_TYPE _promote(Number *lhs, Number *rhs)
 Number *number_add(Number *lhs, Number *rhs)
 {
     NUMBER_TYPE type;
+
+    if (!lhs || !rhs)
+        return NULL;
 
     type = _promote(lhs, rhs);
 
@@ -50,6 +54,9 @@ Number *number_mult(Number *lhs, Number *rhs)
 {
     NUMBER_TYPE type;
 
+    if (!lhs || !rhs)
+        return error_set(WHY_ERROR_MATH, NULL);
+
     type = _promote(lhs, rhs);
 
     if (type == NT_INT)
@@ -66,10 +73,11 @@ Number *number_subtract(Number *lhs, Number *rhs)
 {
     NUMBER_TYPE type;
 
+    if (!lhs)
+        return error_set(WHY_ERROR_MATH, NULL);
+    
     if (!rhs)
-    {
         return number_scale(lhs, -1);
-    }
 
     type = _promote(lhs, rhs);
 
@@ -88,7 +96,7 @@ Number *number_divide(Number *lhs, Number *rhs)
     NUMBER_TYPE type;
 
     if (number_is_zero(rhs))
-        assert(0);
+        return error_set(WHY_ERROR_MATH, " divison by zero");
     
     type = _promote(lhs, rhs);
     if (type == NT_INT)
@@ -104,10 +112,10 @@ Number *number_divide(Number *lhs, Number *rhs)
 Number *number_mod(Number *lhs, Number *rhs)
 {
     if (lhs->type != NT_INT || rhs->type != NT_INT)
-        assert(0);
+        return error_set(WHY_ERROR_MATH, " mod of non-integer types if undefined");
     
     if (number_is_zero(rhs))
-        assert(0);
+        return error_set(WHY_ERROR_MATH, " divison by zero");
 
     return number_new_int(mod_int(lhs->n, rhs->n));
 }
@@ -115,11 +123,11 @@ Number *number_mod(Number *lhs, Number *rhs)
 Number *number_power(Number *lhs, Number *rhs)
 {
     if (rhs->type != NT_INT)
-        assert(0);
+        return error_set(WHY_ERROR_MATH, " non-integer powers are not supported");
 
     if (rhs->n < 0)
-        assert(0);
-    
+        return error_set(WHY_ERROR_MATH, " negative powers are not supported");
+
     if (lhs->type == NT_INT)
         return number_new_int(power_int(lhs->n, rhs->n));
     else if (lhs->type == NT_REAL)
@@ -130,9 +138,9 @@ Number *number_power(Number *lhs, Number *rhs)
 
 Number *number_factorial(Number *lhs, const Number *rhs)
 {
-    if (rhs)
-        assert(0);
-
+    if (!lhs || rhs)
+        return error_set(WHY_ERROR_MATH, NULL);
+    
     if (lhs->type != NT_INT)
         assert(0);
     
@@ -141,6 +149,9 @@ Number *number_factorial(Number *lhs, const Number *rhs)
 
 Number *number_scale(Number *number, real factor)
 {
+    if (!number)
+        return NULL;
+    
     if (number->type == NT_INT)
         return number_new_int(number->n * factor);
     else if (number->type == NT_REAL)
@@ -153,8 +164,11 @@ Number *number_function(const Number *number, real (*function)(real))
 {
     real arg;
 
+    if (!number)
+        return error_set(WHY_ERROR_MATH, NULL);
+    
     if (number->type == NT_COMPLEX)
-        assert(0);
+        return error_set(WHY_ERROR_MATH, " complex numbers are not supported for this function");
     
     arg = number->type == NT_REAL ? number->x : number->n;
 
@@ -198,12 +212,15 @@ Number *number_exp(const Number *number)
 
 Number *number_abs(Number *number)
 {
+    if (!number)
+        return error_set(WHY_ERROR_MATH, NULL);
+    
     if (number->type == NT_INT)
         number->n = ABS(number->n);
     else if (number->type == NT_REAL)
         number->x = ABS(number->x);
     else
-        assert(0);
+        return error_set(WHY_ERROR_MATH, " complex numbers are not supported for this function");
     
     return number;
 }

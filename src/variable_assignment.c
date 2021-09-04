@@ -21,7 +21,7 @@ static char *_get_arg_name(String *string)
     if (cstr_index_of_any(arg_name, WHITE_SPACE) != NOT_FOUND)
     {
         cstr_delete(&arg_name);
-        error_set(WHY_ERROR_NAME);
+        error_set(WHY_ERROR_NAME, " Invalid name");
     }
 
     return arg_name;
@@ -29,22 +29,20 @@ static char *_get_arg_name(String *string)
 
 static void *_deal_with_parse_errors(const String *string, char *name)
 {
+    cstr_delete(&name);
     if (string_length(string))
     {
-        error_set(WHY_ERROR_PARSE);
+        error_set(WHY_ERROR_PARSE, string_get_characters(string));
     }
-
-    cstr_delete(&name);
     
-    return error_display_message_return(string_get_characters(string));
+    return NULL;
 }
 
 static void *_deal_with_eval_errors(char *name)
 {
     cstr_delete(&name);
-    error_set(WHY_ERROR_EVAL);
-
-    return error_display_message_return(NULL);
+    
+    return error_set(WHY_ERROR_EVAL, NULL);
 }
 
 Variable *variable_create_with_name(String *string, const VariableTable *v_table, char *name)

@@ -6,6 +6,7 @@
 #define SEQUENCE_LENGTH 10
 
 extern const char *invalid_strings[];
+extern const char *context_dependent_strings[];
 extern const char *valid_basic_strings[];
 extern const char *valid_matrix_strings[];
 extern const char *valid_id_strings[];

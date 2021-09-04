@@ -25,7 +25,7 @@ static Number *_get_value(const char *id)
     else if (is_e(id))
         return number_new_real(E);
     
-    assert(0);
+    return error_set(WHY_ERROR_NAME, id);
 }
 
 static Number *_eval_btf(const Computation *computation, const VariableTable *v_table, Number *wc_value)
@@ -41,8 +41,6 @@ static Number *_eval_btf(const Computation *computation, const VariableTable *v_
         result = function(lhs_value);
         result = number_demote_if_possible(result);
 
-        // number_delete(&lhs_value);
-
         return result;
     }
 
@@ -52,7 +50,6 @@ static Number *_eval_btf(const Computation *computation, const VariableTable *v_
 static Entity *_eval_btfG(const Computation *computation, const VariableTable *v_table, Entity *wc_value)
 {
     Number *result;
-    // Entity *lhs_value;
     
     if (!wc_value)
         result = _eval_btf(computation, v_table, NULL);
@@ -152,7 +149,11 @@ static Number *_eval_id(const Computation *computation)
 
 static Entity *_eval_idG(const Computation *computation)
 {
-    return entity_new_from_number(_eval_id(computation), FALSE);
+    Number *result;
+
+    result = _eval_id(computation);
+
+    return result ? entity_new_from_number(_eval_id(computation), FALSE) : NULL;
 }
 
 Number *computation_eval(const Computation *computation, const VariableTable *v_table, Number *wc_value)

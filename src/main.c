@@ -142,9 +142,10 @@ int main()
     data = data_init();
 
     // test_sequence(valid_sequence);
-    test_statement("y   -   ");
+    test_statement("x - x");
     // run_tests();
     // test_all_statements(invalid_strings);
+    // test_all_statements(context_dependent_strings);
     // matrix_test();
     // math_test(); 
     // polynomial_test();

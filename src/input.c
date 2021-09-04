@@ -130,11 +130,13 @@ static void _process_find_roots(String *line, VariableTable *v_table)
 VariableTable *process_input_line(String *line, VariableTable *v_table)
 {
     String *substring;
+    VariableTable *result;
     
+    result = v_table;
     if (id_assignment(line))
-        return _process_assignment(line, v_table);
+        result = _process_assignment(line, v_table);
     else if (id_evaluation(line))
-        return _process_assignment(line, v_table);
+        result = _process_assignment(line, v_table);
     else if (id_find_roots(line))
     {
         substring = string_substring(line, 0, string_length(line) - 1);
@@ -142,7 +144,12 @@ VariableTable *process_input_line(String *line, VariableTable *v_table)
         string_delete(&substring);
     }
     else if (id_statement(line))
-        return _process_assignment(line, v_table);
+        result = _process_assignment(line, v_table);
 
-    return v_table;
+    if (WHY_ERROR != WHY_ERROR_DEFAULT)
+    {
+        error_display();
+    }
+
+    return result;
 }

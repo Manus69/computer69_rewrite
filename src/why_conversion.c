@@ -1,5 +1,6 @@
 #include "why_conversion.h"
 #include "why_cstring.h"
+#include "why_error.h"
 
 #include <assert.h>
 
@@ -62,7 +63,10 @@ real convert_to_real(const char *string)
     
     int_part = id_unsigned(string);
     if (!int_part)
-        assert(0);
+    {
+        error_set(WHY_ERROR_CONV, string);
+        return 0;
+    }
 
     result = _convert_int_part(string, int_part);
     string += int_part;
@@ -73,7 +77,10 @@ real convert_to_real(const char *string)
     string ++;
     decimal_part = id_digit_string(string);
     if (!decimal_part)
-        assert(0);
+    {
+        error_set(WHY_ERROR_CONV, string);
+        return 0;
+    }
     
     result += _convert_decimal_part(string, decimal_part);
 
@@ -92,7 +99,10 @@ Complex convert_to_complex(const char *string)
     
     length = id_int_or_float(string);
     if (!length)
-        assert(0);
+    {
+        error_set(WHY_ERROR_CONV, string);
+        return complex(0, 0);
+    }
     
     re = convert_to_real(string);
     string += length;
