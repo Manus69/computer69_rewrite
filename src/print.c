@@ -163,6 +163,12 @@ void print_computation(const Computation *computation)
     _check_branch_and_print(computation, computation->rhs);
 }
 
+void print_computationDBG(const Computation *computation)
+{
+    print_computation(computation);
+    printf("\n");
+}
+
 void print_variable(const Variable *variable)
 {
     Entity *value;

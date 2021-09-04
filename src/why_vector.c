@@ -129,17 +129,21 @@ static boolean _reallocate_array(Vector *vector)
     return TRUE;
 }
 
-boolean vector_push(Vector *vector, void *item)
+boolean vector_pushG(Vector *vector, void *item, void *(*copy)())
 {
     if (vector->current_index == vector->capacity)
         _reallocate_array(vector);
     
-    vector->items[vector->current_index] = vector->copy(item);
+    vector->items[vector->current_index] = copy(item);
     vector->current_index ++;
 
     return TRUE;
 }
 
+boolean vector_push(Vector *vector, void *item)
+{
+    return vector_pushG(vector, item, vector->copy);
+}
 
 void *vector_pop(Vector *vector)
 {
@@ -181,4 +185,27 @@ Vector *vector_copy(const Vector *vector)
     }
 
     return copy;
+}
+
+Vector *vector_concatG(Vector *lhs, const Vector *rhs, void *(copy)())
+{
+    int_signed n;
+
+    if (!lhs)
+        return vector_copy(rhs);
+
+    n = 0;
+    while (n < rhs->current_index)
+    {
+        vector_pushG(lhs, vector_at(rhs, n), copy);
+
+        n ++;
+    }
+
+    return lhs;
+}
+
+Vector *vector_concat(Vector *lhs, const Vector *rhs)
+{
+    return vector_concatG(lhs, rhs, rhs->copy);
 }

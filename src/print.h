@@ -10,6 +10,7 @@
 
 void print_number(const Number *number);
 void print_computation(const Computation *computation);
+void print_computationDBG(const Computation *computation);
 void print_variable(const Variable *variable);
 void print_v_table(const VariableTable *v_table);
 void print_matrix_row(const MatrixRepr *matrix, int_signed j);

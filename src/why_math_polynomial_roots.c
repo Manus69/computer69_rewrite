@@ -75,12 +75,24 @@ static Vector *_solve_quadratic(const Polynomial *p)
 static Vector *_solve_qubic(const Polynomial *p)
 {
     Vector *roots;
+    Vector *quadratic_roots;
+    Polynomial *q;
+    Polynomial *factor;
     real a_root;
 
     a_root = polynomial_newtons(p);
     roots = vector_new_with_capacity(copy_shallow, memory_delete, 3);
 
     vector_push(roots, complex_new(a_root, 0));
+
+    factor = polynomial_new_from_coefficients((real[]){-a_root, 1}, 2);
+    q = polynomial_factor(p, factor);
+    quadratic_roots = polynomial_roots(q);
+    roots = vector_concatG(roots, quadratic_roots, copy_complex);
+
+    polynomial_delete(&factor);
+    vector_delete(&quadratic_roots);
+    polynomial_delete(&q);
 
     return roots;
 }

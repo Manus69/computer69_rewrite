@@ -3,6 +3,7 @@
 #include "node.h"
 #include "operator.h"
 #include "terminals.h"
+#include "why_error.h"
 
 #include <assert.h>
 

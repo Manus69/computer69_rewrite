@@ -40,7 +40,7 @@ int_unsigned id_digit_string(const char *string)
     char *pointer;
 
     pointer = (char *)string;
-    while (*pointer && id_digit(string))
+    while (*pointer && id_digit(pointer))
         pointer ++;
 
     return pointer - string;
@@ -82,6 +82,7 @@ int_unsigned id_int(const char *string)
 int_unsigned id_float(const char *string)
 {
     char *pointer;
+    int_signed length;
 
     if (!string || !*string)
         return 0;
@@ -96,7 +97,8 @@ int_unsigned id_float(const char *string)
     {
         if (_is_between(*(pointer + 1), '0', '9'))
         {
-            return (pointer - string) + id_unsigned(pointer + 1) + 1;
+            length = id_digit_string(pointer + 1);
+            return (pointer - string) +  length + 1;
         }
     }
     else

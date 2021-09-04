@@ -4,6 +4,7 @@
 #include "frontend_declarations.h"
 #include "test.h"
 #include "data_interface.h"
+#include "why_error.h"
 
 #include <stdio.h>
 #include <time.h>
@@ -126,7 +127,6 @@ void run_tests()
 //some increment functions allocate, others do not
 //no () after matrix function assignment
 //some print functions print retarded stuff like -0 etc.
-//destructive polynomial operations?
 //unfuck enums, reserved strings and function names
 //"f(x) = sin(sqrt(4)*pi)" does not resolve to value "f(x) = ln(e)", etc
 //make a structure with strings, f_pointers, etc indexed by an enum
@@ -140,8 +140,9 @@ int main()
 
     data = data_init();
 
-    test_statement("-9.1-8.77x+4x^3=0?");
     // test_sequence(valid_sequence);
+    // test_statement("-0.00000220921+11.4785x^2=0?");
+    test_all_statements(invalid_strings);
     // run_tests();
     // matrix_test();
     // math_test(); 

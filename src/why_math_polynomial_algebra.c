@@ -34,11 +34,6 @@ Polynomial *polynomial_add(Polynomial *p, Polynomial *q)
     Complex     value;
     int_signed  n;
 
-    #if WHY_DBG
-    _print_polynomialDBG(p);
-    _print_polynomialDBG(q);
-    #endif
-
     if (!p || !q)
         return NULL;
 
@@ -58,6 +53,11 @@ Polynomial *polynomial_add(Polynomial *p, Polynomial *q)
     }
 
     return new_polynomial;
+}
+
+Polynomial *polynomial_addLD(Polynomial *p, Polynomial *q)
+{
+    return polynomial_increment(p, q);
 }
 
 Polynomial *polynomial_scale(Polynomial *p, Complex factor)
@@ -95,6 +95,16 @@ Polynomial *polynomial_subtract(Polynomial *p, Polynomial *q)
     return result;
 }
 
+Polynomial *polynomial_subtractLD(Polynomial *p, Polynomial *q)
+{
+    Polynomial *result;
+
+    result = polynomial_subtract(p, q);
+    polynomial_delete(&p);
+
+    return result;
+}
+
 Polynomial *polynomial_multiply(Polynomial *p, Polynomial *q)
 {
     int_signed degree;
@@ -121,6 +131,16 @@ Polynomial *polynomial_multiply(Polynomial *p, Polynomial *q)
     }
 
     return r;
+}
+
+Polynomial *polynomial_multiplyLD(Polynomial *p, Polynomial *q)
+{
+    Polynomial *result;
+
+    result = polynomial_multiply(p, q);
+    polynomial_delete(&p);
+
+    return result;
 }
 
 //careful

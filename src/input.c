@@ -2,6 +2,7 @@
 #include "terminals.h"
 #include "computation.h"
 #include "node.h"
+#include "why_error.h"
 
 #include "print.h" //
 #include <assert.h>
@@ -50,9 +51,9 @@ static void _process_polynomial(Computation *lhs, Computation *rhs)
     _rhs = computation_to_polynomial(rhs);
 
     #if DBG
-    print_computation(lhs);
+    print_computationDBG(lhs);
     _print_polynomialDBG(_lhs);
-    print_computation(rhs);
+    print_computationDBG(rhs);
     _print_polynomialDBG(_rhs);
     #endif
 

@@ -41,4 +41,51 @@ Polynomial *polynomial_differentiate(const Polynomial *p)
     return derivative;
 }
 
-Polynomial *polynomial_factor(Polynomial *p, Polynomial *q);
+static Polynomial *_get_multiplier(const Polynomial *p, const Polynomial *d)
+{
+    Complex leading_p;
+    Complex leading_d;
+    Polynomial *multiplier;
+
+    leading_p = polynomial_get_leading_coefficient(p);
+    leading_d = polynomial_get_leading_coefficient(d);
+
+    multiplier = polynomial_new_from_complexG(complex_div(leading_p, leading_d), p->degree - d->degree, NULL);
+
+    return multiplier;
+}
+
+//p(x) = q(x)d(x) + r(x)
+Polynomial *polynomial_factor(const Polynomial *p, const Polynomial *d)
+{
+    Polynomial *q;
+    Polynomial *remainder;
+    Polynomial *multiplier;
+    Polynomial *result;
+
+    if (!p || !d)
+        return NULL;
+    
+    if (p->degree < 2 || p->degree <= d->degree)
+        return NULL;
+    
+    if (!polynomial_is_real(p) || !polynomial_is_real(d))
+        return NULL;
+
+    result = polynomial_new(NULL);
+    remainder = polynomial_copy(p);
+    while (remainder->degree > 0)
+    {
+        multiplier = _get_multiplier(remainder, d);
+        polynomial_set(result, polynomial_get_leading_coefficient(multiplier), multiplier->degree);
+
+        q = polynomial_multiplyLD(multiplier, (Polynomial *)d);
+        remainder = polynomial_subtractLD(remainder, q);
+
+        polynomial_delete(&q);
+    }
+
+    polynomial_delete(&remainder);
+
+    return result;
+}

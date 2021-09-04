@@ -391,19 +391,19 @@ const char *valid_polynomial_sequences[][SEQUENCE_LENGTH] = {
 {"x^3 - 3 * x^2 + 3 * x - 1 = 0?", 0},
 {"a^3 - 5a^2 - 2a + 24 = 0?", 0},
 {"0 = X^3 + 4 * X^2 + X - 5?", 0},
-{"x^3 - 3x^2 - x + 1 = 0", 0},
+{"x^3 - 3x^2 - x + 1 = 0?", 0},
 {"-13.2593 + 6.48091X - 8.58475X^2 + 0.0000267855X^3 = 0?", 0},
 {"9999999 + 9999999999x + 99999999x^2 = 0?", 0},
 {"999 + 999x + 999x^2 = 0?", 0},
 {"9999999 + 9999999999x + 99999999x^2 + 9999999 * x^3 = 0?", 0},
 {"-13.5203 + 6.533X^2 - 3.64131X^3 = 0?", 0},
-{"-1 + x^3 = x^2 + x^3 + x^3?", 0},
-{"A^17 = -1?", 0},
-{"-x = 0.0001x^10?", 0},
-{"-1 - -1 = C^31?", 0},
-{"0 = x^11?", 0},
-{"x^10 = 0?", 0},
-{"2 * X^4 = 0?", 0},
+{"-1 + x^3 + x^2 = x^3 + x^3?", 0},
+{"A^3 = -1?", 0},
+{"-x = 0.0001x^3?", 0},
+{"-1 - -1 = C^3?", 0},
+{"0 = x^2?", 0},
+{"x^3 = 0?", 0},
+{"2 * X^3 = 0?", 0},
 {"-0x^0 = 0?", 0},
 {"-0 = x?", 0},
 {"0 = 0 * x + -0?", 0},
@@ -420,7 +420,7 @@ const char *valid_polynomial_sequences[][SEQUENCE_LENGTH] = {
 {"x^3 - 3x^2 + 4x - 2 = 0?", 0},
 {"x^3 - 15x - 4 = 0?", 0},
 {"x^3 - 3x + 1.412 = 0?", 0},
-{"-1 + x^3 = x^2 + x^3 + x^3 = 0?", 0},
+{"-1 + x^3 - x^2 + x^3 + x^3 = 0?", 0},
 {"A^3 + A^3 = 125?", 0},
 {"126 = 1X^3?", 0},
 {"-125 = c^3?", 0},
@@ -437,6 +437,24 @@ void test_statement(const char *characters)
 
     process_input_line(string, NULL);
     string_delete(&string);
+}
+
+void test_all_statements(const char **strings)
+{
+    int_signed n;
+    String *string;
+
+    n = 0;
+    while (strings[n])
+    {
+        string = string_new_no_space_to_lower(strings[n]);
+        print_string_n(string);
+
+        process_input_line(string, NULL);
+        string_delete(&string);
+
+        n ++;
+    }
 }
 
 void test_sequence(const char **strings)

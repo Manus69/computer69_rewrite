@@ -3,6 +3,7 @@
 #include "terminals.h"
 #include "computation.h"
 #include "node.h"
+#include "why_error.h"
 
 #include "print.h"//
 
@@ -27,6 +28,9 @@ Variable *variable_create_with_name(String *string, const VariableTable *v_table
     Entity *value;
 
     argument = _parse(string, v_table);
+    if (!argument)
+        ; //
+
     argument = computation_resolve(argument, NULL, v_table);
     value = computation_evalG(argument, v_table, NULL);
     
