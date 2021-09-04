@@ -29,8 +29,12 @@ static VariableTable *_process_assignment(String *line, VariableTable *v_table)
     Variable *_variable;
 
     _variable = variable_create_from_string(line, v_table);
+    if (!_variable)
+    {
+        // error_display_message(NULL);
+        return v_table;
+    }
 
-    //
     print_variable(_variable);
     printf("\n");
     
@@ -58,6 +62,7 @@ static void _process_polynomial(Computation *lhs, Computation *rhs)
     #endif
 
     p = polynomial_subtract(_lhs, _rhs);
+    print_polynomial_with_rhs(p);
     roots = polynomial_roots(p);
 
     if (polynomial_is_zero(p))
@@ -66,7 +71,7 @@ static void _process_polynomial(Computation *lhs, Computation *rhs)
         print_root_messageNR();
     else
     {
-        printf("\n");
+        // printf("\n");
         print_roots(roots);
         printf("\n");
     }

@@ -172,10 +172,11 @@ int_unsigned    id_matrix(const String *string);
 int_signed      find_matching_bracket(const char *string, char o_symbol, char c_symbol);
 int_signed      find_matching_bracket_str(const String *string, char o_symbol, char c_symbol);
 String          *string_new_no_space_to_lower(const char *characters);
+String          *string_new_trimmed(const char *characters);
 boolean         is_pi(const char *string);
 boolean         is_e(const char *string);
-
 char            *check_reserved_symbols(const char *string);
 void            *get_bft_pointer(BULITIN_FUNCTION_TYPE type);
+void            skip_over_equals(String *string);
 
 #endif

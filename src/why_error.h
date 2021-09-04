@@ -16,9 +16,12 @@ enum WHY_ERROR_TYPE
     WHY_ERROR_PARSE,
     WHY_ERROR_SYNTAX,
     WHY_ERROR_MATH,
-
+    WHY_ERROR_NAME,
+    WHY_ERROR_EVAL,
 };
 
-void display_error_message(byte type, const char *message);
+void *error_set(byte type);
+void error_display_message(const char *message);
+void *error_display_message_return(const char *message);
 
 #endif

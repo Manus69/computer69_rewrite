@@ -123,7 +123,7 @@ void print_polynomial(const Polynomial *p)
     
     if (polynomial_get_degree(p) < 0)
     {
-        printf("zero polynomial\n");
+        printf("zero polynomial");
 
         return ;
     }
@@ -143,6 +143,24 @@ void print_polynomial(const Polynomial *p)
 
         n ++;
     }
+}
+
+void print_polynomial_with_rhs(const Polynomial *p)
+{
+    if (!p)
+        return ;
+    
+    if (polynomial_get_degree(p) >= 0)
+    {
+        print_polynomial(p);
+        printf(" = 0");
+    }
+    else
+    {
+        print_polynomial(p);
+    }
+
+    printf("\n");
 }
 
 void _print_polynomialDBG(const Polynomial *p)

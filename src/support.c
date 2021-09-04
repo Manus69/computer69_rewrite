@@ -62,3 +62,22 @@ String *string_new_no_space_to_lower(const char *literal)
 
     return string;
 }
+
+String *string_new_trimmed(const char *characters)
+{
+    String *string;
+
+    string = string_new_allocated(characters);
+    string = string_to_lower(string);
+    string = string_trim(string);
+
+    return string;
+}
+
+void skip_over_equals(String *string)
+{
+    string_skip_spaces(string);
+    if (string_at(string, 0) == TERMINALS[EQUALS])
+        _string_shift(string, 1);
+    string_skip_spaces(string);
+}

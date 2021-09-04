@@ -36,6 +36,17 @@ int_signed _string_shift(String *string, int_signed shift)
     return shift;
 }
 
+String *string_skip_spaces(String *string)
+{
+    if (!string)
+        return NULL;
+    
+    while (string->length && id_whitespace(string->characters))
+        _string_shift(string, 1);
+
+    return string;    
+}
+
 int_signed _string_rewind(String *string)
 {
     string->length = string->characters - string->pointer;
@@ -351,4 +362,33 @@ String *string_substitute_chars(String *string, const char *set, char replacemen
 String *string_remove_spaces(String *string)
 {
     return string_substitute_chars(string, " \t", 0);
+}
+
+String *string_to_lower(String *string)
+{
+    char *characters;
+
+    if (string->allocated == FALSE)
+        characters = cstr_copy(string->characters);
+    else
+        characters = string->characters;
+
+    cstr_to_lower(characters);
+    string->characters = characters;
+    string->allocated = TRUE;
+
+    return string;
+}
+
+String *string_trim(String *string)
+{
+    char *characters;
+
+    characters = cstr_trim(string->characters);
+    if (string->allocated)
+        cstr_delete(&string->characters);
+    
+    _string_init(string, characters, cstr_length(characters), TRUE);
+
+    return string;
 }

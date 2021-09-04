@@ -124,6 +124,22 @@ int_signed cstr_index_of(const char *string, char c)
     return NOT_FOUND;
 }
 
+int_signed cstr_index_of_any(const char *string, const char *set)
+{
+    int_signed n;
+
+    n = 0;
+    while (string[n])
+    {
+        if (cstr_index_of(set, string[n]) != NOT_FOUND)
+            return n;
+        
+        n ++;
+    }
+
+    return NOT_FOUND;
+}
+
 char cstr_char_to_lower(char c)
 {
     if (id_upper(&c))
@@ -147,4 +163,33 @@ void cstr_to_lower(char *string)
         
         string ++;
     }
+}
+
+static char *_trim_left(const char *string)
+{
+    while (*string && id_whitespace(string))
+        string ++;
+
+    return cstr_copy(string);
+}
+
+char *cstr_trim(const char *string)
+{
+    char *new_string;
+    int_signed length;
+
+    new_string = _trim_left(string);
+    length = cstr_length(new_string);
+    length --;
+
+    while (length >= 0)
+    {
+        if (!id_whitespace(new_string + length))
+            break ;
+        
+        new_string[length] = '\0';
+        length --;
+    }
+
+    return new_string;
 }

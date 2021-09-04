@@ -61,6 +61,8 @@ Entity *entity_mult(Entity *lhs, Entity *rhs)
     MatrixRepr *matrix;
     Computation *_computation;
 
+    if (!lhs || !rhs)
+        return NULL;
     if (lhs->type == ET_NUMBER && rhs->type == ET_NUMBER)
     {
         number = number_mult(lhs->number, rhs->number);

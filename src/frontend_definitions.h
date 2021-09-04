@@ -7,6 +7,7 @@
 #define DBG 0
 #define NO_DELETE 1
 #define CHECK_MEMORY 1
+#define WHITE_SPACE " \t\n\r"
 
 typedef struct Number Number;
 typedef struct MatrixRepr MatrixRepr;

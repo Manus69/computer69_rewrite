@@ -95,24 +95,21 @@ Computation *get_term(String *string, const VariableTable *v_table)
     if (!string || string_length(string) == 0)
         return NULL;
     
-    node = node_get_number(string);
-    if (node)
+    string_skip_spaces(string);
+
+    if ((node = node_get_number(string)))
         return computation_new(node, FALSE);
     
-    node = node_get_matrix(string, v_table);
-    if (node)
+    if ((node = node_get_matrix(string, v_table)))
         return computation_new(node, FALSE);
 
-    term = get_stuff_in_parens(string, v_table);
-    if (term)
+    if ((term = get_stuff_in_parens(string, v_table)))
         return term;
     
-    term = get_function(string, v_table);
-    if (term)
+    if ((term = get_function(string, v_table)))
         return term;
     
-    term = get_identifier(string);
-    if (term)
+    if ((term = get_identifier(string)))
         return term;
 
     if (string_at(string, 0) == TERMINALS[MINUS])
@@ -124,6 +121,8 @@ Computation *get_term(String *string, const VariableTable *v_table)
 Computation *get_operator(String *string)
 {
     Node *op_node;
+
+    string_skip_spaces(string);
 
     op_node = node_get_operator(string);
 
@@ -138,13 +137,10 @@ static Computation *get_partial_tree(String *string, const VariableTable *v_tabl
 
     if (!string)
         return NULL;
-
-    // if (string_at(string, 0) == TERMINALS[MINUS])
-    //     return _process_u_minus(string, v_table);
     
     lhs = get_term(string, v_table);
     if (!lhs)
-        return NULL;
+        return error_set(WHY_ERROR_PARSE);
     
     root = get_operator(string);
     if (!root)
@@ -194,19 +190,20 @@ Computation *_parse(String *string, const VariableTable *v_table)
     Computation *term;
 
     root = get_partial_tree(string, v_table);
-    if (!root || root->node->type != NT_OPERATOR)
+    if (!root)
+        return NULL;
+    
+    if (root->node->type != NT_OPERATOR)
         return root;
 
     if (!operator_is_binary(root->node->operator))
         return root;
 
     last_op = root;
-    while (TRUE)
+    while (string_length(string))
     {
-        if (string_length(string) == 0)
-            return root;
-
-        term = get_term(string, v_table);
+        if(!(term = get_term(string, v_table)))
+            return error_set(WHY_ERROR_SYNTAX);
 
         if (!(next_op = get_operator(string)))
         {
@@ -221,9 +218,7 @@ Computation *_parse(String *string, const VariableTable *v_table)
         }
         
         if (_check_order(last_op, next_op))
-        {
             last_op = _insert_in_order(last_op, next_op, term);
-        }
         else
         {
             last_op->rhs = term;
@@ -231,6 +226,8 @@ Computation *_parse(String *string, const VariableTable *v_table)
             last_op = root;
         }
     }
+
+    return root;
 }
 
 Computation *parse(String *string, const VariableTable *v_table)

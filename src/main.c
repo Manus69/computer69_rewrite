@@ -129,6 +129,7 @@ void run_tests()
 //some print functions print retarded stuff like -0 etc.
 //unfuck enums, reserved strings and function names
 //"f(x) = sin(sqrt(4)*pi)" does not resolve to value "f(x) = ln(e)", etc
+//x^3 = 99999999999999999999999999999?
 //make a structure with strings, f_pointers, etc indexed by an enum
 
 int main()
@@ -141,9 +142,9 @@ int main()
     data = data_init();
 
     // test_sequence(valid_sequence);
-    // test_statement("-0.00000220921+11.4785x^2=0?");
-    test_all_statements(invalid_strings);
+    test_statement("y   -   ");
     // run_tests();
+    // test_all_statements(invalid_strings);
     // matrix_test();
     // math_test(); 
     // polynomial_test();

@@ -34,15 +34,18 @@ String      *string_substring_from(const String *string, int_signed left_index);
 String      *string_substring_from_allocated(const String *string, int_signed left_index);
 String      *string_remove_spaces(String *string);
 String      *string_substitute_chars(String *string, const char *set, char replacement);
+String      *string_to_lower(String *string);
+String      *string_trim(String *string);
+String      *string_skip_spaces(String *string);
 void        string_delete(String **string);
 
 //search
-int_signed string_index_of_predicate(const String *string, int_signed start, char c, boolean (*predicate)(char, char));
-int_signed string_index_of_from(const String *string, int_signed start, char c);
-int_signed string_index_of(const String *string, char c);
-int_signed string_index_of_compliment_from(const String *string, int_signed start, char c);
-int_signed string_index_of_any(const String *string, char *characters);
-int_signed string_find(const String *haystack, const String *needle);
-int_signed string_find_literal(const String *haystack, const char *needle);
+int_signed  string_index_of_predicate(const String *string, int_signed start, char c, boolean (*predicate)(char, char));
+int_signed  string_index_of_from(const String *string, int_signed start, char c);
+int_signed  string_index_of(const String *string, char c);
+int_signed  string_index_of_compliment_from(const String *string, int_signed start, char c);
+int_signed  string_index_of_any(const String *string, char *characters);
+int_signed  string_find(const String *haystack, const String *needle);
+int_signed  string_find_literal(const String *haystack, const char *needle);
 
 #endif

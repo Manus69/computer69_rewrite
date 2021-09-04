@@ -3,6 +3,7 @@
 #include "node.h"
 #include "operator.h"
 #include "entity.h"
+#include "why_error.h"
 
 #include "print.h" //
 
@@ -184,9 +185,6 @@ Number *computation_eval(const Computation *computation, const VariableTable *v_
     result = function(lhs_value, rhs_value);
     result = number_demote_if_possible(result);
 
-    // number_delete(&lhs_value);
-    // number_delete(&rhs_value);
-
     return result;
 }
 
@@ -237,9 +235,6 @@ Entity *computation_evalG(const Computation *computation, const VariableTable *v
 
     if (result && result->type == ET_NUMBER)
         result->number = number_demote_if_possible(result->number);
-
-    // entity_delete(&lhs_value);
-    // entity_delete(&rhs_value);
 
     return result;
 }

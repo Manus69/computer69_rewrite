@@ -29,23 +29,14 @@ const char *invalid_strings[] = {
 "a = b = 0",
 "0 = 0 = 0",
 "x y = 0",
-"1",
-"x",
-"X",
-"11",
 "-",
 "-1 *",
-"x - X",
 "y -",
 "1 + x =",
-"x = YYYY",
 "012345678901234567890123456789",
-"012345678901234567890123456789 = x",
-"012345678901234567890123456789x = -1",
 "3 - 3 = ",
 "1 =",
 "= x",
-"x = y",
 "+",
 " + ",
 "- ",
@@ -55,49 +46,26 @@ const char *invalid_strings[] = {
 "x == -1",
 "x = -x = x",
 "===",
-"x10 = -1",
-"a-1 = 0",
-"a-1 = b",
-"a-1=v",
 "x^-11 = -9",
 "x = 01",
 "x = -01",
-"-xX = 0",
-"x*a^1 = -1",
 "x-1^x = 0",
 "-x++x = -1",
-"1^1 = x",
 "-2 --1 = 0",
 "x^-1 = -1",
-"3.1A + 8.1111b = 0",
-"3.11A = -4.1B",
 "+x = -1",
-"1-x = 0",
 "_",
 "	~",
 "1 * X^^1 = -X",
 "* x = -1",
-"10*x = -1",
 "-1 * * c = 0",
 "-x + = -1",
-"ass = 0",
-"0 = a1",
-"a^x = 0",
-"vx = 0",
 "ч = 0",
 "3.1ч = 0",
-"-x^11 -x^2 = x^3",
-"3.14 *x = -1",
-"-x = 3.24* x^10",
 "0 = 3.1ч",
-"0 = -3.1x^3.1",
 "0 = +-1",
 "0 = +- x",
 "01 = 0x",
-"-x = 0x * x",
-"0 = x * x",
-"0 = 0x + 0x^10",
-"0 = 0 * 0",
 "+7 = 0",
 "1. = x",
 "x = .001",
@@ -107,17 +75,51 @@ const char *invalid_strings[] = {
 "0.0.1 = x",
 ".09 = -1",
 "0131.99 = -1",
-"1x^9999999999999999999 = -1",
 "0 - 1 = 9.",
-"0x = -1",
-"-x = 0x^9",
-"-1 * X = - 1 * Y",
 "#1 = -@0",
 "#=",
 "   - $ = -#",
 0};
 
+const char *context_dependent_strings[] = {
+"x",
+"X",
+"x - X",
+"x = YYYY",
+"012345678901234567890123456789 = x",
+"012345678901234567890123456789x = -1",
+"x = y",
+"-x = 0x * x",
+"0 = x * x",
+"0 = 0x + 0x^10",
+"1x^9999999999999999999 = -1",
+"0x = -1",
+"-x = 0x^9",
+"-1 * X = - 1 * Y",
+"-x^11 -x^2 = x^3",
+"3.14 *x = -1",
+"-x = 3.24* x^10",
+"0 = -3.1x^3.1",
+"ass = 0",
+"0 = a1",
+"a^x = 0",
+"vx = 0",
+"3.1A + 8.1111b = 0",
+"3.11A = -4.1B",
+"10*x = -1",
+"1-x = 0",
+"-xX = 0",
+"x*a^1 = -1",
+"1^1 = x",
+"x10 = -1",
+"a-1 = 0",
+"a-1 = b",
+"a-1=v",
+0};
+
 const char *valid_strings[] = {
+"11",
+"0 = 0 * 0",
 "-X^10 = 0",
 "-999999999999999999999999999999999999999999999999999999x = x^20",
 "x^99999999999999999999999999 = -1",
@@ -392,7 +394,7 @@ const char *valid_polynomial_sequences[][SEQUENCE_LENGTH] = {
 {"a^3 - 5a^2 - 2a + 24 = 0?", 0},
 {"0 = X^3 + 4 * X^2 + X - 5?", 0},
 {"x^3 - 3x^2 - x + 1 = 0?", 0},
-{"-13.2593 + 6.48091X - 8.58475X^2 + 0.0000267855X^3 = 0?", 0},
+// {"-13.2593 + 6.48091X - 8.58475X^2 + 0.0000267855X^3 = 0?", 0}, /////
 {"9999999 + 9999999999x + 99999999x^2 = 0?", 0},
 {"999 + 999x + 999x^2 = 0?", 0},
 {"9999999 + 9999999999x + 99999999x^2 + 9999999 * x^3 = 0?", 0},
@@ -408,7 +410,7 @@ const char *valid_polynomial_sequences[][SEQUENCE_LENGTH] = {
 {"-0 = x?", 0},
 {"0 = 0 * x + -0?", 0},
 {"x + -0 * x = -0?", 0},
-{"-13.2593 + 6.48091X - 8.58475X^2 + 0.0000267855X^3 = 0?", 0},
+// {"-13.2593 + 6.48091X - 8.58475X^2 + 0.0000267855X^3 = 0?", 0}, ////
 {"37.7801 + 58.1269X - 50.5115X^2 - 141.452X^3 = 0?", 0},
 {"-121.34 - 76.7428X + 35.6213X^2 + 37.283X^3 = 0?", 0},
 {"76.7264 + 83.6769X^2 - 21.1039X^3 = 0?", 0},
@@ -432,7 +434,8 @@ void test_statement(const char *characters)
 {
     String *string;
 
-    string = string_new_no_space_to_lower(characters);
+    // string = string_new_no_space_to_lower(characters);
+    string = string_new_trimmed(characters);
     print_string_n(string);
 
     process_input_line(string, NULL);
@@ -447,7 +450,8 @@ void test_all_statements(const char **strings)
     n = 0;
     while (strings[n])
     {
-        string = string_new_no_space_to_lower(strings[n]);
+        // string = string_new_no_space_to_lower(strings[n]);
+        string = string_new_trimmed(strings[n]);
         print_string_n(string);
 
         process_input_line(string, NULL);
@@ -467,7 +471,8 @@ void test_sequence(const char **strings)
     v_table = NULL;
     while (strings[n])
     {
-        string = string_new_no_space_to_lower(strings[n]);
+        // string = string_new_no_space_to_lower(strings[n]);
+        string = string_new_trimmed(strings[n]);
         print_string_n(string);
 
         v_table = process_input_line(string, v_table);

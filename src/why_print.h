@@ -15,6 +15,7 @@ void print_cstring(const char *string);
 void print_string(const String *string);
 void print_string_n(const String *string);
 void print_polynomial(const Polynomial *p);
+void print_polynomial_with_rhs(const Polynomial *p);
 void _print_polynomialDBG(const Polynomial *p);
 void print_vector(const Vector *vector, void (*print)(), const char *separator);
 
