@@ -12,7 +12,9 @@ void main_loop()
     while (TRUE)
     {
         line = get_line(STDIN_FILENO);
-        line = string_trim(line);
+        if (!(line = string_trim(line)))
+            break ;
+
         if (string_is_identical_to(line, "q"))
         {
             string_delete(&line);

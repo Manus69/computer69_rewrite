@@ -99,10 +99,10 @@ Computation *computation_resolve(Computation *computation, const char *wc_identi
 
     computation->lhs = computation_resolve(computation->lhs, wc_identifier, v_table);
 
-    computation = _resolve_node(computation, wc_identifier, v_table);
+    if(!(computation = _resolve_node(computation, wc_identifier, v_table)))
+        return error_set(WHY_ERROR_GENERIC, " could not resolve symbols");
 
     computation->rhs = computation_resolve(computation->rhs, wc_identifier, v_table);    
 
-    // return computation;
     return WHY_ERROR == WHY_ERROR_DEFAULT ? computation : NULL;
 }

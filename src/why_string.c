@@ -384,6 +384,9 @@ String *string_trim(String *string)
 {
     char *characters;
 
+    if (!string)
+        return NULL;
+
     characters = cstr_trim(string->characters);
     if (string->allocated)
         cstr_delete(&string->characters);

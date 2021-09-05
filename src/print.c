@@ -177,6 +177,17 @@ void print_variable(const Variable *variable)
         return ;
     
     value = variable_get_value(variable);
+    print_entity(value);
+}
+
+void print_variable_verbose(const Variable *variable)
+{
+    Entity *value;
+
+    if (!variable)
+        return ;
+    
+    value = variable_get_value(variable);
     if (!variable->name)
     {
         print_entity(value); //
@@ -185,7 +196,6 @@ void print_variable(const Variable *variable)
     }
 
     print_cstring(variable->name);
-    // if (variable_get_type(variable) == VT_COMPUTATION)
     if (variable_is_parametrized(variable))
         printf("(%s)", WC_SYMBOL);
 
@@ -242,17 +252,17 @@ void print_matrix_repr(const MatrixRepr *matrix)
     if (!n_rows || !n_cols)
         return ;
     
-    printf("[");
+    // printf("[");
     print_matrix_row(matrix, 0);
 
     n = 1;
     while (n < n_rows)
     {
-        printf(";");
+        printf("\n");
         print_matrix_row(matrix, n);
         n ++;
     }
-    printf("]");
+    // printf("]");
 }
 
 static void *functions[] = {print_number, print_matrix_repr, print_computation, 0};

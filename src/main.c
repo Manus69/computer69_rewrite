@@ -49,7 +49,6 @@ void run_tests()
 //max size for matrices?
 //upper limit for all numbers?
 //some increment functions allocate, others do not
-//no () after matrix function assignment
 //some print functions print retarded stuff like -0 etc.
 //unfuck enums, reserved strings and function names
 //"f(x) = sin(sqrt(4)*pi)" does not resolve to value "f(x) = ln(e)", etc
@@ -57,6 +56,11 @@ void run_tests()
 //"-13.2593 + 6.48091X - 8.58475X^2 + 0.0000267855X^3 = 0?" makes valgrind shit the bed
 //be careful around small coefficients
 //make a structure with strings, f_pointers, etc indexed by an enum
+//f(x = 2 does something weird
+//i = 2
+//f(x) = ... ; f does not print the value
+//numeric variable and function with the same name w = ... ; w(x) = ...
+//r(x) =[[cos(x), -sin(x)];[sin(x), cos(x)]] , v = [[1];[0]] , r * v
 
 int main()
 {

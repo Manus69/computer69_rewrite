@@ -9,6 +9,7 @@ char *error_string = NULL;
 
 const char *error_strings[] = {
 "No errors detected",
+"Error",
 "It is totally broken",
 "Memory error",
 "Index error",
