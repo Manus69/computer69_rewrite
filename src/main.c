@@ -130,6 +130,7 @@ void run_tests()
 //unfuck enums, reserved strings and function names
 //"f(x) = sin(sqrt(4)*pi)" does not resolve to value "f(x) = ln(e)", etc
 //x^3 = 99999999999999999999999999999?
+//"-13.2593 + 6.48091X - 8.58475X^2 + 0.0000267855X^3 = 0?" makes valgrind shit the bed for some reason
 //make a structure with strings, f_pointers, etc indexed by an enum
 
 int main()
@@ -142,7 +143,7 @@ int main()
     data = data_init();
 
     // test_sequence(valid_sequence);
-    test_statement("x - x");
+    test_statement("-13.2593 + 6.48091X - 8.58475X^2 + 0.0000267855X^3 = 0?");
     // run_tests();
     // test_all_statements(invalid_strings);
     // test_all_statements(context_dependent_strings);

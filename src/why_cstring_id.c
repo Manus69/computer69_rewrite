@@ -100,6 +100,7 @@ int_unsigned id_float(const char *string)
             length = id_digit_string(pointer + 1);
             return (pointer - string) +  length + 1;
         }
+        return 0;
     }
     else
         return 0;
