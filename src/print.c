@@ -185,7 +185,8 @@ void print_variable(const Variable *variable)
     }
 
     print_cstring(variable->name);
-    if (variable_get_type(variable) == VT_COMPUTATION)
+    // if (variable_get_type(variable) == VT_COMPUTATION)
+    if (variable_is_parametrized(variable))
         printf("(%s)", WC_SYMBOL);
 
     printf(" = ");

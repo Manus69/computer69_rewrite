@@ -164,8 +164,7 @@ Number *computation_eval(const Computation *computation, const VariableTable *v_
     Number *result;
 
     if (!computation)
-        assert(0);
-
+        return NULL;
     if (computation->node->type == NT_NUMBER)
         return number_copy(computation->node->number);
     if (computation->node->type == NT_BUILTIN_FUNCTION)
@@ -213,8 +212,7 @@ Entity *computation_evalG(const Computation *computation, const VariableTable *v
     Entity *result;
 
     if (!computation)
-        assert(0);
-
+        return NULL;
     if (computation->node->type == NT_NUMBER)
         return entity_new_from_number(computation->node->number, TRUE);
     if (computation->node->type == NT_MATRIX)

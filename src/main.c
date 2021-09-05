@@ -11,44 +11,6 @@
 #include <math.h>
 #include <limits.h>
 
-Data *data;
-
-void parse_test()
-{
-    Computation *cmp;
-    String *string;
-
-    // string = string_new("3!^2+1");
-    string = string_new("i");
-
-    cmp = parse(string, NULL);
-
-    print_computation(cmp);
-
-    string_delete(&string);
-    computation_delete(&cmp);
-}
-
-void variable_test()
-{
-    Variable *v;
-    VariableTable *v_table;
-    String *string;
-
-    string = string_new_no_space_to_lower("sin(x) = x");
-    v_table = v_table_new(NULL);
-    v = variable_create_from_string(string, v_table);
-
-    print_variable(v);
-
-    v_table = v_table_new(v);
-    // v_table_insert(v_table, v);
-
-    // variable_delete(&v);
-    v_table_delete(&v_table);
-    string_delete(&string);
-}
-
 void test()
 {
     Vector *v;
@@ -72,44 +34,6 @@ void test()
     vector_delete(&v);
 }
 
-void matrix_test()
-{
-    MatrixRepr *A;
-    MatrixRepr *B;
-    MatrixRepr *result;
-    int_signed size;
-    NUMBER_TYPE type;
-
-    size = 100;
-    type = NT_REAL;
-    A = generate_random_matrix(size, size, type);
-    B = generate_random_matrix(size, size, type);
-    result = matrix_repr_mult(A, B);
-
-    print_matrix_repr(result);
-
-    matrix_repr_delete(&A);
-    matrix_repr_delete(&B);
-    matrix_repr_delete(&result);
-}
-
-void polynomial_test()
-{
-    Polynomial *p;
-    Computation *cmp;
-    String *str;
-
-    str = string_new_no_space_to_lower("2 - 1");
-    cmp = _parse(str, NULL);
-    cmp = computation_resolve(cmp, "x", NULL);
-    p = computation_to_polynomial(cmp);
-
-    print_polynomial(p);
-
-    polynomial_delete(&p);
-    string_delete(&str);
-}
-
 void run_tests()
 {
     test_all_sequences(valid_sequences);
@@ -130,7 +54,8 @@ void run_tests()
 //unfuck enums, reserved strings and function names
 //"f(x) = sin(sqrt(4)*pi)" does not resolve to value "f(x) = ln(e)", etc
 //x^3 = 99999999999999999999999999999?
-//"-13.2593 + 6.48091X - 8.58475X^2 + 0.0000267855X^3 = 0?" makes valgrind shit the bed for some reason
+//"-13.2593 + 6.48091X - 8.58475X^2 + 0.0000267855X^3 = 0?" makes valgrind shit the bed
+//be careful around small coefficients
 //make a structure with strings, f_pointers, etc indexed by an enum
 
 int main()
@@ -139,22 +64,17 @@ int main()
     clock_t end;
 
     start = clock();
-
     data = data_init();
-
+    
     // test_sequence(valid_sequence);
-    test_statement("-13.2593 + 6.48091X - 8.58475X^2 + 0.0000267855X^3 = 0?");
+    // test_statement("r(x) = [[cos(x), -sin(x)]; [sin(x), cos(x)]]");
+    // test_statement("[[0] ; [1]]");
     // run_tests();
     // test_all_statements(invalid_strings);
     // test_all_statements(context_dependent_strings);
     // matrix_test();
     // math_test(); 
-    // polynomial_test();
-
-    // printf("%f\n", pow(2, 999999999999999999999999999999999999999.0));
-    // printf("%.15f\n", sqrt((real)__INT_MAX__));
-    // printf("%.15Lf\n", math_sqrt((real)__INT_MAX__));
-
+    main_loop();
 
     printf("\nMEMORY USAGE: %Ld\n", data_get_bytes(data));
 

@@ -3,6 +3,7 @@
 #include "node.h"
 #include "entity.h"
 #include "variable.h"
+#include "why_error.h"
 
 #include <assert.h>
 
@@ -69,14 +70,12 @@ static Computation *_resolve_node(Computation *computation, const char *wc_ident
         {
             copy = computation_copy(variable->entity->computation);
             copy = computation_replace_wc(copy, computation->lhs);
-
             computation = copy;
         }
         else if (variable_get_type(variable) == VT_MATRIX)
         {
             matrix = matrix_repr_copy(variable->entity->matrix);
             matrix = matrix_repr_replace_wc(matrix, computation->lhs);
-
             computation = computation_from_entity(entity_new_from_matrix(matrix, FALSE), FALSE);            
         }
     }
@@ -84,11 +83,11 @@ static Computation *_resolve_node(Computation *computation, const char *wc_ident
     {
         if (cstr_compare(wc_identifier, computation->node->identifier) == 0)
             node_convert_to_wildcard(computation->node);
+        else if (!check_reserved_symbols(computation->node->identifier))
+            error_set(WHY_ERROR_SYMBOL, computation->node->identifier);
     }
     else if (computation->node->type == NT_MATRIX)
         _resolve_matrix(computation->node->matrix, wc_identifier, v_table);
-    else if (computation->node->type == NT_IDENTIFIER || computation->node->type == NT_FUNCTION)
-        assert(0);
 
     return computation;
 }
@@ -104,5 +103,6 @@ Computation *computation_resolve(Computation *computation, const char *wc_identi
 
     computation->rhs = computation_resolve(computation->rhs, wc_identifier, v_table);    
 
-    return computation;
+    // return computation;
+    return WHY_ERROR == WHY_ERROR_DEFAULT ? computation : NULL;
 }

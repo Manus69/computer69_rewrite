@@ -6,9 +6,9 @@
 
 struct Variable
 {
-    // String          *name;
-    char            *name;
     Entity          *entity;
+    char            *name;
+    boolean         parametrized;
 };
 
 #endif

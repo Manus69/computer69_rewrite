@@ -27,7 +27,6 @@ static MatrixRepr *_process_row(MatrixRepr *matrix, String *row_string, const Va
         item = entity_new_from_computation(_parse(item_string, v_table), FALSE);
         matrix_repr_push(matrix, item);
 
-        // entity_delete(&item);
         n ++;
     }
 
@@ -52,6 +51,7 @@ static MatrixRepr *_process_rows(Vector *rows, const VariableTable *v_table)
     while (n < vector_size(rows))
     {
         row_string = vector_at(rows, n);
+        row_string = string_skip_spaces(row_string);
         length = id_row(row_string);
         if (!length)
             assert(0);

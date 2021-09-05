@@ -2,17 +2,17 @@
 #include "frontend_declarations.h"
 #include "data_interface.h"
 
-Variable *variable_new(char *name, Entity *entity, boolean copy)
+Variable *variable_new(char *name, Entity *entity, boolean parametrized, boolean copy)
 {
     Variable *variable;
 
     variable = allocate(sizeof(Variable));
     variable->name = name;
     variable->entity = copy? entity_copy(entity) : entity;
+    variable->parametrized = parametrized;
 
     data_add_pointer(data, variable, sizeof(Variable));
     data_add_pointer(data, variable->name, sizeof(void *));
-    // vector_push(data_vector, variable);
 
     return variable;
 }
@@ -53,6 +53,11 @@ VARIABLE_TYPE variable_get_type(const Variable *variable)
     return (VARIABLE_TYPE)entity_get_type(variable->entity);
 }
 
+boolean variable_is_parametrized(const Variable *variable)
+{
+    return variable->parametrized;
+}
+
 Variable *variable_copy(const Variable *variable)
 {
     Variable *copy;
@@ -64,15 +69,11 @@ Variable *variable_copy(const Variable *variable)
     data_add_pointer(data, copy, sizeof(variable));
     data_add_pointer(data, copy->name, sizeof(void *));
 
-    // vector_push(data_vector, copy->name);
-    // vector_push(data_vector, copy);
-
     return copy;
 }
 
 Variable *variable_assign(Variable *variable, Entity *value, boolean copy)
 {
-    // entity_delete(&variable->entity);
     variable->entity = copy ? entity_copy(value) : value;
 
     return variable;

@@ -132,7 +132,7 @@ Entity          *entity_factorial(Entity *lhs, Entity *rhs);
 Computation     *computation_from_entity(Entity *entity, boolean copy);
 
 //variable
-Variable        *variable_new(char *name, Entity *entity, boolean copy);
+Variable        *variable_new(char *name, Entity *entity, boolean parametrized, boolean copy);
 VARIABLE_TYPE   variable_get_type(const Variable *variable);
 int_signed      variable_compare(const Variable *lhs, const Variable *rhs);
 Entity          *variable_get_value(const Variable *variable);
@@ -141,7 +141,9 @@ void            variable_delete(Variable **variable);
 Variable        *variable_create_from_string(String *string, const VariableTable *v_table);
 Variable        *variable_copy(const Variable *variable);
 Variable        *variable_assign(Variable *variable, Entity *value, boolean copy);
-Variable        *variable_create_with_name(String *string, const VariableTable *v_table, char *name);
+Variable        *variable_create_named(String *string, const VariableTable *v_table, char *name);
+boolean         variable_is_parametrized(const Variable *variable);
+
 
 //variable table
 VariableTable   *v_table_new(const Variable *variable);
@@ -178,5 +180,7 @@ boolean         is_e(const char *string);
 char            *check_reserved_symbols(const char *string);
 void            *get_bft_pointer(BULITIN_FUNCTION_TYPE type);
 void            skip_over_equals(String *string);
+
+void            main_loop();
 
 #endif

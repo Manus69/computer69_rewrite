@@ -3,6 +3,8 @@
 
 #include <assert.h>
 
+Data *data;
+
 Vector *get_data_vector()
 {
     return vector_new_with_capacity(copy_shallow, memory_delete, DEFAULT_DATA_CAPACITY);

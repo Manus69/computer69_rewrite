@@ -559,3 +559,24 @@ void math_test()
     // sqrt_test(initial_value, step, terminal_value);
     log_test(initial_value, step, terminal_value);
 }
+
+void matrix_test()
+{
+    MatrixRepr *A;
+    MatrixRepr *B;
+    MatrixRepr *result;
+    int_signed size;
+    NUMBER_TYPE type;
+
+    size = 100;
+    type = NT_REAL;
+    A = generate_random_matrix(size, size, type);
+    B = generate_random_matrix(size, size, type);
+    result = matrix_repr_mult(A, B);
+
+    print_matrix_repr(result);
+
+    matrix_repr_delete(&A);
+    matrix_repr_delete(&B);
+    matrix_repr_delete(&result);
+}

@@ -5,9 +5,27 @@
 #define READ_SIZE (1 << 11)
 #define NUMBER_OF_DESCRIPTORS (1 << 10)
 
+static void _delete_buffers(Buffer **buffers)
+{
+    int_signed n;
+
+    n = 0;
+    while (n < NUMBER_OF_DESCRIPTORS)
+    {
+        buffer_delete(&buffers[n]);
+        n ++;
+    }
+}
+
 static Buffer *_get_buffer(int_signed index)
 {
     static Buffer *buffers[NUMBER_OF_DESCRIPTORS];
+
+    if (index < 0)
+    {
+        _delete_buffers(buffers);
+        return NULL;
+    }
 
     if (index >= NUMBER_OF_DESCRIPTORS)
         return NULL;

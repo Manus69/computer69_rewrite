@@ -16,6 +16,7 @@ const char *error_strings[] = {
 "Syntax error",
 "Math error",
 "Name error",
+"Unknown symbol error",
 "Evaluation error",
 "Conversion error",
 0};
