@@ -223,6 +223,7 @@ Entity *computation_evalG(const Computation *computation, const VariableTable *v
         return _eval_functionG(computation, v_table, wc_value);
     if (computation->node->type == NT_IDENTIFIER)
         return _eval_idG(computation);
+    // if (computation->node->type == NT_WILDCARD && wc_value)
     if (computation->node->type == NT_WILDCARD)
         return _eval_wildcard(wc_value);
     

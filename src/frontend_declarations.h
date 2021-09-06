@@ -163,6 +163,7 @@ boolean         id_assignment(const String *string);
 boolean         id_evaluation(const String *string);
 boolean         id_find_roots(const String *string);
 boolean         id_statement(const String *string);
+boolean         id_display(const String *string, const VariableTable *v_table);
 
 //support
 int_unsigned    id_identifier(const char *string);

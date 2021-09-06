@@ -3,6 +3,8 @@
 
 #include <unistd.h>
 
+#define DBG 0
+
 void main_loop()
 {
     VariableTable *v_table;
@@ -14,6 +16,10 @@ void main_loop()
         line = get_line(STDIN_FILENO);
         if (!(line = string_trim(line)))
             break ;
+
+        #if DBG
+        printf("line read: '%s'\n", string_get_characters(line));
+        #endif
 
         if (string_is_identical_to(line, "q"))
         {

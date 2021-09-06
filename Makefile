@@ -1,4 +1,4 @@
-name = test
+name = computer69
 source_folder = src/
 obj_folder = obj/
 cc = gcc

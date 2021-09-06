@@ -69,7 +69,8 @@ static Computation *_resolve_node(Computation *computation, const char *wc_ident
         else if (variable_get_type(variable) == VT_COMPUTATION)
         {
             copy = computation_copy(variable->entity->computation);
-            copy = computation_replace_wc(copy, computation->lhs);
+            if (computation->lhs) ///
+                copy = computation_replace_wc(copy, computation->lhs);
             computation = copy;
         }
         else if (variable_get_type(variable) == VT_MATRIX)

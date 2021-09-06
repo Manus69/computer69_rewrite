@@ -54,6 +54,15 @@ boolean id_find_roots(const String *string)
     return TRUE;
 }
 
+boolean id_display(const String *string, const VariableTable *v_table)
+{
+    Variable *_variable;
+
+    _variable = v_table_search(v_table, string_get_characters(string));
+    
+    return _variable ? TRUE : FALSE;
+}
+
 boolean id_statement(const String *string)
 {
     return string_length(string) > 0;

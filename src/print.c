@@ -180,6 +180,12 @@ void print_variable(const Variable *variable)
     print_entity(value);
 }
 
+void print_variableN(const Variable *variable)
+{
+    print_variable(variable);
+    printf("\n");
+}
+
 void print_variable_verbose(const Variable *variable)
 {
     Entity *value;

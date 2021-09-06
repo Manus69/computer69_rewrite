@@ -131,8 +131,15 @@ VariableTable *process_input_line(String *line, VariableTable *v_table)
 {
     String *substring;
     VariableTable *result;
+    Variable *_variable;
     
     result = v_table;
+    if ((_variable = v_table_search(v_table, string_get_characters(line))))
+    {
+        print_variableN(_variable);
+        return v_table;
+    }
+
     if (id_assignment(line))
         result = _process_assignment(line, v_table);
     else if (id_evaluation(line))

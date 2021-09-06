@@ -53,11 +53,22 @@ Variable *variable_create_named(String *string, const VariableTable *v_table, ch
     return variable;
 }
 
+static void *_handle_name_errors(char *name)
+{
+    error_set(WHY_ERROR_NAME, "reserved symbol");
+    cstr_delete(&name);
+
+    return NULL;
+}
+
 static Variable *_create_constant(String *string, const VariableTable *v_table, int_signed name_length)
 {
     char *name;
 
     name = string_slice(string, name_length);
+    if (check_reserved_symbols(name))
+        return _handle_name_errors(name);
+    
     _string_shift(string, name_length);
     skip_over_equals(string);
 

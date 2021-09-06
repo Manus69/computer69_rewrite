@@ -13,6 +13,7 @@ void print_computation(const Computation *computation);
 void print_computationDBG(const Computation *computation);
 void print_variable_verbose(const Variable *variable);
 void print_variable(const Variable *variable);
+void print_variableN(const Variable *variable);
 void print_v_table(const VariableTable *v_table);
 void print_matrix_row(const MatrixRepr *matrix, int_signed j);
 void print_matrix_repr(const MatrixRepr *matrix);
