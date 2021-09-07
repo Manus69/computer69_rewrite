@@ -23,6 +23,8 @@ boolean id_assignment(const String *string)
 boolean id_evaluation(const String *string)
 {
     int_signed length;
+    int_signed n;
+    char c;
 
     length = string_length(string);
     if (length <= 2)
@@ -31,7 +33,17 @@ boolean id_evaluation(const String *string)
     if (string_at(string, length - 1) != TERMINALS[QUESTION])
         return FALSE;
     
-    if (string_at(string, length - 2) != TERMINALS[EQUALS])
+    n = length - 2;
+    while (n)
+    {
+        c = string_at(string, n);
+        if (!id_whitespace(&c))
+            break ;
+        
+        n --;
+    }
+
+    if (string_at(string, n) != TERMINALS[EQUALS])
         return FALSE;
     
     return TRUE;    

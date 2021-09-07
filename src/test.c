@@ -210,7 +210,7 @@ const char *valid_cubics[] = {
 
 const char *valid_sequence_basic[] = {"A = [[1]]", "B = 2*A", 0};
 
-const char *valid_sequence[] = {"i = 2", 0};
+const char *valid_sequence[] = {"r(x) =[[x]]", "r + [[1]]", 0};
 
 const char *valid_sequences[][SEQUENCE_LENGTH] = {
 {"0", 0},
@@ -315,9 +315,9 @@ const char *valid_matrix_sequences[][SEQUENCE_LENGTH] = {{"[[0]]", 0},
 {"a = 1", "a = [[sin(pi)];[cos(pi)]]", 0},
 {"a = [[1,0];[0,1]]", "a = i", "a + a", 0},
 {"a = [[1,0];[0,1]]", "a(x) = x^2", "a(2)", 0},
+{"A(x) = [[cos(x), -sin(x)];[sin(x), cos(x)]]", "v = A(pi/2) * A(-pi/2) * [[1];[1]]", 0},
 {0}};
 
-//only x is allowed for now
 const char *valid_polynomial_sequences[][SEQUENCE_LENGTH] = {
 {"x = 1 ?", 0},
 {"1 = 1 ?", 0},

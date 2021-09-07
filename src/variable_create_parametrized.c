@@ -12,6 +12,9 @@ static char *_get_arg_name(String *string)
     char *arg_name;
 
     n = find_matching_bracket_str(string, TERMINALS[O_PAREN], TERMINALS[C_PAREN]);
+    if (n < 0)
+        return error_set(WHY_ERROR_SYNTAX, string_get_characters(string));
+    
     arg_name = string_slice_index(string, 1, n - 1);
 
     if (cstr_index_of_any(arg_name, WHITE_SPACE) != NOT_FOUND)

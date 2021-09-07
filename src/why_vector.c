@@ -163,7 +163,7 @@ void vector_swap(Vector *vector, int_signed m, int_signed n)
     SWAP(vector->items[m], vector->items[n], void *);
 }
 
-Vector *vector_copy(const Vector *vector)
+Vector *vector_copy_with(const Vector *vector, void *(*copy_function)())
 {
     Vector *copy;
     void *item;
@@ -178,13 +178,18 @@ Vector *vector_copy(const Vector *vector)
     length = vector->current_index;
     while (n < length)
     {
-        item = copy->copy(vector->items[n]);
+        item = copy_function(vector->items[n]);
         vector_push(copy, item);
 
         n ++;
     }
 
     return copy;
+}
+
+Vector *vector_copy(const Vector *vector)
+{
+    return vector_copy_with(vector, vector->copy);
 }
 
 Vector *vector_concatG(Vector *lhs, const Vector *rhs, void *(copy)())

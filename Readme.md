@@ -5,8 +5,9 @@
 ### Some of its more advanced features are still in development, they will become available in the future versions.
 ---
 ## Installation and controls
-    Clone the repository in the directory of your choice and type "make".
-    Type in "./computer69" to run the program. To interpret a statement, type it in and press Enter. Type "q" and Enter to quit the program.
+#### Clone the repository in the directory of your choice and type "make".
+#### Type in "./computer69" to run the program.
+#### To interpret a statement, type it in and press Enter. Type "q" and Enter to quit the program.
 ---
 ## Supported features
 ---
@@ -21,7 +22,7 @@
 ---
 
 ### Built-in constants
-#### Some useful numbers, like pi and e, are predefined with precision of at least 10 decimal digits.
+#### Some useful numbers, like pi and e, are predefined, with precision of at least 10 decimal digits.
 ---
 
 ### Complex numbers
@@ -49,11 +50,22 @@
     cos(pi)^2 + sin(pi)^2
 ---
 
+### Some words on syntax
+#### In general, the syntax rules are conventional. Symbols are connected by special characters,
+#### that represent mathematical operations:
+    (i * pi * e)^0
+#### when a numeric symbol precedes a symbolic constant, variable name or function name,
+#### multiplication symbol can be omitted:
+    x = 2e
+    x = 1
+    1cos(2pi)^3x
+---
+
 ### User-defined functions / Variables(II)
 #### Users can define functions of a single variable:
     f(x) = x^2
     g(x) = exp(x) + 1 / sqrt(x)
-    s(t) = a + vt + (1/2) * g * t^2
+    s(t) = a + v * t + (1/2) * g * t^2
 ---
 
 ### Function evaluation
@@ -123,16 +135,21 @@
     a(x) = [[1, x];[0, 1]]
     b(x) = [[1, 0];[x, 1]]
     a(x) * b(x)
+---
 
+### Fun
+#### Let's play around with the program and compute the 69th Fibonacci number using matrices.
+    F69 = [[0, 1]]*[[1, 1];[1, 0]]^69*[[1];[0]]
+#### Another way to have fun is to rotate some vectors in the plane:
+    r(x) = [[cos(x), -sin(x)];[sin(x), cos(x)]]
+    v = [[1];[1]]
+    w = r(pi/2) * v
+---
 
-
-
-<!-- ```C
-int main();
-```
-* this
-* is
-* a
-* test
-
-## f(x) = 2x -->
+## Upcoming features
+* Derivatives and integrals of real functions
+* Functions of multiple variables
+* Determinants, inverses, systems of linear equations
+* Non-integer exponents
+* Functions from C to C
+* Better controls

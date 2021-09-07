@@ -100,7 +100,7 @@ static Entity *_eval_matrix(MatrixRepr *matrix, const VariableTable *v_table, En
         if (value->type == ET_COMPUTATION)
         {
             number = computation_eval(value->computation, v_table, wc_value ? wc_value->number : NULL);
-            value = entity_new_from_number(number, FALSE);
+            value = number ? entity_new_from_number(number, FALSE) : NULL;
             matrix_repr_set_nth(matrix, value, n);
         }     
 
@@ -176,7 +176,7 @@ Number *computation_eval(const Computation *computation, const VariableTable *v_
     if (computation->node->type == NT_WILDCARD && wc_value)
         return number_copy(wc_value);
     if (computation->node->type != NT_OPERATOR)
-        assert(0);
+        return error_set(WHY_ERROR_EVAL, NULL);
     
     lhs_value = computation->lhs ? computation_eval(computation->lhs, v_table, wc_value) : NULL;
     rhs_value = computation->rhs ? computation_eval(computation->rhs, v_table, wc_value) : NULL;
@@ -197,7 +197,6 @@ static Entity *_eval_wildcard(Entity *wc_value)
         return entity_new_from_number(wc_value->number, TRUE);
     if (wc_value->type == ET_MATRIX)
         return entity_new_from_matrix(wc_value->matrix, TRUE);
-
     if (wc_value->type == ET_COMPUTATION)
         return entity_new_from_computation(wc_value->computation, TRUE);
 

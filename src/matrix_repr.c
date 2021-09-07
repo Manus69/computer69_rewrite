@@ -129,7 +129,7 @@ MatrixRepr *matrix_repr_copy(const MatrixRepr *matrix)
     MatrixRepr *copy;
     
     copy = matrix_repr_new(COPY_FUNCTION);
-    copy->items = vector_copy(matrix->items);
+    copy->items = vector_copy_with(matrix->items, entity_copy_wrapper);
     copy->n_cols = matrix->n_cols;
     copy->n_rows = matrix->n_rows;
 

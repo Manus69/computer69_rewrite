@@ -35,13 +35,27 @@ static VariableTable *_process_assignment(String *line, VariableTable *v_table)
         return v_table;
     }
 
-    print_variable(_variable);
-    printf("\n");
+    print_variableN(_variable);
     
     if (variable_get_name(_variable))
         v_table = _insert_into_table(_variable, v_table);
 
     return v_table;
+}
+
+static VariableTable *_process_eval(String *line, VariableTable *v_table)
+{
+    Vector *substrings;
+    String *lhs;
+    VariableTable *result;
+
+    substrings = string_split_and_trim(line, TERMINALS[EQUALS]);
+    lhs = vector_at(substrings, 0);
+
+    result = _process_assignment(lhs, v_table);
+    vector_delete(&substrings);
+
+    return result;
 }
 
 static void _process_polynomial(Computation *lhs, Computation *rhs)
@@ -109,15 +123,19 @@ static void _process_find_roots(String *line, VariableTable *v_table)
     Computation *rhs;
     char *id;
 
-    strings = string_split(line, TERMINALS[EQUALS]);
+    strings = string_split_and_trim(line, TERMINALS[EQUALS]);
     if (vector_size(strings) != 2)
-        assert(0);
+    {
+        vector_delete(&strings);
+        error_set(WHY_ERROR_SYNTAX, string_get_characters(line));
+
+        return ;
+    }
     
     lhs = _parse(vector_at(strings, 0), v_table);
     rhs = _parse(vector_at(strings, 1), v_table);
 
-    id = _get_first_identifier(lhs);
-    if (!id)
+    if (!(id = _get_first_identifier(lhs)))
         id = _get_first_identifier(rhs);
     
     lhs = computation_resolve(lhs, id, v_table);
@@ -143,7 +161,7 @@ VariableTable *process_input_line(String *line, VariableTable *v_table)
     if (id_assignment(line))
         result = _process_assignment(line, v_table);
     else if (id_evaluation(line))
-        result = _process_assignment(line, v_table);
+        result = _process_eval(line, v_table);
     else if (id_find_roots(line))
     {
         substring = string_substring(line, 0, string_length(line) - 1);

@@ -37,8 +37,9 @@ void test()
 void run_tests()
 {
     test_all_sequences(valid_sequences);
-    test_all_sequences(valid_matrix_sequences);
     test_all_sequences(valid_polynomial_sequences);
+    test_all_sequences(valid_matrix_sequences);
+    test_all_statements(valid_basic_strings);
 }
 
 //user defined names must be case insensitive
@@ -57,13 +58,6 @@ void run_tests()
 //"-13.2593 + 6.48091X - 8.58475X^2 + 0.0000267855X^3 = 0?" makes valgrind shit the bed
 //be careful around small coefficients
 //make a structure with strings, f_pointers, etc indexed by an enum
-//f(x = 2 does something weird
-//f(x) = ... ; f does not print the value
-//numeric variable and function with the same name w = ... ; w(x) = ...
-//r(x) =[[cos(x), -sin(x)];[sin(x), cos(x)]] , v = [[1];[0]] , r * v
-//w(x) = (f+g)(x)
-//x = 2; (1+1)x
-//matrix times vector is broken
 
 int main()
 {
@@ -73,15 +67,15 @@ int main()
     start = clock();
     data = data_init();
     
-    // test_statement("r(x) = [[cos(x), -sin(x)]; [sin(x), cos(x)]]");
-    // test_statement("[[0] ; [1]]");
     // run_tests();
+    test_statement("f(x = 2");
+    // test_statement("[[0] ; [1]]");
     // test_all_statements(invalid_strings);
     // test_all_statements(context_dependent_strings);
     // matrix_test();
     // math_test(); 
     // test_sequence(valid_sequence);
-    main_loop();
+    // main_loop();
 
     printf("\nMEMORY USAGE: %Ld\n", data_get_bytes(data));
 

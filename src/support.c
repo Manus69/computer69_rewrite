@@ -81,3 +81,24 @@ void skip_over_equals(String *string)
         _string_shift(string, 1);
     string_skip_spaces(string);
 }
+
+Vector *string_split_and_trim(String *string, char delimiter)
+{
+    Vector *vector;
+    int_signed n;
+    String *item;
+
+    if (!(vector = string_split(string, delimiter)))
+        return NULL;
+    
+    n = 0;
+    while (n < vector_size(vector))
+    {
+        item = vector_at(vector, n);
+        item = string_trim(item);
+
+        n ++;
+    }
+
+    return vector;
+}

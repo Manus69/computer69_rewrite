@@ -7,7 +7,6 @@
 
 #include <assert.h>
 
-// static Computation *_parse(String *string);
 Computation *get_term(String *string, const VariableTable *v_table);
 Computation *get_operator(String *string);
 
@@ -47,8 +46,7 @@ Computation *get_function(String *string, const VariableTable *v_table)
         return NULL;
 
     node_change_type(identifier_node, NT_FUNCTION);
-
-    node_convert_to_bft(identifier_node); //
+    node_convert_to_bft(identifier_node);
 
     identifier = computation_new(identifier_node, FALSE);
     identifier->lhs = argument;
@@ -67,24 +65,25 @@ Computation *get_identifier(String *string)
 
 static Computation *_process_u_minus(String *string, const VariableTable *v_table)
 {
-    Computation *root;
+    // Computation *root;
     Computation *minus;
     Computation *term;
 
     minus = get_operator(string);
-    term = get_term(string, v_table);
-    if (!term)
-        return NULL;
+    if (!(term = get_term(string, v_table)))
+        return error_set(WHY_ERROR_PARSE, string_get_characters(string));
 
     minus->lhs = term;
 
-    root = get_operator(string);
-    if (!root)
-        return minus;
-    
-    root->lhs = minus;
+    return minus;
 
-    return root;
+    // root = get_operator(string);
+    // if (!root)
+    //     return minus;
+    
+    // root->lhs = minus;
+
+    // return root;
 }
 
 Computation *get_term(String *string, const VariableTable *v_table)
@@ -138,17 +137,17 @@ static Computation *get_partial_tree(String *string, const VariableTable *v_tabl
     if (!string)
         return NULL;
     
-    lhs = get_term(string, v_table);
-    if (!lhs)
+    if (!(lhs = get_term(string, v_table)))
         return error_set(WHY_ERROR_PARSE, string_get_characters(string));
     
-    root = get_operator(string);
-    if (!root)
+    if (!(root = get_operator(string)))
     {
-        if (!id_identifier_str(string) || !lhs->node->type == NT_NUMBER)
+        if (id_identifier_str(string) && lhs->node->type == NT_NUMBER)
+            root = computation_new(node_new(operator_new_from_type(OT_STAR), NT_OPERATOR, FALSE), FALSE);
+        else if (!string_length(string))
             return lhs;
-
-        root = computation_new(node_new(operator_new_from_type(OT_STAR), NT_OPERATOR, FALSE), FALSE);
+        else
+            return error_set(WHY_ERROR_PARSE, string_get_characters(string));
     }
     
     root->lhs = lhs;
@@ -182,6 +181,18 @@ static Computation *_insert_in_order(Computation *last_op, Computation *next_op,
     return last_op;
 }
 
+static void _check_precedence_and_insert(Computation **last_op, Computation **next_op, Computation **term, Computation **root)
+{
+    if (_check_order(*last_op, *next_op))
+        *last_op = _insert_in_order(*last_op, *next_op, *term);
+    else
+    {
+        (*last_op)->rhs = *term;
+        *root = computation_insert_root(*root, *next_op);
+        *last_op = *root;
+    }
+}
+
 Computation *_parse(String *string, const VariableTable *v_table)
 {
     Computation *root;
@@ -189,8 +200,7 @@ Computation *_parse(String *string, const VariableTable *v_table)
     Computation *next_op;
     Computation *term;
 
-    root = get_partial_tree(string, v_table);
-    if (!root)
+    if (!(root = get_partial_tree(string, v_table)))
         return NULL;
     
     if (root->node->type != NT_OPERATOR)
@@ -205,37 +215,35 @@ Computation *_parse(String *string, const VariableTable *v_table)
         if(!(term = get_term(string, v_table)))
             return error_set(WHY_ERROR_SYNTAX, string_get_characters(string));
 
-        if (!(next_op = get_operator(string)))
-        {
-            if (!id_identifier_str(string) || !term->node->type == NT_NUMBER)
-            {
-                last_op->rhs = term;
-                return root;
-            }
-            
-            next_op =
-            computation_new(node_new(operator_new_from_type(OT_STAR), NT_OPERATOR, FALSE), FALSE);
-        }
-        
-        if (_check_order(last_op, next_op))
-            last_op = _insert_in_order(last_op, next_op, term);
-        else
+        if (!string_length(string))
         {
             last_op->rhs = term;
-            root = computation_insert_root(root, next_op);
-            last_op = root;
+            return root;
         }
+
+        if (!(next_op = get_operator(string)))
+        {            
+            if (id_identifier_str(string) && term->node->type == NT_NUMBER)
+            {
+                next_op =
+                computation_new(node_new(operator_new_from_type(OT_STAR), NT_OPERATOR, FALSE), FALSE);
+            }
+            else
+                return error_set(WHY_ERROR_SYNTAX, string_get_characters(string));
+        }
+        
+        _check_precedence_and_insert(&last_op, &next_op, &term, &root);
     }
 
     return root;
 }
 
-Computation *parse(String *string, const VariableTable *v_table)
-{
-    if (!string || !string_length(string))
-        return NULL;
+// Computation *parse(String *string, const VariableTable *v_table)
+// {
+//     if (!string || !string_length(string))
+//         return NULL;
 
-    string = string_remove_spaces(string);
+//     string = string_remove_spaces(string);
 
-    return _parse(string, v_table);
-}
+//     return _parse(string, v_table);
+// }

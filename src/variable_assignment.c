@@ -8,6 +8,7 @@
 #include "print.h"//
 
 #include <assert.h>
+#define DBG 0
 
 Variable *_create_parametrized(String *string, const VariableTable *v_table, int_signed name_length);
 
@@ -40,9 +41,13 @@ Variable *variable_create_named(String *string, const VariableTable *v_table, ch
         return _handle_parse_errors(string, name);
 
     argument = computation_resolve(argument, NULL, v_table);
+    #if DBG
+    print_computation(argument);
+    fflush(NULL);
+    #endif
     value = computation_evalG(argument, v_table, NULL);
     
-    if (!value || entity_get_type(value) == ET_COMPUTATION)
+    if (!value || WHY_ERROR || entity_get_type(value) == ET_COMPUTATION)
         return _handle_eval_errors(name);
 
     variable = variable_new(name, value, FALSE, FALSE);

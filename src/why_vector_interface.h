@@ -10,6 +10,7 @@ typedef struct Vector Vector;
 Vector      *vector_new(void *(*copy)(), void (*delete_)());
 Vector      *vector_new_with_capacity(void *(copy)(), void (*delete)(), int_signed capacity);
 Vector      *vector_copy(const Vector *vector);
+Vector      *vector_copy_with(const Vector *vector, void *(*copy_function)());
 Vector      *vector_concat(Vector *lhs, const Vector *rhs);
 Vector      *vector_concatG(Vector *lhs, const Vector *rhs, void *(copy)());
 boolean     vector_push(Vector *vector, void *item);
