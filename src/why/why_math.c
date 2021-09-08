@@ -1,4 +1,5 @@
 #include "why_math.h"
+#include "why_error.h"
 
 #include <limits.h>
 #include <assert.h>
@@ -56,7 +57,7 @@ int_signed power_int(int_signed base, int_unsigned n)
 int_unsigned round_to_int(real x)
 {
     if (x > ULLONG_MAX)
-        assert(0);
+        return (int_unsigned)error_set(WHY_ERROR_CONV, "the number is too big");
     
     return (int_unsigned)x;
 }

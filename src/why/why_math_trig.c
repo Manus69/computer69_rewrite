@@ -1,4 +1,5 @@
 #include "why_math.h"
+#include "why_error.h"
 
 #include <assert.h>
 
@@ -54,13 +55,15 @@ real math_cos(real x)
 
 real math_tan(real x)
 {
+    real _cos_x;
+
     x = math_mod(x, TWO_PI);
-
-    if (within_delta(x, PI / 2, TRIG_DELTA))
-        assert(0);
-
-    if (within_delta(x, 3 * PI / 2, TRIG_DELTA))
-        assert(0);
+    _cos_x = math_cos(x);
+    if (_cos_x == 0)
+    {
+        error_set(WHY_ERROR_MATH, "tan of this value is undefined");
+        return 0;
+    }
     
-    return math_sin(x) / math_cos(x);
+    return math_sin(x) / _cos_x;
 }

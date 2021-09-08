@@ -39,7 +39,6 @@ Number *number_new_real(real x)
     number->type = NT_REAL;
 
     data_add_pointer(data, number, sizeof(Number));
-    // vector_push(data_vector, number);
 
     return number;
 }
@@ -62,7 +61,6 @@ Number *number_new_complex(Complex z)
     number->type = NT_COMPLEX;
 
     data_add_pointer(data, number, sizeof(Number));
-    // vector_push(data_vector, number);
 
     return number;
 }

@@ -116,6 +116,11 @@ static char *_get_first_identifier(const Computation *_computation)
     return _get_first_identifier(_computation->rhs);
 }
 
+static void _handle_errors(Vector *strings)
+{
+    vector_delete(&strings);
+}
+
 static void _process_find_roots(String *line, VariableTable *v_table)
 {
     Vector *strings;
@@ -134,6 +139,9 @@ static void _process_find_roots(String *line, VariableTable *v_table)
     
     lhs = _parse(vector_at(strings, 0), v_table);
     rhs = _parse(vector_at(strings, 1), v_table);
+
+    if (WHY_ERROR)
+        return _handle_errors(strings);
 
     if (!(id = _get_first_identifier(lhs)))
         id = _get_first_identifier(rhs);

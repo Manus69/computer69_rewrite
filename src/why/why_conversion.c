@@ -28,6 +28,9 @@ static real _convert_int_part(const char *string, int_signed length)
     while (length)
     {
         result = result * 10 + *string - '0';
+        if (result > __INT_MAX__)
+            return (int_signed)error_set(WHY_ERROR_CONV, string);
+        
         length --;
         string ++;
     }
@@ -46,6 +49,9 @@ int_signed convert_to_int(const char *string)
     while (*string && id_digit(string))
     {
         result = result * 10 + *string - '0';
+        if (result > __INT_MAX__)
+            return (int_signed)error_set(WHY_ERROR_CONV, string);
+        
         string ++;
     }
 

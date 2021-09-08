@@ -142,7 +142,7 @@ Number *number_factorial(Number *lhs, const Number *rhs)
         return error_set(WHY_ERROR_MATH, NULL);
     
     if (lhs->type != NT_INT)
-        assert(0);
+        return error_set(WHY_ERROR_MATH, NULL);
     
     return number_new_int(factorial(lhs->n));
 }
@@ -168,7 +168,7 @@ Number *number_function(const Number *number, real (*function)(real))
         return error_set(WHY_ERROR_MATH, NULL);
     
     if (number->type == NT_COMPLEX)
-        return error_set(WHY_ERROR_MATH, " complex numbers are not supported for this function");
+        return error_set(WHY_ERROR_MATH, "complex numbers are not supported for this function");
     
     arg = number->type == NT_REAL ? number->x : number->n;
 

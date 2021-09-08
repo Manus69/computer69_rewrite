@@ -149,7 +149,8 @@
 ## Upcoming features
 * Derivatives and integrals of real functions
 * Functions of multiple variables
-* Determinants, inverses, systems of linear equations
+* Systems of linear equations
+* Determinants, inverses, eigenvalues
 * Non-integer exponents
 * Functions from C to C
 * Better controls
