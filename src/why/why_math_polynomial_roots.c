@@ -53,7 +53,7 @@ static Vector *_solve_quadratic(const Polynomial *p)
     D = b * b - 4 * a *c;
     if (D == 0)
     {
-        vector_push(roots, complex_new(-b, 0));
+        vector_push(roots, complex_new(-b / (2 * a), 0));
     }
     else if (D > 0)
     {

@@ -32,16 +32,21 @@ void print_number(const Number *number)
 void print_operator(const Operator *operator)
 {
     int_signed index;
+    char *format;
 
     if (!operator)
         return ;
 
     index = operator_get_type(operator);
+    if (index == OT_CARET || index == OT_EXCLAM)
+        format = "%c";
+    else
+        format = " %c ";
 
-    printf("%c", TERMINALS[index]);
+    printf(format, TERMINALS[index]);
 }
 
-void print_node(const Node *node)
+void print_node(const Node *node, const char *wc_symbol)
 {
     NODE_TYPE type;
 
@@ -56,35 +61,35 @@ void print_node(const Node *node)
     else if (type == NT_IDENTIFIER)
         print_cstring(node->identifier);
     else if (type == NT_WILDCARD)
-        print_cstring(WC_SYMBOL);
+        print_cstring(wc_symbol ? wc_symbol : WC_SYMBOL);
     else if (type == NT_FUNCTION)
         print_cstring(node->identifier);
     else if (type == NT_BUILTIN_FUNCTION)
         print_cstring(FUNCTION_STRINGS[node->bf_type]);
     else if (type == NT_MATRIX)
-        print_matrix_repr(node->matrix);
+        print_matrix_repr(node->matrix, wc_symbol);
     else assert(0);
 }
 
-void _default_print(const Computation *computation)
+void _default_print(const Computation *computation, const char *wc_symbol)
 {
     if (!computation)
         return ;
     
-    print_computation(computation_get_lhs(computation));
-    print_node(computation_get_node(computation));
-    print_computation(computation_get_rhs(computation));
+    print_computation(computation_get_lhs(computation), wc_symbol);
+    print_node(computation_get_node(computation), NULL);
+    print_computation(computation_get_rhs(computation), wc_symbol);
 }
 
-static void _pp_print(const Computation *computation)
+static void _pp_print(const Computation *computation, const char *wc_symbol)
 {
     printf("(");
     fflush(NULL);
-    print_computation(computation);
+    print_computation(computation, wc_symbol);
     printf(")");
 }
 
-static void _check_branch_and_print(const Computation *root, const Computation *branch)
+static void _check_branch_and_print(const Computation *root, const Computation *branch, const char *wc_symbol)
 {
     Node *root_node;
     Node *branch_node;
@@ -96,36 +101,36 @@ static void _check_branch_and_print(const Computation *root, const Computation *
         return ;
 
     if (root_node->type == NT_FUNCTION)
-        return _pp_print(branch);
+        return _pp_print(branch, wc_symbol);
 
     if (branch_node->type != NT_OPERATOR)
-        return print_computation(branch);
+        return print_computation(branch, wc_symbol);
 
     if (root_node->type == NT_OPERATOR && branch_node->type == NT_OPERATOR)
     {
         if (operator_compare_precedence(branch_node->operator, root_node->operator) > 0)
         {
-            return _pp_print(branch);
+            return _pp_print(branch, wc_symbol);
         }
         else
         {
-            return print_computation(branch);
+            return print_computation(branch, wc_symbol);
         }
     }
 
-    print_computation(branch);
+    print_computation(branch, wc_symbol);
 }
 
-static void _print_function(const Computation *computation)
+static void _print_function(const Computation *computation, const char *wc_symbol)
 {
-    print_node(computation->node);
-    _pp_print(computation->lhs);
+    print_node(computation->node, wc_symbol);
+    _pp_print(computation->lhs, wc_symbol);
 }
 
-static void _print_u_minus(const Computation *computation)
+static void _print_u_minus(const Computation *computation, const char *wc_symbol)
 {
-    print_node(computation->node);
-    print_computation(computation->lhs);
+    print_node(computation->node, wc_symbol);
+    print_computation(computation->lhs, wc_symbol);
 }
 
 static byte _check_u_minus(const Computation *computation)
@@ -140,7 +145,7 @@ static byte _check_u_minus(const Computation *computation)
     return FALSE;
 }
 
-void print_computation(const Computation *computation)
+void print_computation(const Computation *computation, const char *wc_symbol)
 {
     Node *root_node;
 
@@ -150,22 +155,22 @@ void print_computation(const Computation *computation)
     root_node = computation->node;
 
     if (root_node->type == NT_FUNCTION || root_node->type == NT_BUILTIN_FUNCTION)
-        return _print_function(computation);
+        return _print_function(computation, wc_symbol);
 
     if (_check_u_minus(computation))
-        return _print_u_minus(computation);
+        return _print_u_minus(computation, wc_symbol);
 
     if (root_node->type == NT_MATRIX)
-        return print_matrix_repr(root_node->matrix);
+        return print_matrix_repr(root_node->matrix, wc_symbol);
 
-    _check_branch_and_print(computation, computation->lhs);
-    print_node(root_node);
-    _check_branch_and_print(computation, computation->rhs);
+    _check_branch_and_print(computation, computation->lhs, wc_symbol);
+    print_node(root_node, wc_symbol);
+    _check_branch_and_print(computation, computation->rhs, wc_symbol);
 }
 
-void print_computationDBG(const Computation *computation)
+void print_computationDBG(const Computation *computation, const char *wc_symbol)
 {
-    print_computation(computation);
+    print_computation(computation, wc_symbol);
     printf("\n");
 }
 
@@ -177,7 +182,7 @@ void print_variable(const Variable *variable)
         return ;
     
     value = variable_get_value(variable);
-    print_entity(value);
+    print_entity(value, NULL);
 }
 
 void print_variableN(const Variable *variable)
@@ -186,7 +191,19 @@ void print_variableN(const Variable *variable)
     printf("\n");
 }
 
-void print_variable_verbose(const Variable *variable)
+void print_variableNI(const Variable *variable)
+{
+    Entity *value;
+
+    if (!variable)
+        return ;
+    
+    value = variable_get_value(variable);
+    print_entity(value, variable->initial_parameter);
+    printf("\n");
+}
+
+void print_variable_verbose(const Variable *variable, const char *wc_symbol)
 {
     Entity *value;
 
@@ -196,7 +213,7 @@ void print_variable_verbose(const Variable *variable)
     value = variable_get_value(variable);
     if (!variable->name)
     {
-        print_entity(value); //
+        print_entity(value, wc_symbol); //
 
         return ;
     }
@@ -206,7 +223,7 @@ void print_variable_verbose(const Variable *variable)
         printf("(%s)", WC_SYMBOL);
 
     printf(" = ");
-    print_entity(value);
+    print_entity(value, wc_symbol);
 }
 
 void print_v_table(const VariableTable *v_table)
@@ -215,12 +232,12 @@ void print_v_table(const VariableTable *v_table)
         return ;
 
     print_v_table(v_table->left);
-    print_variable(v_table->node);
+    print_variable_verbose(v_table->node, NULL);
     printf("\n");
     print_v_table(v_table->right);
 }
 
-void print_matrix_row(const MatrixRepr *matrix, int_signed j)
+void print_matrix_row(const MatrixRepr *matrix, int_signed j, const char *wc_symbol)
 {
     int_signed k;
     Entity *item;
@@ -228,23 +245,23 @@ void print_matrix_row(const MatrixRepr *matrix, int_signed j)
     if (!matrix)
         return ;
 
-    printf("[");
+    printf("[ ");
     item = matrix_repr_at(matrix, j, 0);
-    print_entity(item);
+    print_entity(item, wc_symbol);
     k = 1;
 
     while (k < matrix_repr_n_cols(matrix))
     {
-        printf("%s", ",");
+        printf("%s", " , ");
         item = matrix_repr_at(matrix, j, k);
-        print_entity(item);
+        print_entity(item, wc_symbol);
 
         k ++;
     }
-    printf("]");
+    printf(" ]");
 }
 
-void print_matrix_repr(const MatrixRepr *matrix)
+void print_matrix_repr(const MatrixRepr *matrix, const char *wc_symbol)
 {
     int_signed n;
     int_signed n_rows;
@@ -259,13 +276,13 @@ void print_matrix_repr(const MatrixRepr *matrix)
         return ;
     
     // printf("[");
-    print_matrix_row(matrix, 0);
+    print_matrix_row(matrix, 0, wc_symbol);
 
     n = 1;
     while (n < n_rows)
     {
         printf("\n");
-        print_matrix_row(matrix, n);
+        print_matrix_row(matrix, n, wc_symbol);
         n ++;
     }
     // printf("]");
@@ -273,7 +290,7 @@ void print_matrix_repr(const MatrixRepr *matrix)
 
 static void *functions[] = {print_number, print_matrix_repr, print_computation, 0};
 
-void print_entity(const Entity *entity)
+void print_entity(const Entity *entity, const char *wc_symbol)
 {
     void (*print_function)();
 
@@ -281,7 +298,7 @@ void print_entity(const Entity *entity)
         return ;
     
     print_function = functions[entity_get_type(entity)];
-    print_function(entity->number);
+    print_function(entity->number, wc_symbol);
 }
 
 void print_roots(const Vector *roots)

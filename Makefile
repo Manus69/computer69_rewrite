@@ -34,7 +34,7 @@ $(obj_folder)%.o : $(test_folder)%.c $(headers)
 $(obj_folder)%.o : $(source_folder)%.c $(headers)
 	$(cc) $(flags) -I $(why_folder) $< -c -o $@
 
-$(name): $(test_objects) $(objects) $(headers)
+$(name): $(why_objects) $(test_objects) $(objects) $(headers)
 	$(cc) $(flags) $(why_objects) $(test_objects) $(objects) -o $(name) -lm
 
 clean:

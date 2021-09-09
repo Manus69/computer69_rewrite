@@ -215,6 +215,7 @@ const char *valid_sequence[] = {"r(x) =[[x]]", "r + [[1]]", 0};
 const char *valid_sequences[][SEQUENCE_LENGTH] = {
 {"0", 0},
 {"-1", "--1", "---pi", "----e", "-i", "--i", 0},
+{"2 + 3 * 4 / 4", 0},
 {"cos(2*pi*sin(-pi+2*pi))", 0},
 {"-sin(2*cos(0))/sin(pi/2)", 0},
 {"2-2*2-2^3+1", 0},
@@ -574,7 +575,7 @@ void matrix_test()
     B = generate_random_matrix(size, size, type);
     result = matrix_repr_mult(A, B);
 
-    print_matrix_repr(result);
+    print_matrix_repr(result, NULL);
 
     matrix_repr_delete(&A);
     matrix_repr_delete(&B);

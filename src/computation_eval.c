@@ -134,8 +134,8 @@ static Entity *_eval_functionG(const Computation *computation, const VariableTab
         
         return result;
     }
-
-    assert(0);
+    
+    return error_set(WHY_ERROR_EVAL, "unknown function");
 }
 
 static Number *_eval_id(const Computation *computation)

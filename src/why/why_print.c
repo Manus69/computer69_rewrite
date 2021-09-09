@@ -1,16 +1,47 @@
 #include "why_print.h"
+#include "why_cstring.h"
 
 #include <stdio.h>
 #include <assert.h>
 #include <unistd.h>
+
+#define BUFFER_SIZE (1 << 7)
 
 void print_int(int_signed n)
 {
     printf("%lld", n);
 }
 
+static void _print_number_string(char *string)
+{
+    int_signed n;
+    int_signed index_of_dot;
+
+    index_of_dot = cstr_index_of(string, '.');
+    if (index_of_dot == NOT_FOUND)
+    {
+        printf("%s", string);
+        return ;
+    }
+
+    n = cstr_length(string) - 1;
+    while (n)
+    {
+        if (string[n] != '0')
+            break ;
+        
+        n --;
+    }
+
+    n == index_of_dot ? n : n ++;
+    string[n] = 0;
+    printf("%s", string);
+}
+
 void print_real(real x)
 {
+    char *buffer;
+
     if (x < 0)
     {
         printf("-");
@@ -22,7 +53,12 @@ void print_real(real x)
     if (absolute_value(x - round_to_int(x)) < TOLERANCE)
         printf("%.0Lf", x);
     else
-        printf("%Lf", x);
+    {
+        buffer = memory_zero(BUFFER_SIZE);
+        sprintf(buffer, "%Lf", x);
+        _print_number_string(buffer);
+        cstr_delete(&buffer);
+    }
 }
 
 void print_complex(Complex z)
@@ -35,10 +71,20 @@ void print_complex(Complex z)
     if (z.re)
     {
         print_real(z.re);
-        printf(" + ");
+        if (z.im < 0)
+            printf(" - ");
+        else
+            printf(" + ");
+        if (z.im != 1 && z.im != -1)
+            print_real(absolute_value(z.im));
+        printf("i");
+
+        return ;
     }
 
-    if (z.im != 1)
+    if (z.im == -1)
+        printf("-");
+    else if (z.im != 1)
         print_real(z.im);
 
     printf("i");

@@ -100,7 +100,8 @@ Number *number_divide(Number *lhs, Number *rhs)
     
     type = _promote(lhs, rhs);
     if (type == NT_INT)
-        return number_new_int(divide_int(lhs->n, rhs->n));
+        // return number_new_int(divide_int(lhs->n, rhs->n));
+        return number_new_real(divide_real(lhs->n, rhs->n));
     else if (type == NT_REAL)
         return number_new_real(divide_real(lhs->x, rhs->x));
     else if (type == NT_COMPLEX)

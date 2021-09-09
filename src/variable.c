@@ -2,17 +2,19 @@
 #include "frontend_declarations.h"
 #include "data_interface.h"
 
-Variable *variable_new(char *name, Entity *entity, boolean parametrized, boolean copy)
+Variable *variable_new(char *name, char *initial_parameter, Entity *entity, boolean copy)
 {
     Variable *variable;
 
     variable = allocate(sizeof(Variable));
     variable->name = name;
     variable->entity = copy? entity_copy(entity) : entity;
-    variable->parametrized = parametrized;
+    variable->parametrized = initial_parameter ? TRUE : FALSE;
+    variable->initial_parameter = initial_parameter;
 
     data_add_pointer(data, variable, sizeof(Variable));
     data_add_pointer(data, variable->name, sizeof(void *));
+    data_add_pointer(data, variable->initial_parameter, sizeof(void *));
 
     return variable;
 }
@@ -27,6 +29,7 @@ void variable_delete(Variable **variable)
         return ;
     
     cstr_delete(&(*variable)->name);
+    cstr_delete(&(*variable)->initial_parameter);
     entity_delete(&(*variable)->entity);
 
     free(*variable);

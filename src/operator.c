@@ -24,14 +24,16 @@ int_signed operator_compare_precedence(Operator *lhs, Operator *rhs)
 
 static byte _get_precedence(OPERATOR_TYPE type)
 {
-    if (type <= OT_MINUS)
+    if (type == OT_PLUS)
         return 0;
-    else if (type <= OT_MOD)
+    else if (type == OT_MINUS)
         return 1;
-    else if (type == OT_CARET)
+    else if (type <= OT_MOD)
         return 2;
-    else if (type == OT_EXCLAM)
+    else if (type == OT_CARET)
         return 3;
+    else if (type == OT_EXCLAM)
+        return 4;
     
     assert(0);
 }

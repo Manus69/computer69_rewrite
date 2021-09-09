@@ -31,11 +31,11 @@ static VariableTable *_process_assignment(String *line, VariableTable *v_table)
     _variable = variable_create_from_string(line, v_table);
     if (!_variable)
     {
-        // error_display_message(NULL);
         return v_table;
     }
 
-    print_variableN(_variable);
+    // print_variableN(_variable);
+    print_variableNI(_variable);
     
     if (variable_get_name(_variable))
         v_table = _insert_into_table(_variable, v_table);

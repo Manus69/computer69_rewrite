@@ -26,6 +26,13 @@ void main_loop()
             string_delete(&line);
             break ;
         }
+
+        if (string_is_identical_to(line, "--list"))
+        {
+            print_v_table(v_table);
+            string_delete(&line);
+            continue ;
+        }
         
         v_table = process_input_line(line, v_table);
         string_delete(&line);

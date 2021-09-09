@@ -132,7 +132,7 @@ Entity          *entity_factorial(Entity *lhs, Entity *rhs);
 Computation     *computation_from_entity(Entity *entity, boolean copy);
 
 //variable
-Variable        *variable_new(char *name, Entity *entity, boolean parametrized, boolean copy);
+Variable        *variable_new(char *name, char *initial_parameter, Entity *entity, boolean copy);
 VARIABLE_TYPE   variable_get_type(const Variable *variable);
 int_signed      variable_compare(const Variable *lhs, const Variable *rhs);
 Entity          *variable_get_value(const Variable *variable);

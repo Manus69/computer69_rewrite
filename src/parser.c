@@ -65,7 +65,6 @@ Computation *get_identifier(String *string)
 
 static Computation *_process_u_minus(String *string, const VariableTable *v_table)
 {
-    // Computation *root;
     Computation *minus;
     Computation *term;
 
@@ -76,14 +75,6 @@ static Computation *_process_u_minus(String *string, const VariableTable *v_tabl
     minus->lhs = term;
 
     return minus;
-
-    // root = get_operator(string);
-    // if (!root)
-    //     return minus;
-    
-    // root->lhs = minus;
-
-    // return root;
 }
 
 Computation *get_term(String *string, const VariableTable *v_table)
@@ -237,13 +228,3 @@ Computation *_parse(String *string, const VariableTable *v_table)
 
     return root;
 }
-
-// Computation *parse(String *string, const VariableTable *v_table)
-// {
-//     if (!string || !string_length(string))
-//         return NULL;
-
-//     string = string_remove_spaces(string);
-
-//     return _parse(string, v_table);
-// }

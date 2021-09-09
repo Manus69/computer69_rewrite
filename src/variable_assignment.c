@@ -50,7 +50,7 @@ Variable *variable_create_named(String *string, const VariableTable *v_table, ch
     if (!value || WHY_ERROR || entity_get_type(value) == ET_COMPUTATION)
         return _handle_eval_errors(name);
 
-    variable = variable_new(name, value, FALSE, FALSE);
+    variable = variable_new(name, NULL, value, FALSE);
 
     if (string_length(string))
         assert(0);

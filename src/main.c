@@ -36,12 +36,15 @@ void test()
 
 void run_tests()
 {
-    test_all_sequences(valid_sequences);
+    test_all_statements(valid_basic_strings);
     test_all_sequences(valid_polynomial_sequences);
     test_all_sequences(valid_matrix_sequences);
-    test_all_statements(valid_basic_strings);
+    test_all_sequences(valid_sequences);
 }
 
+//dont forget the author file
+//only letters in variable names?
+//list the stored variables
 //user defined names must be case insensitive
 //remove all asserts
 //NT enums have the same prefix
@@ -65,14 +68,14 @@ int main()
     start = clock();
     data = data_init();
     
-    run_tests();
-    // test_statement("-999999999999999999999999999999999999999999999999999999x = x^2?");
+    // run_tests();
+    // test_statement("x^2 + 2x + 1 = 0 ?");
     // test_all_statements(invalid_strings);
     // test_all_statements(context_dependent_strings);
     // matrix_test();
     // math_test(); 
     // test_sequence(valid_sequence);
-    // main_loop();
+    main_loop();
 
     printf("\nMEMORY USAGE: %Ld\n", data_get_bytes(data));
 

@@ -26,7 +26,7 @@ static char *_get_arg_name(String *string)
     return arg_name;
 }
 
-static Variable *_build_variable(const Computation *argument, String *string, char *name)
+static Variable *_build_variable(const Computation *argument, String *string, char *name, char *arg_name)
 {
     Entity *value;
     Variable *variable;
@@ -38,7 +38,7 @@ static Variable *_build_variable(const Computation *argument, String *string, ch
     else
         value = entity_new_from_computation(argument, FALSE);
 
-    variable = variable_new(name, value, TRUE, FALSE);
+    variable = variable_new(name, arg_name, value, FALSE);
 
     if (string_length(string))
         assert(0);
@@ -85,7 +85,7 @@ Variable *_create_parametrized(String *string, const VariableTable *v_table, int
 
     argument = _parse(string, v_table);
     argument = computation_resolve(argument, arg_name, v_table);
-    cstr_delete(&arg_name);
+    // cstr_delete(&arg_name);
 
     if (!argument)
     {
@@ -93,5 +93,5 @@ Variable *_create_parametrized(String *string, const VariableTable *v_table, int
         return NULL;
     }
     
-    return _build_variable(argument, string, name);
+    return _build_variable(argument, string, name, arg_name);
 }
