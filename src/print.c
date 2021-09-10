@@ -112,6 +112,8 @@ static void _check_branch_and_print(const Computation *root, const Computation *
         {
             return _pp_print(branch, wc_symbol);
         }
+        // else if (branch_node->operator->type == OT_MOD || branch_node->operator->type == OT_SLASH)
+        //     return _pp_print(branch, wc_symbol);
         else
         {
             return print_computation(branch, wc_symbol);

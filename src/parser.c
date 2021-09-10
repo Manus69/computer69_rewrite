@@ -154,16 +154,7 @@ static Computation *get_partial_tree(String *string, const VariableTable *v_tabl
     return root;    
 }
 
-static boolean _check_order(const Computation *last_op, const Computation *next_op)
-{
-    if (!operator_is_binary(next_op->node->operator) ||
-    (operator_compare_precedence(last_op->node->operator, next_op->node->operator) > 0))
-        return TRUE;
-    
-    return FALSE;
-}
-
-static Computation *_insert_in_order(Computation *last_op, Computation *next_op, Computation *term)
+static Computation *_insert_below(Computation *last_op, Computation *next_op, Computation *term)
 {
     last_op->rhs = next_op;
     next_op->lhs = term;
@@ -172,15 +163,39 @@ static Computation *_insert_in_order(Computation *last_op, Computation *next_op,
     return last_op;
 }
 
+static Computation *_insert_above(Computation **root, Computation *last_op, Computation *next_op, Computation *term)
+{
+    Computation *parent;
+
+    parent = computation_find_parentR(*root, last_op);
+    last_op->rhs = term;
+    next_op->lhs = last_op;
+
+    if (parent)
+        parent->rhs = next_op;
+    else
+        *root = next_op;
+
+    return next_op;
+}
+
 static void _check_precedence_and_insert(Computation **last_op, Computation **next_op, Computation **term, Computation **root)
 {
-    if (_check_order(*last_op, *next_op))
-        *last_op = _insert_in_order(*last_op, *next_op, *term);
-    else
+    int_signed comparison;
+
+    comparison = operator_compare_precedence((*last_op)->node->operator, (*next_op)->node->operator);
+
+    if (comparison > 0)
+        *last_op = _insert_below(*last_op, *next_op, *term);
+    else if (comparison < 0 && operator_compare_precedence((*root)->node->operator, (*next_op)->node->operator) <= 0)
     {
         (*last_op)->rhs = *term;
         *root = computation_insert_root(*root, *next_op);
         *last_op = *root;
+    }
+    else
+    {
+        *last_op = _insert_above(root, *last_op, *next_op, *term);
     }
 }
 
@@ -206,14 +221,14 @@ Computation *_parse(String *string, const VariableTable *v_table)
         if(!(term = get_term(string, v_table)))
             return error_set(WHY_ERROR_SYNTAX, string_get_characters(string));
 
-        if (!string_length(string))
-        {
-            last_op->rhs = term;
-            return root;
-        }
-
         if (!(next_op = get_operator(string)))
-        {            
+        {         
+            if (!string_length(string))
+            {
+                last_op->rhs = term;
+                return root;
+            }
+
             if (id_identifier_str(string) && term->node->type == NT_NUMBER)
             {
                 next_op =

@@ -51,6 +51,7 @@ Complex         complex_subtract(Complex lhs, Complex rhs);
 Complex         complex_inv(Complex z);
 boolean         complex_is_real(Complex z);
 boolean         complex_is_zero(Complex z);
+boolean         complex_is_imaginary(Complex z);
 Complex         complex_scale(Complex z, real a);
 Complex         complex_conjugate(Complex z);
 Complex         complex_power(Complex z, int_unsigned n);

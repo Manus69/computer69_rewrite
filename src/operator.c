@@ -22,20 +22,12 @@ int_signed operator_compare_precedence(Operator *lhs, Operator *rhs)
     return rhs->precedence > lhs->precedence;
 }
 
+//+ - * / % ^ !
+static byte _precedence_array[] = {1, 1, 2, 2, 2, 3, 4};
+
 static byte _get_precedence(OPERATOR_TYPE type)
 {
-    if (type == OT_PLUS)
-        return 0;
-    else if (type == OT_MINUS)
-        return 1;
-    else if (type <= OT_MOD)
-        return 2;
-    else if (type == OT_CARET)
-        return 3;
-    else if (type == OT_EXCLAM)
-        return 4;
-    
-    assert(0);
+   return _precedence_array[type];
 }
 
 Operator *operator_new_from_type(OPERATOR_TYPE type)

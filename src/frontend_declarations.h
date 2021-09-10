@@ -94,6 +94,7 @@ Computation     *computation_insert_root(Computation *root, Computation *new_roo
 Computation     *computation_swap_root(Computation *root, Computation *new_root);
 Computation     *computation_get_lhs(const Computation *computation);
 Computation     *computation_get_rhs(const Computation *computation);
+Computation     *computation_find_parentR(Computation *root, Computation *_computation);
 Computation     *computation_replace_wc(Computation *_computation, Computation *value);
 Computation     *computation_resolve(Computation *computation, const char *wc_identifier, const VariableTable *v_table);
 void            computation_traverse(Computation *computation, void (*function)());
@@ -111,6 +112,7 @@ Computation     *computation_factorial(Computation *lhs, Computation *rhs);
 Computation     *computation_increment(Computation *lhs, Computation *rhs);
 Computation     *computation_scale(Computation *computation, Number *number);
 Polynomial      *computation_to_polynomial(const Computation *_computation);
+void            computation_swap_nodes(Computation *lhs, Computation *rhs);
 
 //entity
 Entity          *entity_new(const void *stuff, ENTITY_TYPE type);

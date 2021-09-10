@@ -39,6 +39,11 @@ boolean complex_is_real(Complex z)
     return z.im == 0 ? TRUE : FALSE;
 }
 
+boolean complex_is_imaginary(Complex z)
+{
+    return z.re == 0 ? TRUE : FALSE;
+}
+
 boolean complex_is_zero(Complex z)
 {
     return (z.re == 0 && z.im == 0) ? TRUE : FALSE;

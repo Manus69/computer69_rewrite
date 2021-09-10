@@ -42,12 +42,11 @@ void run_tests()
     test_all_sequences(valid_sequences);
 }
 
+//fix op priorities
 //dont forget the author file
 //only letters in variable names?
-//list the stored variables
 //user defined names must be case insensitive
 //remove all asserts
-//NT enums have the same prefix
 //format all headers
 //order all reserved symbols (reserved symols, function names, etc) and make a binary lookup
 //be careful around things of the form f(x) = ... ; g(x) = f with no arg; this must be checked
@@ -59,6 +58,9 @@ void run_tests()
 //"-13.2593 + 6.48091X - 8.58475X^2 + 0.0000267855X^3 = 0?" makes valgrind shit the bed
 //be careful around small coefficients
 //make a structure with strings, f_pointers, etc indexed by an enum
+//2 / (2 %2 )
+//x^3 - 3x^2 - x + 1 = 0? LOOPS OUT
+// print polynomial has "x" hardcoded
 
 int main()
 {
@@ -69,7 +71,7 @@ int main()
     data = data_init();
     
     // run_tests();
-    // test_statement("x^2 + 2x + 1 = 0 ?");
+    // test_statement("2 + 3 ^ 4 * 2");
     // test_all_statements(invalid_strings);
     // test_all_statements(context_dependent_strings);
     // matrix_test();

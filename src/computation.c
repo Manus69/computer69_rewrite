@@ -13,7 +13,6 @@ Computation *computation_new(Node *node, boolean copy)
     computation->rhs = NULL;
 
     data_add_pointer(data, computation, sizeof(Computation));
-    // vector_push(data_vector, computation);
 
     return computation;
 }
@@ -81,12 +80,29 @@ Computation *computation_copy(const Computation *computation)
     copy->lhs = computation_copy(computation->lhs);
     copy->rhs = computation_copy(computation->rhs);
 
-    // vector_push(data_vector, copy);
-
     return copy;
 }
 
 void *computation_copy_wrapper(Computation *computation)
 {
     return computation_copy(computation);
+}
+
+void computation_swap_nodes(Computation *lhs, Computation *rhs)
+{
+    if (!lhs || !rhs)
+        return ;
+    
+    SWAP(lhs->node, rhs->node, Node *);
+}
+
+Computation *computation_find_parentR(Computation *root, Computation *_computation)
+{
+    if (!root)
+        return NULL;
+    
+    if (root->rhs == _computation)
+        return root;
+    
+    return computation_find_parentR(root->rhs, _computation);
 }
