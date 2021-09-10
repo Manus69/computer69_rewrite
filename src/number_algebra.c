@@ -21,7 +21,7 @@ Number *number_add(Number *lhs, Number *rhs)
     NUMBER_TYPE type;
 
     if (!lhs || !rhs)
-        return NULL;
+        return error_set(WHY_ERROR_MATH, NULL);
 
     type = _promote(lhs, rhs);
 
@@ -37,6 +37,9 @@ Number *number_add(Number *lhs, Number *rhs)
 Number *number_increment(Number *lhs, Number *rhs)
 {
     NUMBER_TYPE type;
+
+    if (!lhs || !rhs)
+        return error_set(WHY_ERROR_MATH, NULL);
 
     type = _promote(lhs, rhs);
 
@@ -95,6 +98,9 @@ Number *number_divide(Number *lhs, Number *rhs)
 {
     NUMBER_TYPE type;
 
+    if (!lhs || !rhs)
+        return error_set(WHY_ERROR_MATH, NULL);
+
     if (number_is_zero(rhs))
         return error_set(WHY_ERROR_MATH, " divison by zero");
     
@@ -112,6 +118,9 @@ Number *number_divide(Number *lhs, Number *rhs)
 
 Number *number_mod(Number *lhs, Number *rhs)
 {
+    if (!lhs || !rhs)
+        return error_set(WHY_ERROR_MATH, NULL);
+    
     if (lhs->type != NT_INT || rhs->type != NT_INT)
         return error_set(WHY_ERROR_MATH, " mod of non-integer types if undefined");
     
@@ -123,6 +132,9 @@ Number *number_mod(Number *lhs, Number *rhs)
 
 Number *number_power(Number *lhs, Number *rhs)
 {
+    if (!lhs || !rhs)
+        return error_set(WHY_ERROR_MATH, NULL);
+    
     if (rhs->type != NT_INT)
         return error_set(WHY_ERROR_MATH, " non-integer powers are not supported");
 
@@ -151,7 +163,7 @@ Number *number_factorial(Number *lhs, const Number *rhs)
 Number *number_scale(Number *number, real factor)
 {
     if (!number)
-        return NULL;
+        return error_set(WHY_ERROR_MATH, NULL);
     
     if (number->type == NT_INT)
         return number_new_int(number->n * factor);

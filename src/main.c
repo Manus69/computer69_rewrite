@@ -61,6 +61,7 @@ void run_tests()
 //2 / (2 %2 )
 //x^3 - 3x^2 - x + 1 = 0? LOOPS OUT
 // print polynomial has "x" hardcoded
+//find an input to break "insert root"
 
 int main()
 {
@@ -70,14 +71,14 @@ int main()
     start = clock();
     data = data_init();
     
-    // run_tests();
-    // test_statement("2 + 3 ^ 4 * 2");
+    run_tests();
+    // test_statement("f(x) = x^2 - 1");
     // test_all_statements(invalid_strings);
     // test_all_statements(context_dependent_strings);
     // matrix_test();
     // math_test(); 
     // test_sequence(valid_sequence);
-    main_loop();
+    // main_loop();
 
     printf("\nMEMORY USAGE: %Ld\n", data_get_bytes(data));
 

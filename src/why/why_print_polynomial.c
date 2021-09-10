@@ -1,6 +1,8 @@
 #include "why_math_polynomial.h"
 #include "why_print.h"
 
+#include <stdio.h>
+
 //this is all fucked up
 
 static void _print_p_coefficient(Complex coefficient, boolean _signed, int_signed degree)

@@ -36,7 +36,9 @@ static Variable *_build_variable(const Computation *argument, String *string, ch
     else if (argument->node->type == NT_MATRIX)
         value = entity_new_from_matrix(argument->node->matrix, TRUE);
     else
+    {
         value = entity_new_from_computation(argument, FALSE);
+    }
 
     variable = variable_new(name, arg_name, value, FALSE);
 
@@ -85,7 +87,11 @@ Variable *_create_parametrized(String *string, const VariableTable *v_table, int
 
     argument = _parse(string, v_table);
     argument = computation_resolve(argument, arg_name, v_table);
-    // cstr_delete(&arg_name);
+
+    //
+    argument = computation_reduce(argument, v_table, NULL);
+    error_reset();
+    //
 
     if (!argument)
     {
