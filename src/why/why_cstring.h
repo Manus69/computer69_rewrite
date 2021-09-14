@@ -16,6 +16,7 @@ void            cstr_delete(char **string);
 void            cstr_to_lower(char *string);
 char            cstr_char_to_lower(char c);
 char            *cstr_trim(const char *string);
+boolean         cstr_starts_with(const char * restrict string, const char * restrict start);
 
 int_unsigned    id_digit(const char *string);
 int_unsigned    id_lower(const char *string);

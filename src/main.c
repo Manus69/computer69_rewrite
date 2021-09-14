@@ -42,7 +42,7 @@ void run_tests()
     test_all_sequences(valid_sequences);
 }
 
-//fix op priorities
+//print brackets based on relative positions in the ast
 //dont forget the author file
 //only letters in variable names?
 //user defined names must be case insensitive
@@ -58,7 +58,6 @@ void run_tests()
 //"-13.2593 + 6.48091X - 8.58475X^2 + 0.0000267855X^3 = 0?" makes valgrind shit the bed
 //be careful around small coefficients
 //make a structure with strings, f_pointers, etc indexed by an enum
-//2 / (2 %2 )
 //x^3 - 3x^2 - x + 1 = 0? LOOPS OUT
 // print polynomial has "x" hardcoded
 //find an input to break "insert root"
@@ -71,14 +70,14 @@ int main()
     start = clock();
     data = data_init();
     
-    run_tests();
-    // test_statement("f(x) = x^2 - 1");
+    // run_tests();
+    // test_statement("funB(y) = y / (4 % 2 * y)\n1+1\nx\n");
     // test_all_statements(invalid_strings);
     // test_all_statements(context_dependent_strings);
     // matrix_test();
     // math_test(); 
     // test_sequence(valid_sequence);
-    // main_loop();
+    main_loop();
 
     printf("\nMEMORY USAGE: %Ld\n", data_get_bytes(data));
 

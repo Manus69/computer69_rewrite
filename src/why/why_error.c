@@ -4,7 +4,7 @@
 
 #include <stdio.h>
 
-byte WHY_ERROR = WHY_ERROR_DEFAULT;
+int_unsigned WHY_ERROR = WHY_ERROR_DEFAULT;
 char *error_string = NULL;
 
 const char *error_strings[] = {
@@ -22,7 +22,7 @@ const char *error_strings[] = {
 "Conversion error",
 0};
 
-void *error_set(byte type, const char *_error_string)
+void *error_set(int_unsigned type, const char *_error_string)
 {
     if (WHY_ERROR != WHY_ERROR_DEFAULT)
         return NULL;

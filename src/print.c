@@ -108,7 +108,7 @@ static void _check_branch_and_print(const Computation *root, const Computation *
 
     if (root_node->type == NT_OPERATOR && branch_node->type == NT_OPERATOR)
     {
-        if (operator_compare_precedence(branch_node->operator, root_node->operator) > 0)
+        if (operator_compare_precedence(branch_node->operator, root_node->operator) >= 0)
         {
             return _pp_print(branch, wc_symbol);
         }

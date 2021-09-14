@@ -21,7 +21,7 @@ Computation *get_stuff_in_parens(String *string, const VariableTable *v_table)
         return NULL;
 
     substring = string_substring(string, 1, right_index - 1);
-    computation = _parse(substring, v_table);
+    computation = parse(substring, v_table);
 
     _string_shift(string, right_index + 1);
     string_delete(&substring);
@@ -179,6 +179,7 @@ static Computation *_insert_above(Computation **root, Computation *last_op, Comp
     return next_op;
 }
 
+//this is bad
 static void _check_precedence_and_insert(Computation **last_op, Computation **next_op, Computation **term, Computation **root)
 {
     int_signed comparison;
@@ -199,7 +200,7 @@ static void _check_precedence_and_insert(Computation **last_op, Computation **ne
     }
 }
 
-Computation *_parse(String *string, const VariableTable *v_table)
+Computation *parse(String *string, const VariableTable *v_table)
 {
     Computation *root;
     Computation *last_op;

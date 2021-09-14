@@ -7,7 +7,11 @@
 ## Installation and controls
 #### Clone the repository in the directory of your choice and type "make".
 #### Type in "./computer69" to run the program.
-#### To interpret a statement, type it in and press Enter. Type "q" and Enter to quit the program.
+#### To interpret a statement, type it in and press Enter.
+#### Type "q" and Enter to quit the program.
+#### Type "--list" to list all current variables.
+#### Lines starting with "//" are treated as "comments"
+
 ---
 ## Supported features
 ---
@@ -45,7 +49,7 @@
 ### Built-in functions
 #### Many commonly used functions are supported out of the box:
     abs(x), sqrt(x), sin(x), cos(x), tan(x), exp(x), log(x), ln(x)
-#### They are defined on R.
+#### They are defined on **R**.
 #### For instance:
     cos(pi)^2 + sin(pi)^2
 ---
@@ -54,7 +58,14 @@
 #### In general, the syntax rules are conventional. Symbols are connected by special characters,
 #### that represent mathematical operations:
     (i * pi * e)^0
-#### when a numeric symbol precedes a symbolic constant, variable name or function name,
+#### "+" stands for numeric or matrix addition;
+#### "-" numeric or matrix subtraction or unary negation;
+#### "*" numeric or matrix multiplication;
+#### "/" numeric division;
+#### "%" remainder after integer division;
+#### "^" exponentiation (rhs must be in **N**);
+#### "!" factorial (operand must be in **N**);
+#### When a numeric symbol precedes a symbolic constant, variable name or function name,
 #### multiplication symbol can be omitted:
     x = 2e
     x = 1
@@ -75,6 +86,8 @@
 #### Note that if you try to evaluate a function with a value, that is not in its domain, you will get an error. Try this:
     f(x) = sin(x) + x!
     f(i)
+#### Also note that function evaluation is **lazy**, meaning that if you create a function,
+#### it will not be evaluated until you provide it with an argument.
 ---
 
 ### Function algebra

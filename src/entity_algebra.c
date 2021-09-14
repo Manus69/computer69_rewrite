@@ -110,6 +110,11 @@ Entity *entity_subtract(Entity *lhs, Entity *rhs)
         number = number_subtract(lhs->number, rhs->number);
         return entity_new_from_number(number, FALSE);
     }
+    else if (lhs->type == ET_MATRIX && !rhs)
+    {
+        matrix = matrix_repr_scale(lhs->matrix, number_new_int(-1));
+        return entity_new_from_matrix(matrix, FALSE);
+    }
     else if (lhs->type == ET_MATRIX && rhs->type == ET_MATRIX)
     {
         matrix = matrix_repr_subtract(lhs->matrix, rhs->matrix);

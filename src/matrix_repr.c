@@ -18,7 +18,6 @@ MatrixRepr *matrix_repr_new(void *(*copy)())
 
     data_add_pointer(data, matrix, sizeof(MatrixRepr));
     data_add_vector_pointer(data, matrix->items);
-    // vector_push(data_vector, matrix);
 
     return matrix;
 }
@@ -80,6 +79,11 @@ Entity *matrix_repr_at(const MatrixRepr *matrix, int_signed j, int_signed k)
     value = vector_at(matrix->items, n);
 
     return value;
+}
+
+int_signed matrix_repr_get_n(const MatrixRepr *matrix)
+{
+    return matrix->n_rows * matrix->n_cols;
 }
 
 Entity *matrix_repr_nth(const MatrixRepr *matrix, int_signed n)

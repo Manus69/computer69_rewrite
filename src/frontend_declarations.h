@@ -54,6 +54,7 @@ Vector          *matrix_repr_get_row(const MatrixRepr *matrix, int_signed n);
 boolean         matrix_repr_push(MatrixRepr *matrix, Entity *value);
 int_signed      matrix_repr_n_cols(const MatrixRepr *matrix);
 int_signed      matrix_repr_n_rows(const MatrixRepr *matrix);
+int_signed      matrix_repr_get_n(const MatrixRepr *matrix);
 void            matrix_repr_delete(MatrixRepr **matrix);
 MatrixRepr      *matrix_repr_copy(const MatrixRepr *matrix);
 Vector          *matrix_row_from_string(String *string, const VariableTable *v_table);
@@ -98,6 +99,7 @@ Computation     *computation_find_parentR(Computation *root, Computation *_compu
 Computation     *computation_replace_wc(Computation *_computation, Computation *value);
 Computation     *computation_resolve(Computation *computation, const char *wc_identifier, const VariableTable *v_table);
 Computation     *computation_reduce(Computation *computation, const VariableTable *v_table, Number *wc_value);
+Computation     *computation_matrix_reduce(Computation *_computation, const VariableTable *v_table, Number *wc_value);
 void            computation_traverse(Computation *computation, void (*function)());
 Node            *computation_get_node(const Computation *computation);
 void            computation_delete(Computation **computation);
@@ -159,7 +161,6 @@ VariableTable   *v_table_insert_report(VariableTable *v_table, const Variable *v
 
 //parser
 Computation     *parse(String *string, const VariableTable *v_table);
-Computation     *_parse(String *string, const VariableTable *v_table); // get rid of one of these later
 
 //input
 VariableTable   *process_input_line(String *line, VariableTable *v_table);

@@ -24,7 +24,7 @@ static MatrixRepr *_process_row(MatrixRepr *matrix, String *row_string, const Va
     while (n < vector_size(items))
     {
         item_string = vector_at(items, n);
-        item = entity_new_from_computation(_parse(item_string, v_table), FALSE);
+        item = entity_new_from_computation(parse(item_string, v_table), FALSE);
         matrix_repr_push(matrix, item);
 
         n ++;

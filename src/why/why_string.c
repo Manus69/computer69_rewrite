@@ -395,3 +395,8 @@ String *string_trim(String *string)
 
     return string;
 }
+
+boolean string_starts_with(const String *string, const char *start)
+{
+    return cstr_starts_with(string_get_characters(string), start);
+}

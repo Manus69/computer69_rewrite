@@ -36,7 +36,7 @@ Variable *variable_create_named(String *string, const VariableTable *v_table, ch
     Variable *variable;
     Entity *value;
 
-    argument = _parse(string, v_table);
+    argument = parse(string, v_table);
     if (!argument || string_length(string))
         return _handle_parse_errors(string, name);
 

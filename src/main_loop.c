@@ -7,8 +7,8 @@
 
 void main_loop()
 {
-    VariableTable *v_table;
-    String *line;
+    VariableTable   *v_table;
+    String          *line;
 
     v_table = NULL;
     while (TRUE)
@@ -31,9 +31,19 @@ void main_loop()
         {
             print_v_table(v_table);
             string_delete(&line);
+
             continue ;
         }
         
+        if (string_starts_with(line, "//"))
+        {
+            _string_shift(line, 2);
+            print_string_n(line);
+            string_delete(&line);
+
+            continue ;
+        }
+
         v_table = process_input_line(line, v_table);
         string_delete(&line);
     }

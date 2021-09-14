@@ -193,3 +193,24 @@ char *cstr_trim(const char *string)
 
     return new_string;
 }
+
+boolean cstr_starts_with(const char * restrict string, const char * restrict start)
+{
+    if (!start)
+        return FALSE;
+    
+    if (!*start)
+        return TRUE;
+    
+    while (*string && *start)
+    {
+        if (*string == *start)
+        {
+            string ++;
+            start ++;
+        }
+        else return FALSE;
+    }
+
+    return *start ? FALSE : TRUE;
+}

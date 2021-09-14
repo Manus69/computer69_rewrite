@@ -85,12 +85,12 @@ Variable *_create_parametrized(String *string, const VariableTable *v_table, int
     _string_shift(string, cstr_length(arg_name) + 2);
     skip_over_equals(string);
 
-    argument = _parse(string, v_table);
+    argument = parse(string, v_table);
     argument = computation_resolve(argument, arg_name, v_table);
 
     //
-    argument = computation_reduce(argument, v_table, NULL);
-    error_reset();
+    // if (argument->node->type != NT_MATRIX)
+    argument = computation_reduce(argument, v_table, NULL);    
     //
 
     if (!argument)
@@ -98,6 +98,7 @@ Variable *_create_parametrized(String *string, const VariableTable *v_table, int
         cstr_delete(&name);
         return NULL;
     }
+    error_reset();
     
     return _build_variable(argument, string, name, arg_name);
 }

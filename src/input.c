@@ -137,8 +137,8 @@ static void _process_find_roots(String *line, VariableTable *v_table)
         return ;
     }
     
-    lhs = _parse(vector_at(strings, 0), v_table);
-    rhs = _parse(vector_at(strings, 1), v_table);
+    lhs = parse(vector_at(strings, 0), v_table);
+    rhs = parse(vector_at(strings, 1), v_table);
 
     if (WHY_ERROR)
         return _handle_errors(strings);
