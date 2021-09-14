@@ -1,5 +1,3 @@
-# Computer69
----
 ### Computer69 is an interpreter of mathematical expressions.
 ### It is capable of evaluating arithmetical expressions, polynomials, trigonometric functions, matrix operations and so on.
 ### Some of its more advanced features are still in development, they will become available in the future versions.
@@ -8,9 +6,10 @@
 #### Clone the repository in the directory of your choice and type "make".
 #### Type in "./computer69" to run the program.
 #### To interpret a statement, type it in and press Enter.
-#### Type "q" and Enter to quit the program.
+#### Type "--q" and Enter to quit the program.
 #### Type "--list" to list all current variables.
-#### Lines starting with "//" are treated as "comments"
+#### Type "--purge" to purge all variables.
+#### Lines starting with "//" are treated as "comments".
 
 ---
 ## Supported features
@@ -27,22 +26,26 @@
 
 ### Built-in constants
 #### Some useful numbers, like pi and e, are predefined, with precision of at least 10 decimal digits.
+    pi
+    e
 ---
 
 ### Complex numbers
 #### Complex arithmetic is fully supported
     i*i
-    pi + e*i / e*i
+    pi + e*i / (e*i)
 ---
 
 ### Variables (I)
 #### It is possible to define variables. The syntax is straightforward:
     <variable name> = <value>
+#### Variable name must begin with a letter and may contain underscores and numbers.
 #### For instance:
     x = (pi * pi) / e
     x = x + 1
     y = -x*i
     variable69 = x^69
+    this_is_also_a_variable = 0
 #### Variable names are not case sensitive. So "var69" and "VAR69" stand for the same entity.
 ---
 

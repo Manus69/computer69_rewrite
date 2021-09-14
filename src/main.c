@@ -42,7 +42,6 @@ void run_tests()
     test_all_sequences(valid_sequences);
 }
 
-//print brackets based on relative positions in the ast
 //dont forget the author file
 //only letters in variable names?
 //user defined names must be case insensitive
@@ -58,9 +57,10 @@ void run_tests()
 //"-13.2593 + 6.48091X - 8.58475X^2 + 0.0000267855X^3 = 0?" makes valgrind shit the bed
 //be careful around small coefficients
 //make a structure with strings, f_pointers, etc indexed by an enum
-//x^3 - 3x^2 - x + 1 = 0? LOOPS OUT
 // print polynomial has "x" hardcoded
 //find an input to break "insert root"
+// f(x) = ? should be equivalent to "f"
+//use computation_to_polynomial to avoid lazy evaluation?
 
 int main()
 {

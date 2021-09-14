@@ -9,6 +9,8 @@
 #define WC_SYMBOL "_"
 
 void print_number(const Number *number);
+void print_operator(const Operator *operator);
+void print_node(const Node *node, const char *wc_symbol);
 void print_computation(const Computation *computation, const char *wc_symbol);
 void print_computationDBG(const Computation *computation, const char *wc_symbol);
 void print_variable_verbose(const Variable *variable, const char *wc_symbol);
