@@ -181,6 +181,9 @@ Number *computation_eval(const Computation *computation, const VariableTable *v_
     lhs_value = computation->lhs ? computation_eval(computation->lhs, v_table, wc_value) : NULL;
     rhs_value = computation->rhs ? computation_eval(computation->rhs, v_table, wc_value) : NULL;
 
+    if (WHY_ERROR)
+        return NULL;
+
     function = op_functions[computation->node->operator->type];
     result = function(lhs_value, rhs_value);
     result = number_demote_if_possible(result);
@@ -222,12 +225,14 @@ Entity *computation_evalG(const Computation *computation, const VariableTable *v
         return _eval_functionG(computation, v_table, wc_value);
     if (computation->node->type == NT_IDENTIFIER)
         return _eval_idG(computation);
-    // if (computation->node->type == NT_WILDCARD && wc_value)
     if (computation->node->type == NT_WILDCARD)
         return _eval_wildcard(wc_value);
     
     lhs_value = computation->lhs ? computation_evalG(computation->lhs, v_table, wc_value) : NULL;
     rhs_value = computation->rhs ? computation_evalG(computation->rhs, v_table, wc_value) : NULL;
+
+    if (WHY_ERROR)
+        return NULL;
 
     function = op_functionsG[computation->node->operator->type];
     result = function(lhs_value, rhs_value);

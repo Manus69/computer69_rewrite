@@ -70,6 +70,7 @@ void print_complex(Complex z)
     }
     if (z.re)
     {
+        printf("(");
         print_real(z.re);
         if (z.im < 0)
             printf(" - ");
@@ -78,13 +79,14 @@ void print_complex(Complex z)
         if (z.im != 1 && z.im != -1)
             print_real(absolute_value(z.im));
         printf("i");
+        printf(")");
 
         return ;
     }
 
-    if (z.im == -1)
+    if (within_delta(z.im, -1, TOLERANCE))
         printf("-");
-    else if (z.im != 1)
+    else if (!within_delta(z.im, 1, TOLERANCE))
         print_real(z.im);
 
     printf("i");

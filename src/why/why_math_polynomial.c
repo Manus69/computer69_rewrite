@@ -28,7 +28,7 @@ Polynomial *_new(int_signed size, char *variable)
     _array_init(p->coefficients, 0, size);
     p->degree = -1;
     p->capacity = size;
-    p->variable = variable;
+    p->variable = cstr_copy(variable);
 
     return p;
 }
@@ -95,7 +95,7 @@ Polynomial *polynomial_copy(const Polynomial *p)
     if (p->degree == -1)
         return polynomial_new(cstr_copy(p->variable));
     
-    new = _new(p->degree + 1, cstr_copy(p->variable));
+    new = _new(p->degree + 1, p->variable);
     new->degree = p->degree;
     new->capacity = new->degree + 1;
     new->coefficients = memory_copy(new->coefficients, p->coefficients, (p->degree + 1) * sizeof(Complex));

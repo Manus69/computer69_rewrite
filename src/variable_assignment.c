@@ -89,6 +89,8 @@ Variable *variable_create_from_string(String *string, const VariableTable *v_tab
     length = id_function_name_str(string);
     if (length && index != NOT_FOUND)
         return _create_parametrized(string, v_table, length);
+    else if (length && index == NOT_FOUND)
+        return variable_create_named(string, v_table, NULL);
 
     length = id_identifier(string_get_characters(string));
     if (length && index != NOT_FOUND)

@@ -87,6 +87,12 @@ Computation *get_term(String *string, const VariableTable *v_table)
     
     string_skip_spaces(string);
 
+    if ((term = get_function(string, v_table)))
+        return term;
+    
+    if ((term = get_identifier(string)))
+        return term;
+    
     if ((node = node_get_number(string)))
         return computation_new(node, FALSE);
     
@@ -96,12 +102,6 @@ Computation *get_term(String *string, const VariableTable *v_table)
     if ((term = get_stuff_in_parens(string, v_table)))
         return term;
     
-    if ((term = get_function(string, v_table)))
-        return term;
-    
-    if ((term = get_identifier(string)))
-        return term;
-
     if (string_at(string, 0) == TERMINALS[MINUS])
         return _process_u_minus(string, v_table);
     
@@ -219,7 +219,7 @@ Computation *parse(String *string, const VariableTable *v_table)
     last_op = root;
     while (string_length(string))
     {
-        if(!(term = get_term(string, v_table)))
+        if(!(term = get_term(string, v_table)) && operator_is_binary(last_op->node->operator))
             return error_set(WHY_ERROR_SYNTAX, string_get_characters(string));
 
         if (!(next_op = get_operator(string)))

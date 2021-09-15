@@ -3,6 +3,8 @@
 
 #include <stdio.h>
 
+#define DEFAULT_SYMBOL "x"
+
 //this is all fucked up
 
 static void _print_p_coefficient(Complex coefficient, boolean _signed, int_signed degree)
@@ -71,10 +73,10 @@ static void _print_coefficient(const Polynomial *p, int_signed degree, boolean l
 //this is fucking ugly
 void print_polynomial(const Polynomial *p)
 {
-    int_signed n;
-    int_signed degree;
-    Complex coefficient;
-    boolean leading;
+    int_signed  n;
+    int_signed  degree;
+    Complex     coefficient;
+    boolean     leading;
 
     if (!p)
         return ;
@@ -98,12 +100,12 @@ void print_polynomial(const Polynomial *p)
         }
 
         _print_coefficient(p, n, leading);
-        leading = leading ? FALSE : leading;
+        leading = FALSE;
 
         if (n > 1)
-            printf("x^%Ld", n);
+            printf("%s^%Ld", p->variable ? p->variable : DEFAULT_SYMBOL, n);
         else if (n == 1)
-            printf("x");
+            printf("%s", p->variable ? p->variable : DEFAULT_SYMBOL);
 
         n ++;
     }

@@ -18,6 +18,7 @@ void main_loop()
         if (!(line = string_trim(line)))
             break ;
 
+        line = string_to_lower(line);
         if (string_is_identical_to(line, CMD_QUIT))
         {
             string_delete(&line);
@@ -35,7 +36,7 @@ void main_loop()
         }
         else if (string_starts_with(line, CMD_COMMENT))
         {
-            _string_shift(line, 2);
+            _string_shift(line, cstr_length(CMD_COMMENT));
             print_string_n(line);
             string_delete(&line);
         }

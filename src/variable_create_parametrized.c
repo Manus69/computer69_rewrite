@@ -67,8 +67,8 @@ static void *_handle_reserved_name(char *name, char *arg_name)
 
 Variable *_create_parametrized(String *string, const VariableTable *v_table, int_signed name_length)
 {
-    char *name;
-    char *arg_name;
+    char        *name;
+    char        *arg_name;
     Computation *argument;
     
     name = string_slice(string, name_length);
@@ -89,13 +89,13 @@ Variable *_create_parametrized(String *string, const VariableTable *v_table, int
     argument = computation_resolve(argument, arg_name, v_table);
 
     //
-    // if (argument->node->type != NT_MATRIX)
     argument = computation_reduce(argument, v_table, NULL);    
     //
 
     if (!argument)
     {
         cstr_delete(&name);
+        cstr_delete(&arg_name);
         return NULL;
     }
     error_reset();

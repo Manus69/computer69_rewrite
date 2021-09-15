@@ -26,7 +26,6 @@ Node *node_new(void *object, NODE_TYPE type, boolean copy)
     node->type = type;
 
     data_add_pointer(data, node, sizeof(Node));
-    // vector_push(data_vector, node);
 
     return node;
 }
@@ -43,7 +42,6 @@ Node *node_convert_to_wildcard(Node *node)
     if (node->type != NT_IDENTIFIER)
         return NULL;
     
-    // cstr_delete(&node->identifier);
     node->type = NT_WILDCARD;
 
     return node;
@@ -83,7 +81,7 @@ void node_delete(Node **node)
 
     destructor = _fetch_destructor((*node)->type);
     if (destructor)
-        destructor(&(*node)->identifier); //
+        destructor(&(*node)->identifier);
     
     free(*node);
     *node = NULL;
@@ -112,10 +110,13 @@ Node *node_get_identifier(String *string)
     int_unsigned length;
     char *substring;
 
+    if((length = id_imaginary(string_get_characters(string))))
+        return NULL;
+
     length = id_identifier(string_get_characters(string));
     if (!length)
         return NULL;
-    
+
     substring = string_slice(string, length);
     _string_shift(string, length);
 
@@ -153,10 +154,8 @@ Node *node_copy(const Node *node)
         new_node->matrix = matrix_repr_copy(node->matrix);
     else if (node->type == NT_BUILTIN_FUNCTION)
         new_node->bf_type = node->bf_type;
-    // else assert(0);
 
     data_add_pointer(data, new_node, sizeof(Node));
-    // vector_push(data_vector, new_node);
 
     return new_node;
 }

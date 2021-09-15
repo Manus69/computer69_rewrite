@@ -44,23 +44,20 @@ void run_tests()
 
 //dont forget the author file
 //only letters in variable names?
-//user defined names must be case insensitive
 //remove all asserts
 //format all headers
 //order all reserved symbols (reserved symols, function names, etc) and make a binary lookup
 //be careful around things of the form f(x) = ... ; g(x) = f with no arg; this must be checked
 //max size for matrices?
-//some print functions print retarded stuff like -0 etc.
 //unfuck enums, reserved strings and function names
 //-999999999999999999999999999999999999999999999999999999x = x^2?
-//"f(x) = sin(sqrt(4)*pi)" does not resolve to value "f(x) = ln(e)", etc
 //"-13.2593 + 6.48091X - 8.58475X^2 + 0.0000267855X^3 = 0?" makes valgrind shit the bed
 //be careful around small coefficients
 //make a structure with strings, f_pointers, etc indexed by an enum
-// print polynomial has "x" hardcoded
 //find an input to break "insert root"
-// f(x) = ? should be equivalent to "f"
+// f(x) = ? should be equivalent to "f" ?
 //use computation_to_polynomial to avoid lazy evaluation?
+//put more complicated expressions into readme
 
 int main()
 {
@@ -71,13 +68,13 @@ int main()
     data = data_init();
     
     // run_tests();
-    // test_statement("funB(y) = y / (4 % 2 * y)\n1+1\nx\n");
+    // test_statement("E(x) = 0");
     // test_all_statements(invalid_strings);
     // test_all_statements(context_dependent_strings);
     // matrix_test();
     // math_test(); 
-    // test_sequence(valid_sequence);
-    main_loop();
+    test_sequence(valid_sequence);
+    // main_loop();
 
     printf("\nMEMORY USAGE: %Ld\n", data_get_bytes(data));
 

@@ -172,7 +172,6 @@ void print_matrix_repr(const MatrixRepr *matrix, const char *wc_symbol)
     if (!n_rows || !n_cols)
         return ;
     
-    // printf("[");
     print_matrix_row(matrix, 0, wc_symbol);
 
     n = 1;
@@ -182,7 +181,6 @@ void print_matrix_repr(const MatrixRepr *matrix, const char *wc_symbol)
         print_matrix_row(matrix, n, wc_symbol);
         n ++;
     }
-    // printf("]");
 }
 
 static void *functions[] = {print_number, print_matrix_repr, print_computation, 0};

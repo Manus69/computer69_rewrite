@@ -68,7 +68,7 @@
 #### "%" remainder after integer division;
 #### "^" exponentiation (rhs must be in **N**);
 #### "!" factorial (operand must be in **N**);
-#### When a numeric symbol precedes a symbolic constant, variable name or function name,
+#### When a number precedes a symbolic constant, variable name or function name,
 #### multiplication symbol can be omitted:
     x = 2e
     x = 1
@@ -89,7 +89,7 @@
 #### Note that if you try to evaluate a function with a value, that is not in its domain, you will get an error. Try this:
     f(x) = sin(x) + x!
     f(i)
-#### Also note that function evaluation is **lazy**, meaning that if you create a function,
+#### Also note that function evaluation might be **lazy**, meaning that if you create a function,
 #### it will not be evaluated until you provide it with an argument.
 ---
 
@@ -98,6 +98,8 @@
     f(x) = 2x
     g(x) = x^2
     w(x) = f(x) + g(x)
+    f(x) = f + g + w
+#### (the argument is implicit)
 ---
 
 ### Function composition
@@ -114,10 +116,11 @@
 
 ### Roots of polynomials
 #### Computer69 can find roots of a polynomial with real coefficients, provided the degree of a polynomial is no greater than 3. To do that, just put a question mark after a polynomial:
-    x + x^2 = 0 ?
+    -2 + x^2 = 0 ?
 #### or:
     p(x) = x^2 - x - 1
     p(x) = 0 ?
+    y^2 + 1 = 0 ?
 ---
 
 ### Matrices
@@ -154,12 +157,17 @@
 ---
 
 ### Fun
-#### Let's play around with the program and compute the 69th Fibonacci number using matrices.
-    F69 = [[0, 1]]*[[1, 1];[1, 0]]^69*[[1];[0]]
+#### Let's play around with the program and compute some stuff.
+#### Let's compute e with reasonable precision:
+    my_e(x) = 1 + x + x^2 / 2! + x^3 / 3! + x^4 / 4! + x^5 / 5!
+    my_e(1)
+#### Compute the 69th Fibonacci number using matrices:
+    F69 = [[0, 1]]*[[1, 1];[1, 0]]^68*[[1];[0]]
 #### Another way to have fun is to rotate some vectors in the plane:
     r(x) = [[cos(x), -sin(x)];[sin(x), cos(x)]]
+    r_pi = r(pi)
     v = [[1];[1]]
-    w = r(pi/2) * v
+    w = r_pi^2 * v
 ---
 
 ## Upcoming features
@@ -170,3 +178,4 @@
 * Non-integer exponents
 * Functions from C to C
 * Better controls
+* Roots of higher degree polynomials (?)

@@ -7,14 +7,9 @@
 
 static Polynomial *_combine_polynomials(Polynomial *lhs, Operator *op, Polynomial *rhs)
 {
-    OPERATOR_TYPE op_type;
-    Polynomial *result;
-    Complex z;
-
-    #if DBG
-    _print_polynomialDBG(lhs);
-    _print_polynomialDBG(rhs);
-    #endif
+    OPERATOR_TYPE   op_type;
+    Polynomial      *result;
+    Complex         z;
 
     result = NULL;
     op_type = operator_get_type(op);
@@ -68,9 +63,7 @@ Polynomial *computation_to_polynomial(const Computation *_computation)
     }
 
     if (_computation->node->type == NT_WILDCARD)
-    {
-        return polynomial_new_from_complexG(complex(1, 0), 1, NULL);
-    }
+        return polynomial_new_from_complexG(complex(1, 0), 1, _computation->node->identifier);
 
     if (_computation->node->type == NT_IDENTIFIER)
     {
