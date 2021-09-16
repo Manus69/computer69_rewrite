@@ -7,5 +7,6 @@
 void *copy_shallow(const void *item);
 void *copy_real(real *x);
 void *copy_complex(Complex *z);
+void *copy_cstring(const char *string);
 
 #endif

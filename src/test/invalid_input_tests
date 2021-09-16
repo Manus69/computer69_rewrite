@@ -1,0 +1,116 @@
+. * -
+//ERROR
+*
+//ERROR
+-
+//ERROR
+- = -
+//ERROR
+- 1 * = 0
+//ERROR
+a = b = 0
+//ERROR
+0 = 0 = 0
+//ERROR
+x y = 0
+//ERROR
+-
+//ERROR
+-1 *
+//ERROR
+y -
+//ERROR
+1 + x =
+//ERROR
+012345678901234567890123456789
+//ERROR
+3 - 3 = 
+//ERROR
+1 =
+//ERROR
+= x
+//ERROR
++
+//ERROR
+ + 
+ //ERROR
+- 
+//ERROR
+=
+//ERROR
+ =
+ //ERROR
+ = 
+ //ERROR
+x == -1
+//ERROR
+x = -x = x
+//ERROR
+===
+//ERROR
+x^-11 = -9
+//ERROR
+x = 01
+//ERROR
+x = -01
+//ERROR
+x-1^x = 0
+//ERROR
+-x++x = -1
+//ERROR
+-2 --1 = 0
+//ERROR
+x^-1 = -1
+//ERROR
++x = -1
+//ERROR
+_
+//ERROR
+	~
+    //ERROR
+1 * X^^1 = -X
+//ERROR
+* x = -1
+//ERROR
+-1 * * c = 0
+//ERROR
+-x + = -1
+//ERROR
+ч = 0
+//ERROR
+3.1ч = 0
+//ERROR
+0 = 3.1ч
+//ERROR
+0 = +-1
+//ERROR
+0 = +- x
+//ERROR
+01 = 0x
+//ERROR
++7 = 0
+//ERROR
+1. = x
+//ERROR
+x = .001
+//ERROR
+x = ..
+//ERROR
+1..0 = x
+//ERROR
+-00..1 = x
+//ERROR
+0.0.1 = x
+//ERROR
+.09 = -1
+//ERROR
+0131.99 = -1
+//ERROR
+0 - 1 = 9.
+//ERROR
+#1 = -@0
+//ERROR
+#=
+//ERROR
+   - $ = -#
+   //ERROR

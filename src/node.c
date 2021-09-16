@@ -110,7 +110,7 @@ Node *node_get_identifier(String *string)
     int_unsigned length;
     char *substring;
 
-    if((length = id_imaginary(string_get_characters(string))))
+    if (contains_i(string_get_characters(string)))
         return NULL;
 
     length = id_identifier(string_get_characters(string));

@@ -55,9 +55,11 @@ void run_tests()
 //be careful around small coefficients
 //make a structure with strings, f_pointers, etc indexed by an enum
 //find an input to break "insert root"
-// f(x) = ? should be equivalent to "f" ?
 //use computation_to_polynomial to avoid lazy evaluation?
 //put more complicated expressions into readme
+//put a qubic equation into a readme
+//error messages format: error type: additional message?
+// f(x) = ? should be equivalent to "f" ?
 
 int main()
 {
@@ -68,7 +70,7 @@ int main()
     data = data_init();
     
     // run_tests();
-    // test_statement("E(x) = 0");
+    // test_statement("B = pi * [[1, 0]]");
     // test_all_statements(invalid_strings);
     // test_all_statements(context_dependent_strings);
     // matrix_test();

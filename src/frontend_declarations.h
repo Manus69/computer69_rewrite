@@ -182,6 +182,7 @@ int_signed      find_matching_bracket_str(const String *string, char o_symbol, c
 String          *string_new_no_space_to_lower(const char *characters);
 String          *string_new_trimmed(const char *characters);
 Vector          *string_split_and_trim(String *string, char delimiter);
+boolean         contains_i(const char *string);
 boolean         is_pi(const char *string);
 boolean         is_e(const char *string);
 char            *check_reserved_symbols(const char *string);

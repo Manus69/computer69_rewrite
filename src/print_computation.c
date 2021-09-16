@@ -6,6 +6,8 @@
 
 #include <assert.h>
 
+void print_computationL(const Computation *computation, const char *wc_symbol);
+
 static void _pp_print(const Computation *computation, const char *wc_symbol)
 {
     printf("(");
@@ -41,7 +43,7 @@ static void _check_branch_and_print(const Computation *root, const Computation *
             return print_computation(branch, wc_symbol);
     }
 
-    print_computation(branch, wc_symbol);
+    print_computationL(branch, wc_symbol);
 }
 
 static void _check_left_branch_and_print(const Computation *root, const Computation *branch, const char *wc_symbol)
@@ -78,7 +80,7 @@ static byte _check_u_minus(const Computation *computation)
     return FALSE;
 }
 
-void print_computation(const Computation *computation, const char *wc_symbol)
+static void _print_computation(const Computation *computation, const char *wc_symbol, void (*m_print)())
 {
     Node *root_node;
 
@@ -94,11 +96,21 @@ void print_computation(const Computation *computation, const char *wc_symbol)
         return _print_u_minus(computation, wc_symbol);
 
     if (root_node->type == NT_MATRIX)
-        return print_matrix_repr(root_node->matrix, wc_symbol);
+        return m_print(root_node->matrix, wc_symbol);
 
     _check_left_branch_and_print(computation, computation->lhs, wc_symbol);
     print_node(root_node, wc_symbol);
     _check_right_branch_and_print(computation, computation->rhs, wc_symbol);
+}
+
+void print_computation(const Computation *computation, const char *wc_symbol)
+{
+    return _print_computation(computation, wc_symbol, print_matrix_reprL); //
+}
+
+void print_computationL(const Computation *computation, const char *wc_symbol)
+{
+    return _print_computation(computation, wc_symbol, print_matrix_reprL);
 }
 
 void print_computationDBG(const Computation *computation, const char *wc_symbol)

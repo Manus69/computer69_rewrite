@@ -97,6 +97,12 @@ void print_cstring(const char *string)
     printf("%s", string);
 }
 
+void print_cstringN(const char *string)
+{
+    print_cstring(string);
+    printf("\n");
+}
+
 //this is ugly and dangerous
 void print_string(const String *string)
 {
@@ -141,4 +147,9 @@ void print_vector(const Vector *vector, void (*print)(), const char *separator)
 
         n ++;
     }
+}
+
+void print_list(const List *list, void (*function)())
+{
+    return list_map((List *)list, function);
 }

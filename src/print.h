@@ -20,6 +20,7 @@ void print_variableNI(const Variable *variable);
 void print_v_table(const VariableTable *v_table);
 void print_matrix_row(const MatrixRepr *matrix, int_signed j, const char *wc_symbol);
 void print_matrix_repr(const MatrixRepr *matrix, const char *wc_symbol);
+void print_matrix_reprL(const MatrixRepr *matrix, const char *wc_symbol);
 void print_entity(const Entity *entity, const char *wc_symbol);
 void print_roots(const Vector *roots);
 void print_root_messageAR();

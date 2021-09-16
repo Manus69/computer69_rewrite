@@ -210,7 +210,9 @@ const char *valid_cubics[] = {
 
 const char *valid_sequence_basic[] = {"A = [[1]]", "B = 2*A", 0};
 
-const char *valid_sequence[] = {"f(y) = y + 1", "f(y) = 0?", 0};
+const char *valid_sequence[] = {"a(x) = [[1, x];[0, 1]]",
+"b(x) = [[1, 0];[x, 1]]",
+"c(x) = a(x) * b(x)", "c(0)", 0};
 
 const char *valid_sequences[][SEQUENCE_LENGTH] = {
 {"0", 0},

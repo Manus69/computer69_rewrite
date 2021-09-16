@@ -3,6 +3,8 @@
 #include "why_memory.h"
 #include "why_macros.h"
 
+//read the to do list
+
 static void **_get_array(int_signed size)
 {
     void **array;

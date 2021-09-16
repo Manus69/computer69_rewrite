@@ -158,7 +158,7 @@ void print_matrix_row(const MatrixRepr *matrix, int_signed j, const char *wc_sym
     printf(" ]");
 }
 
-void print_matrix_repr(const MatrixRepr *matrix, const char *wc_symbol)
+static void _print_matrix_repr_separator(const MatrixRepr *matrix, const char *wc_symbol, const char *separator)
 {
     int_signed n;
     int_signed n_rows;
@@ -177,10 +177,20 @@ void print_matrix_repr(const MatrixRepr *matrix, const char *wc_symbol)
     n = 1;
     while (n < n_rows)
     {
-        printf("\n");
+        printf("%s", separator);
         print_matrix_row(matrix, n, wc_symbol);
         n ++;
     }
+}
+
+void print_matrix_repr(const MatrixRepr *matrix, const char *wc_symbol)
+{
+    return _print_matrix_repr_separator(matrix, wc_symbol, "\n");
+}
+
+void print_matrix_reprL(const MatrixRepr *matrix, const char *wc_symbol)
+{    
+    return _print_matrix_repr_separator(matrix, wc_symbol, "; ");
 }
 
 static void *functions[] = {print_number, print_matrix_repr, print_computation, 0};

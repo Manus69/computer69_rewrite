@@ -136,7 +136,7 @@
 ### Matrix operations
 #### Matrices can be added, multiplied by a scalar or multiplied by a matrix:
     A = [[1, 0];[0, 1]] + [[0, 1];[1, 0]]
-    B = [[1, 0]] * pi
+    B = pi * [[1, 0]]
     C = [[pi, e]]*[[e];[pi]]*A
 #### raising to an integer power is also defined:
     A = [[1, 1];[0, 1]]^69
@@ -153,7 +153,8 @@
 #### For example:
     a(x) = [[1, x];[0, 1]]
     b(x) = [[1, 0];[x, 1]]
-    a(x) * b(x)
+    c(x) = a(x) * b(x)
+    c(0)
 ---
 
 ### Fun
@@ -174,6 +175,7 @@
 * Derivatives and integrals of real functions
 * Functions of multiple variables
 * Systems of linear equations
+* Matrix transposition
 * Determinants, inverses, eigenvalues
 * Non-integer exponents
 * Functions from C to C

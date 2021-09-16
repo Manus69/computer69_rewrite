@@ -4,6 +4,8 @@
 #include "why_memory.h"
 #include "why_macros.h"
 
+//not tested
+
 Heap *heap_new(void *(*copy)(), void (*delete)(), int_signed (*compare)())
 {
     Heap *heap;

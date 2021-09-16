@@ -96,6 +96,7 @@ Variable *_create_parametrized(String *string, const VariableTable *v_table, int
     {
         cstr_delete(&name);
         cstr_delete(&arg_name);
+        
         return NULL;
     }
     error_reset();

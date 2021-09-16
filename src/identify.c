@@ -1,6 +1,26 @@
 #include "frontend_declarations.h"
 #include "terminals.h"
 
+boolean contains_i(const char *string)
+{
+    if (!string || !*string)
+        return FALSE;
+
+    if (*string != 'i')
+        return FALSE;
+    
+    if (*(string + 1) == 0)
+        return TRUE;
+    
+    if (id_whitespace(string + 1))
+        return TRUE;
+    
+    if (id_alphanum(string + 1))
+        return FALSE;
+    
+    return TRUE;
+}
+
 int_unsigned id_identifier(const char *string)
 {
     char *pointer;
