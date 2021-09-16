@@ -1,3 +1,5 @@
+//MALFORMED INPUT
+//--------
 . * -
 //ERROR
 *
@@ -48,13 +50,9 @@ x = -x = x
 //ERROR
 ===
 //ERROR
-x^-11 = -9
-//ERROR
 x = 01
 //ERROR
 x = -01
-//ERROR
-x-1^x = 0
 //ERROR
 -x++x = -1
 //ERROR
@@ -112,5 +110,79 @@ x = ..
 //ERROR
 #=
 //ERROR
-   - $ = -#
-   //ERROR
+- $ = -#
+//ERROR
+//------------
+//INVALID SYNTAX OR UNDEFINED SYMBOLS
+//------------
+x
+//ERROR
+X
+//ERROR
+x - X
+//ERROR
+x = YYYY
+//ERROR
+012345678901234567890123456789 = x
+//ERROR
+012345678901234567890123456789x = -1
+//ERROR
+x = y
+//ERROR
+-x = 0x * x
+//ERROR
+0 = x * x
+//ERROR
+0 = 0x + 0x^10
+//ERROR
+1x^9999999999999999999 = -1
+//ERROR
+0x = -1
+//ERROR
+-x = 0x^9
+//ERROR
+-1 * X = - 1 * Y
+//ERROR
+-x^11 -x^2 = x^3
+//ERROR
+3.14 *x = -1
+//ERROR
+-x = 3.24* x^10
+//ERROR
+0 = -3.1x^3.1
+//ERROR
+0 = a1
+//ERROR
+a^x = 0
+//ERROR
+3.1A + 8.1111b = 0
+//ERROR
+3.11A = -4.1B
+//ERROR
+10*x = -1
+//ERROR
+1-x = 0
+//ERROR
+-xX = 0
+//ERROR
+x*a^1 = -1
+//ERROR
+1^1 = x
+//ERROR
+a-1 = 0
+//ERROR
+a-1 = b
+//ERROR
+a-1=v
+//ERROR
+x^-11 = -9
+//ERROR
+x-1^x = 0
+//ERROR
+11 ?
+//ERROR
+//-------------
+//SEMANTIC ERRORS
+//--------------
+
+//-------

@@ -60,6 +60,7 @@ void run_tests()
 //put a qubic equation into a readme
 //error messages format: error type: additional message?
 // f(x) = ? should be equivalent to "f" ?
+//is -...-x valid syntax ?
 
 int main()
 {
@@ -75,8 +76,8 @@ int main()
     // test_all_statements(context_dependent_strings);
     // matrix_test();
     // math_test(); 
-    test_sequence(valid_sequence);
-    // main_loop();
+    // test_sequence(valid_sequence);
+    main_loop();
 
     printf("\nMEMORY USAGE: %Ld\n", data_get_bytes(data));
 
