@@ -12,6 +12,12 @@ void print_int(int_signed n)
     printf("%lld", n);
 }
 
+void print_int_pointerN(int_signed *n)
+{
+    print_int(*n);
+    printf("\n");
+}
+
 static void _print_number_string(char *string)
 {
     int_signed n;

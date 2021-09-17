@@ -18,7 +18,6 @@ void main_loop()
         if (!(line = string_trim(line)))
             break ;
 
-        line = string_to_lower(line);
         if (string_is_identical_to(line, CMD_QUIT))
         {
             string_delete(&line);
@@ -42,6 +41,7 @@ void main_loop()
         }
         else
         {
+            line = string_to_lower(line);
             v_table = process_input_line(line, v_table);
             string_delete(&line);
         }

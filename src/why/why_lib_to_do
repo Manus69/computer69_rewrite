@@ -3,3 +3,4 @@ preallocate some extra space at the front to make front insertions amortized O(1
 resize the array when you poped some elements ?
 change the name to array?
 build \ new distinction?
+stay away from recursive things to avoid stack overflow

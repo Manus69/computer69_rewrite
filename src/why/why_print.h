@@ -10,6 +10,7 @@
 #define TOLERANCE (1.0/10000)
 
 void print_int(int_signed n);
+void print_int_pointerN(int_signed *n);
 void print_real(real x);
 void print_complex(Complex z);
 void print_cstring(const char *string);

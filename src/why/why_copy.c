@@ -12,6 +12,16 @@ void *copy_cstring(const char *string)
     return cstr_copy(string);
 }
 
+void *copy_int_signed(int_signed *n)
+{
+    int_signed *number;
+
+    number = allocate(sizeof(int_signed));
+    *number = *n;
+
+    return number;
+}
+
 void *copy_real(real *x)
 {
     real *number;

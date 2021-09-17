@@ -20,14 +20,18 @@ List *list_new(void *(*copy)(), void (*delete)())
 
 void sequence_delete(Sequence **sequence, void (*_delete)())
 {
+    Sequence *next;
+
     if (!sequence || !*sequence)
         return ;
     
-    sequence_delete(&(*sequence)->next, _delete);
-    _delete(&(*sequence)->data);
-
-    free(*sequence);
-    *sequence = NULL;
+    while (*sequence)
+    {
+        next = (*sequence)->next;
+        _delete(&(*sequence)->data);
+        free(*sequence);
+        *sequence = next;
+    }
 }
 
 static void _list_delete_empty(List **list)
