@@ -3,7 +3,7 @@
 #define FACTOR (real) 100 / RAND_MAX;
 #define MOD 1000
 
-static Entity *_get_random_int()
+static Entity* _get_random_int()
 {
     int_signed value;
 
@@ -13,7 +13,7 @@ static Entity *_get_random_int()
     return entity_new_from_number(number_new_int(value), FALSE);
 }
 
-static Entity *_get_random_real()
+static Entity* _get_random_real()
 {
     real value;
 
@@ -23,7 +23,7 @@ static Entity *_get_random_real()
     return entity_new_from_number(number_new_real(value), FALSE);
 }
 
-static Entity *_get_random_complex()
+static Entity* _get_random_complex()
 {
     Complex value;
 
@@ -36,21 +36,21 @@ static Entity *_get_random_complex()
     return entity_new_from_number(number_new_complex(value), FALSE);
 }
 
-static void *getters[] = {_get_random_int, _get_random_real, _get_random_complex, 0};
+static void* getters[] = {_get_random_int, _get_random_real, _get_random_complex, 0};
 
-MatrixRepr *generate_random_matrix(int_signed n_rows, int_signed n_cols, NUMBER_TYPE type)
+MatrixRepr* generate_random_matrix(int_signed n_rows, int_signed n_cols, NUMBER_TYPE type)
 {
-    Entity *value;
+    Entity* value;
     int_signed n;
     int_signed size;
-    MatrixRepr *matrix;
-    Entity *(*get)();
+    MatrixRepr* matrix;
+    Entity* (*get)();
 
     get = getters[type];
 
     srand(0);
     matrix = matrix_repr_new_fixed_size(n_rows, n_cols);
-    size = n_rows * n_cols;
+    size = n_rows*  n_cols;
     n = 0;
 
     while (n < size)

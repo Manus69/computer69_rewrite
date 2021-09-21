@@ -23,6 +23,9 @@ Polynomial *_new(int_signed size, char *variable)
 {
     Polynomial *p;
 
+    if (size <= 0)
+        return polynomial_new(variable);
+    
     p = allocate(sizeof(Polynomial));
     p->coefficients = allocate(sizeof(Complex) * size);
     _array_init(p->coefficients, 0, size);

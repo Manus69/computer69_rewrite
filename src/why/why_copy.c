@@ -2,19 +2,19 @@
 #include "why_memory.h"
 #include "why_cstring.h"
 
-void *copy_shallow(const void *item)
+void* copy_shallow(const void* item)
 {
-    return (void *)item;
+    return (void* )item;
 }
 
-void *copy_cstring(const char *string)
+void* copy_cstring(const char* string)
 {
     return cstr_copy(string);
 }
 
-void *copy_int_signed(int_signed *n)
+void* copy_int_signed(int_signed* n)
 {
-    int_signed *number;
+    int_signed* number;
 
     number = allocate(sizeof(int_signed));
     *number = *n;
@@ -22,9 +22,9 @@ void *copy_int_signed(int_signed *n)
     return number;
 }
 
-void *copy_real(real *x)
+void* copy_real(real* x)
 {
-    real *number;
+    real* number;
 
     number = allocate(sizeof(real));
     *number = *x;
@@ -32,9 +32,9 @@ void *copy_real(real *x)
     return number;
 }
 
-void *copy_complex(Complex *z)
+void* copy_complex(Complex* z)
 {
-    Complex *w;
+    Complex* w;
 
     w = allocate(sizeof(Complex));
     w->re = z->re;

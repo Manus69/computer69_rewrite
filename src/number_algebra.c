@@ -156,6 +156,9 @@ Number *number_factorial(Number *lhs, const Number *rhs)
     
     if (lhs->type != NT_INT)
         return error_set(WHY_ERROR_MATH, NULL);
+
+    if (lhs->n < 0)
+        return error_set(WHY_ERROR_MATH, "! is defined for non-negative integers");
     
     return number_new_int(factorial(lhs->n));
 }

@@ -4,7 +4,7 @@
 
 #include <assert.h>
 
-static real _convert_decimal_part(const char *string, int_signed length)
+static real _convert_decimal_part(const char* string, int_signed length)
 {
     real result;
     char c;
@@ -20,14 +20,14 @@ static real _convert_decimal_part(const char *string, int_signed length)
     return result;
 }
 
-static real _convert_int_part(const char *string, int_signed length)
+static real _convert_int_part(const char* string, int_signed length)
 {
     real result;    
 
     result = 0;
     while (length)
     {
-        result = result * 10 + *string - '0';
+        result = result*  10 + *string - '0';
         if (result > __INT_MAX__)
             return (int_signed)error_set(WHY_ERROR_CONV, string);
         
@@ -38,7 +38,7 @@ static real _convert_int_part(const char *string, int_signed length)
     return result;
 }
 
-int_signed convert_to_int(const char *string)
+int_signed convert_to_int(const char* string)
 {
     int_signed result;
 
@@ -48,7 +48,7 @@ int_signed convert_to_int(const char *string)
     result = 0;
     while (*string && id_digit(string))
     {
-        result = result * 10 + *string - '0';
+        result = result*  10 +* string - '0';
         if (result > __INT_MAX__)
             return (int_signed)error_set(WHY_ERROR_CONV, string);
         
@@ -58,7 +58,7 @@ int_signed convert_to_int(const char *string)
     return result;
 }
 
-real convert_to_real(const char *string)
+real convert_to_real(const char* string)
 {
     real result;
     int_unsigned int_part;
@@ -93,7 +93,7 @@ real convert_to_real(const char *string)
     return result;
 }
 
-Complex convert_to_complex(const char *string)
+Complex convert_to_complex(const char* string)
 {
     int_unsigned length;
     int_signed sign;
@@ -132,7 +132,7 @@ Complex convert_to_complex(const char *string)
     if (!length)
         return (Complex){re, 0};
 
-    im = convert_to_real(string) * sign;
+    im = convert_to_real(string)*  sign;
 
     return (Complex){re, im};
 }

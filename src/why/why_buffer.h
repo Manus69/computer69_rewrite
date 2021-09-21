@@ -9,10 +9,10 @@
 
 struct Buffer
 {
-    char    *bytes;
-    char    *read_pointer;
-    char    *search_pointer;
-    char    *write_pointer;
+    char*   bytes;
+    char*   read_pointer;
+    char*   search_pointer;
+    char*   write_pointer;
 
     int_signed size;
 };

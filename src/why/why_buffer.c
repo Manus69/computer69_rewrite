@@ -18,8 +18,8 @@ static void _buffer_init(Buffer *buffer, char *bytes, int_signed size)
 
 Buffer *buffer_new()
 {
-    Buffer *buffer;
-    char *bytes;
+    Buffer  *buffer;
+    char    *bytes;
 
     buffer = allocate(sizeof(Buffer));    
     bytes = memory_zero(BUFFER_DEFAULT_SIZE);
@@ -65,10 +65,10 @@ int_signed buffer_count_unsearched_bytes(Buffer *buffer)
 
 static int_signed _reallocate_bytes(Buffer *buffer, int_signed extra_capacity)
 {
-    int_signed new_size;
-    int_signed unread_bytes;
-    int_signed shift;
-    char *new_byte_array;
+    int_signed  new_size;
+    int_signed  unread_bytes;
+    int_signed  shift;
+    char        *new_byte_array;
 
     new_size = MAX(buffer->size + extra_capacity, buffer->size * 2);
     new_byte_array = allocate(new_size);
@@ -119,8 +119,8 @@ int_signed buffer_write_all_bytes_into(Buffer *buffer, int f_descriptor)
 
 String *buffer_read_from(Buffer *buffer, int_signed n_bytes, boolean allocate_bytes)
 {
-    String *string;
-    int_signed bytes_availible;
+    String      *string;
+    int_signed  bytes_availible;
 
     bytes_availible = buffer_count_unread_bytes(buffer);
     if (!bytes_availible)
@@ -146,8 +146,8 @@ String *buffer_flush_all(Buffer *buffer, boolean allocate_bytes)
 
 String *buffer_flush_sequence(Buffer *buffer, char terminator, boolean allocate_bytes)
 {
-    int_signed index;
-    String *string;
+    int_signed  index;
+    String      *string;
 
     index = buffer_search(buffer, terminator);
     if (index == NOT_FOUND)
@@ -179,16 +179,15 @@ static int_signed _process_index(Buffer *buffer, int_signed index)
 
 int_signed buffer_search(Buffer *buffer, char c)
 {
-    String *string;
-    int_signed length;
-    int_signed index;
+    String      *string;
+    int_signed  length;
+    int_signed  index;
 
     length = buffer_count_unsearched_bytes(buffer);
     if (length <= 0)
         return NOT_FOUND;
     
     string = string_new_fixed_length(buffer->search_pointer, length);
-    // _string_init(stack_string, buffer->search_pointer, length, FALSE);
     index = string_index_of(string, c);
     index = _process_index(buffer, index);
     string_delete(&string);
@@ -198,16 +197,15 @@ int_signed buffer_search(Buffer *buffer, char c)
 
 int_signed buffer_search_string(Buffer *buffer, const char *literal)
 {
-    String *string;
-    int_signed length;
-    int_signed index;
+    String      *string;
+    int_signed  length;
+    int_signed  index;
 
     length = buffer_count_unsearched_bytes(buffer);
     if (length <= 0)
         return NOT_FOUND;
     
     string = string_new_fixed_length(buffer->search_pointer, length);
-    // _string_init(stack_string, buffer->search_pointer, length, FALSE);
     index = string_find_literal(string, literal);
     index = _process_index(buffer, index);
     string_delete(&string);

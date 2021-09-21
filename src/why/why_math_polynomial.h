@@ -6,17 +6,15 @@
 #include "why_vector_interface.h"
 #include "why_math_complex.h"
 
-// #define P_MAX_DEGREE (1 << 4)
-
+#define P_COEFFICIENT_ABS_MAX (1 << 15)
 #define P_DEFAULT_SIZE (1 << 1)
 
 struct Polynomial
 {
-    // Complex coefficients[P_MAX_DEGREE + 1];
-    Complex *coefficients;
-    char *variable;
-    int_signed degree;
-    int_signed capacity;
+    Complex     *coefficients;
+    char        *variable;
+    int_signed  degree;
+    int_signed  capacity;
 };
 
 int_signed _get_degree(Polynomial *p, int_signed start);

@@ -501,7 +501,8 @@ void test_all_sequences(const char *array[][SEQUENCE_LENGTH])
 
 void sqrt_test(real initial_value, real step, real terminal_value)
 {
-    real x, _x;
+    real x;
+    // real _x;
 
     while (initial_value < terminal_value)
     {
@@ -509,8 +510,8 @@ void sqrt_test(real initial_value, real step, real terminal_value)
         x = math_sqrt(initial_value);
         printf("my sqrt:    %.10Lf\n", x);
 
-        _x = sqrt(initial_value);
-        printf("stock sqrt: %.10Lf\n\n", _x);
+        // _x = sqrt(initial_value);
+        // printf("stock sqrt: %.10Lf\n\n", _x);
 
         initial_value += step;
     }
@@ -518,7 +519,8 @@ void sqrt_test(real initial_value, real step, real terminal_value)
 
 void log_test(real initial_value, real step, real terminal_value)
 {
-    real x, _x;
+    real x;
+    // real _x;
 
     while (initial_value < terminal_value)
     {
@@ -526,8 +528,8 @@ void log_test(real initial_value, real step, real terminal_value)
         x = math_ln(initial_value);
         printf("my log:    %.10Lf\n", x);
 
-        _x = log(initial_value);
-        printf("stock log: %.10Lf\n\n", _x);
+        // _x = log(initial_value);
+        // printf("stock log: %.10Lf\n\n", _x);
 
         initial_value += step;
     }
@@ -535,15 +537,16 @@ void log_test(real initial_value, real step, real terminal_value)
 
 void exp_test(real initial_value, real step, real terminal_value)
 {
-    real x, _x;
+    real x;
+    // real _x;
 
     while (initial_value < terminal_value)
     {
         x = math_exp(initial_value);
-        _x = exp(initial_value);
+        // _x = exp(initial_value);
         printf("a = %Lf\n", initial_value);
         printf("my exp:     %.10Lf\n", x);
-        printf("stock exp:  %.10Lf\n\n", _x);
+        // printf("stock exp:  %.10Lf\n\n", _x);
 
         initial_value += step;
     }

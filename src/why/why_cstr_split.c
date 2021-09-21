@@ -3,12 +3,12 @@
 #include "why_vector_interface.h"
 #include "why_copy.h"
 
-Vector *cstr_split(char *string, char delimiter)
+Vector* cstr_split(char* string, char delimiter)
 {
-    Vector *vector;
-    int_signed index;
-    int_signed length;
-    char *substring;
+    Vector*     vector;
+    int_signed  index;
+    int_signed  length;
+    char*       substring;
 
     vector = vector_new(copy_shallow, memory_delete);
 

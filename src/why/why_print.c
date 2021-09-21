@@ -50,7 +50,8 @@ void print_real(real x)
 
     if (x < 0)
     {
-        printf("-");
+        if (!within_delta(0, -x, TOLERANCE))
+            printf("-");
         print_real(-x);
 
         return ;

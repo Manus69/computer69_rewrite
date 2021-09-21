@@ -4,12 +4,15 @@
 #include "node.h"
 #include "why_error.h"
 
-#include "print.h" //
-#include <assert.h>
+#define DBG 1
+#if DBG
+    #include "print.h" //
+    #include <assert.h>
+#endif
 
-static VariableTable *_insert_into_table(Variable *variable, VariableTable *v_table)
+static VariableTable* _insert_into_table(Variable* variable, VariableTable* v_table)
 {
-    Variable *v;
+    Variable* v;
 
     if (!v_table)
         v_table = v_table_new(variable);
@@ -24,9 +27,9 @@ static VariableTable *_insert_into_table(Variable *variable, VariableTable *v_ta
     return v_table;
 }
 
-static VariableTable *_process_assignment(String *line, VariableTable *v_table)
+static VariableTable* _process_assignment(String* line, VariableTable* v_table)
 {
-    Variable *_variable;
+    Variable* _variable;
 
     _variable = variable_create_from_string(line, v_table);
     if (!_variable)
@@ -34,7 +37,6 @@ static VariableTable *_process_assignment(String *line, VariableTable *v_table)
         return v_table;
     }
 
-    // print_variableN(_variable);
     print_variableNI(_variable);
     
     if (variable_get_name(_variable))
@@ -43,11 +45,11 @@ static VariableTable *_process_assignment(String *line, VariableTable *v_table)
     return v_table;
 }
 
-static VariableTable *_process_eval(String *line, VariableTable *v_table)
+static VariableTable* _process_eval(String* line, VariableTable* v_table)
 {
-    Vector *substrings;
-    String *lhs;
-    VariableTable *result;
+    Vector* substrings;
+    String* lhs;
+    VariableTable* result;
 
     substrings = string_split_and_trim(line, TERMINALS[EQUALS]);
     lhs = vector_at(substrings, 0);
@@ -58,22 +60,15 @@ static VariableTable *_process_eval(String *line, VariableTable *v_table)
     return result;
 }
 
-static void _process_polynomial(Computation *lhs, Computation *rhs)
+static void _process_polynomial(Computation* lhs, Computation* rhs)
 {    
-    Polynomial *p;
-    Polynomial *_lhs;
-    Polynomial *_rhs;
-    Vector *roots;
+    Polynomial* p;
+    Polynomial* _lhs;
+    Polynomial* _rhs;
+    Vector*     roots;
 
     _lhs = computation_to_polynomial(lhs);
     _rhs = computation_to_polynomial(rhs);
-
-    #if DBG
-    print_computationDBG(lhs);
-    _print_polynomialDBG(_lhs);
-    print_computationDBG(rhs);
-    _print_polynomialDBG(_rhs);
-    #endif
 
     p = polynomial_subtract(_lhs, _rhs);
     print_polynomial_with_rhs(p);
@@ -81,11 +76,10 @@ static void _process_polynomial(Computation *lhs, Computation *rhs)
 
     if (polynomial_is_zero(p))
         print_root_messageAR();
-    else if (!roots)
+    else if (!roots && !WHY_ERROR)
         print_root_messageNR();
     else
     {
-        // printf("\n");
         print_roots(roots);
         printf("\n");
     }
@@ -96,9 +90,9 @@ static void _process_polynomial(Computation *lhs, Computation *rhs)
     vector_delete(&roots);
 }
 
-static char *_get_first_identifier(const Computation *_computation)
+static char* _get_first_identifier(const Computation* _computation)
 {
-    char *_lhs;
+    char* _lhs;
 
     if (!_computation)
         return NULL;
@@ -116,17 +110,17 @@ static char *_get_first_identifier(const Computation *_computation)
     return _get_first_identifier(_computation->rhs);
 }
 
-static void _handle_errors(Vector *strings)
+static void _handle_errors(Vector* strings)
 {
     vector_delete(&strings);
 }
 
-static void _process_find_roots(String *line, VariableTable *v_table)
+static void _process_find_roots(String* line, VariableTable* v_table)
 {
-    Vector *strings;
-    Computation *lhs;
-    Computation *rhs;
-    char *id;
+    Vector*         strings;
+    Computation*    lhs;
+    Computation*    rhs;
+    char*           id;
 
     strings = string_split_and_trim(line, TERMINALS[EQUALS]);
     if (vector_size(strings) != 2)
@@ -153,11 +147,11 @@ static void _process_find_roots(String *line, VariableTable *v_table)
     vector_delete(&strings);
 }
 
-VariableTable *process_input_line(String *line, VariableTable *v_table)
+VariableTable* process_input_line(String* line, VariableTable* v_table)
 {
-    String *substring;
-    VariableTable *result;
-    Variable *_variable;
+    String*         substring;
+    VariableTable*  result;
+    Variable*       _variable;
     
     result = v_table;
     if ((_variable = v_table_search(v_table, string_get_characters(line))))

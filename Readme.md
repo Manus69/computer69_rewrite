@@ -55,6 +55,8 @@
 #### They are defined on **R**.
 #### For instance:
     cos(pi)^2 + sin(pi)^2
+    sqrt(abs(-pi))
+    zero = log(e) - 1 / ln(2)
 ---
 
 ### Some words on syntax
@@ -121,6 +123,7 @@
     p(x) = x^2 - x - 1
     p(x) = 0 ?
     y^2 + 1 = 0 ?
+    x^3 - 3x^2 - 144x + 432 = 0 ?
 ---
 
 ### Matrices
@@ -162,6 +165,9 @@
 #### Let's compute e with reasonable precision:
     my_e(x) = 1 + x + x^2 / 2! + x^3 / 3! + x^4 / 4! + x^5 / 5!
     my_e(1)
+#### Compute the volume of Earth, assuming that its radius is around 6300 km.
+    V(r) = (4pi/3)r^3
+    V(6300 * 1000) = ?
 #### Compute the 69th Fibonacci number using matrices:
     F69 = [[0, 1]]*[[1, 1];[1, 0]]^68*[[1];[0]]
 #### Another way to have fun is to rotate some vectors in the plane:
@@ -174,6 +180,7 @@
 ## Upcoming features
 * Derivatives and integrals of real functions
 * Functions of multiple variables
+* gcd, lcm, C(n, k)
 * Systems of linear equations
 * Matrix transposition
 * Determinants, inverses, eigenvalues

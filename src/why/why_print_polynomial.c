@@ -16,6 +16,11 @@ static void _print_p_coefficient(Complex coefficient, boolean _signed, int_signe
     {
         if (coefficient.re == 1 && degree)
             return ;
+        if (coefficient.re == -1 && degree)
+        {
+            printf("-");
+            return ;
+        }
         
         _signed ? print_real(coefficient.re) : print_real(absolute_value(coefficient.re));
     }

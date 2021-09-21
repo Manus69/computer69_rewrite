@@ -5,9 +5,9 @@
 #include <stdio.h>
 
 int_unsigned WHY_ERROR = WHY_ERROR_DEFAULT;
-char *error_string = NULL;
+char* error_string = NULL;
 
-const char *error_strings[] = {
+const char* error_strings[] = {
 "No errors detected",
 "Error",
 "It is totally broken",
@@ -22,7 +22,7 @@ const char *error_strings[] = {
 "Conversion error",
 0};
 
-void *error_set(int_unsigned type, const char *_error_string)
+void* error_set(int_unsigned type, const char* _error_string)
 {
     if (WHY_ERROR != WHY_ERROR_DEFAULT)
         return NULL;
@@ -46,35 +46,35 @@ void error_reset()
 
 void error_display()
 {
-    char *format;
+    char* format;
 
-    format = error_string ? "%s %s\n" : "%s\n";
+    format = error_string ? "%s: %s\n" : "%s\n";
     fprintf(stderr, format, error_strings[WHY_ERROR], error_string);
 
     error_reset();
 }
 
-void error_display_message(const char *message)
+void error_display_message(const char* message)
 {
-    char *format;
+    char* format;
 
     format = message ? "%s at %s\n" : "%s\n";
     fprintf(stderr, format, error_strings[WHY_ERROR], message);
 }
 
-void *error_display_message_return(const char *message)
+void* error_display_message_return(const char* message)
 {
     error_display_message(message);
 
     return NULL;
 }
 
-void error_display_custom(const char *message)
+void error_display_custom(const char* message)
 {
     fprintf(stderr, "%s", message);
 }
 
-void *error_display_custom_return(const char *message)
+void* error_display_custom_return(const char* message)
 {
     error_display_custom(message);
 

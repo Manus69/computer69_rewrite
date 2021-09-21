@@ -5,10 +5,13 @@
 #include "terminals.h"
 #include "why_error.h"
 
+
+#include "why_string.h" //
 #include <assert.h>
 
 Computation *get_term(String *string, const VariableTable *v_table);
 Computation *get_operator(String *string);
+static Computation *_get_term(String *string, const VariableTable *v_table);
 
 Computation *get_stuff_in_parens(String *string, const VariableTable *v_table)
 {
@@ -69,7 +72,10 @@ static Computation *_process_u_minus(String *string, const VariableTable *v_tabl
     Computation *term;
 
     minus = get_operator(string);
-    if (!(term = get_term(string, v_table)))
+    if (string_at(string, 0) == TERMINALS[MINUS])
+        return error_set(WHY_ERROR_PARSE, string_get_characters(string));
+
+    if (!(term = _get_term(string, v_table)))
         return error_set(WHY_ERROR_PARSE, string_get_characters(string));
 
     minus->lhs = term;
@@ -77,15 +83,10 @@ static Computation *_process_u_minus(String *string, const VariableTable *v_tabl
     return minus;
 }
 
-Computation *get_term(String *string, const VariableTable *v_table)
+static Computation *_get_term(String *string, const VariableTable *v_table)
 {
     Node *node;
     Computation *term;
-
-    if (!string || string_length(string) == 0)
-        return NULL;
-    
-    string_skip_spaces(string);
 
     if ((term = get_function(string, v_table)))
         return term;
@@ -102,10 +103,20 @@ Computation *get_term(String *string, const VariableTable *v_table)
     if ((term = get_stuff_in_parens(string, v_table)))
         return term;
     
+    return NULL;
+}
+
+Computation *get_term(String *string, const VariableTable *v_table)
+{    
+    if (!string || string_length(string) == 0)
+        return NULL;
+    
+    string_skip_spaces(string);
+
     if (string_at(string, 0) == TERMINALS[MINUS])
         return _process_u_minus(string, v_table);
     
-    return NULL;
+    return _get_term(string, v_table);
 }
 
 Computation *get_operator(String *string)
@@ -195,9 +206,7 @@ static void _check_precedence_and_insert(Computation **last_op, Computation **ne
         *last_op = *root;
     }
     else
-    {
         *last_op = _insert_above(root, *last_op, *next_op, *term);
-    }
 }
 
 Computation *parse(String *string, const VariableTable *v_table)
