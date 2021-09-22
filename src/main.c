@@ -8,31 +8,7 @@
 
 #include <stdio.h>
 #include <time.h>
-#include <math.h>
 #include <limits.h>
-
-void test()
-{
-    Vector *v;
-    String *str;
-
-    str = string_new("this is a test");
-    v = string_split(str, ' ');
-    string_delete(&str);
-
-    print_vector(v, print_string, "-----");
-    printf("\n");
-
-    str = vector_at(v, 3);
-    print_string_n(str);
-    _string_shift(str, 2);
-    print_string_n(str);
-
-    print_vector(v, print_string, "-----");
-    printf("\n");
-
-    vector_delete(&v);
-}
 
 void run_tests()
 {
@@ -42,6 +18,11 @@ void run_tests()
     test_all_sequences(valid_sequences);
 }
 
+static void _at_exit()
+{
+    get_line(-1);
+}
+
 //dont forget the author file
 //only letters in variable names?
 //remove all asserts
@@ -49,6 +30,7 @@ void run_tests()
 //order all reserved symbols (reserved symols, function names, etc) and make a binary lookup
 //be careful around things of the form f(x) = ... ; g(x) = f with no arg; this must be checked
 //max size for matrices?
+//limit for factorials and powers?
 //-999999999999999999999999999999999999999999999999999999x = x^2?
 //"-13.2593 + 6.48091X - 8.58475X^2 + 0.0000267855X^3 = 0?" makes valgrind shit the bed
 //be careful around small coefficients
@@ -62,15 +44,13 @@ int main()
     clock_t start;
     clock_t end;
 
+    atexit(_at_exit);
+
     start = clock();
     data = data_init();
     
     // run_tests();
-    test_statement("-125 = c^3 ?");
-    // test_all_statements(invalid_strings);
-    // test_all_statements(context_dependent_strings);
-    // matrix_test();
-    // math_test(); 
+    test_statement("-13.2593 + 6.48091X - 8.58475X^2 + 0.0000267855X^3 = 0?");
     // test_sequence(valid_sequence);
     // main_loop();
 

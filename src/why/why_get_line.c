@@ -5,7 +5,7 @@
 #define READ_SIZE (1 << 11)
 #define NUMBER_OF_DESCRIPTORS (1 << 10)
 
-static void _delete_buffers(Buffer **buffers)
+static void _delete_buffers(Buffer** buffers)
 {
     int_signed n;
 
@@ -17,9 +17,9 @@ static void _delete_buffers(Buffer **buffers)
     }
 }
 
-static Buffer *_get_buffer(int_signed index)
+static Buffer* _get_buffer(int_signed index)
 {
-    static Buffer *buffers[NUMBER_OF_DESCRIPTORS];
+    static Buffer* buffers[NUMBER_OF_DESCRIPTORS];
 
     if (index < 0)
     {
@@ -38,11 +38,11 @@ static Buffer *_get_buffer(int_signed index)
     return buffers[index];
 }
 
-String *get_line(int file_descriptor)
+String* get_line(int file_descriptor)
 {
-    String *line;
-    int status;
-    Buffer *buffer;
+    String* line;
+    Buffer* buffer;
+    int     status;
     
     buffer =  _get_buffer(file_descriptor);
     if (!buffer)
@@ -60,10 +60,10 @@ String *get_line(int file_descriptor)
     }
 }
 
-String *get_all_lines(int file_descriptor)
+String* get_all_lines(int file_descriptor)
 {
-    Buffer *buffer;
-    String *string;
+    Buffer* buffer;
+    String* string;
 
     buffer = buffer_new();
 

@@ -2,11 +2,10 @@
 
 #include <assert.h>
 
-// #define N_ITERATIONS(x) ((1 + (int_signed)ABS(x)) << 6)
-#define N_ITERATIONS (1 << 5)
-#define EXP2 (real)7.389056098930650
-#define R_THRESHOLD (1 << 2)
-#define L_THRESHOLD -(1 << 2)
+#define N_ITERATIONS    (1 << 5)
+#define EXP2            (real)7.389056098930650
+#define R_THRESHOLD     (1 << 2)
+#define L_THRESHOLD     -(1 << 2)
 
 real math_exp(real x)
 {

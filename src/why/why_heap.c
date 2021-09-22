@@ -6,9 +6,9 @@
 
 //not tested
 
-Heap *heap_new(void *(*copy)(), void (*delete)(), int_signed (*compare)())
+Heap* heap_new(void* (*copy)(), void (*delete)(), int_signed (*compare)())
 {
-    Heap *heap;
+    Heap* heap;
 
     heap = vector_new(copy, delete);
     heap->compare = compare;
@@ -16,17 +16,17 @@ Heap *heap_new(void *(*copy)(), void (*delete)(), int_signed (*compare)())
     return heap;
 }
 
-void heap_delete(Heap **heap)
+void heap_delete(Heap** heap)
 {
     return vector_delete(heap);
 }
 
-void heap_map(Heap *heap, void (*function)())
+void heap_map(Heap* heap, void (*function)())
 {
     return vector_map(heap, function);
 }
 
-void heap_swap(Heap *heap, int_signed m, int_signed n)
+void heap_swap(Heap* heap, int_signed m, int_signed n)
 {
     return vector_swap(heap, m, n);
 }
@@ -38,20 +38,20 @@ static int_signed _index_of_parent(int_signed index)
 
 static int_signed _index_of_left_child(int_signed index)
 {
-    return 2 * index + 1;
+    return 2*  index + 1;
 }
 
 static int_signed _index_of_right_child(int_signed index)
 {
-    return 2 * index + 2;
+    return 2*  index + 2;
 }
 
-static void *_get_parent(Heap *heap, int_signed index)
+static void* _get_parent(Heap* heap, int_signed index)
 {
     return heap->items[_index_of_parent(index)];
 }
 
-void *_get_left_child(Heap *heap, int_signed index)
+void* _get_left_child(Heap* heap, int_signed index)
 {
     int_signed child_index;
 
@@ -62,7 +62,7 @@ void *_get_left_child(Heap *heap, int_signed index)
     return heap->items[child_index];
 }
 
-void *_get_right_child(Heap *heap, int_signed index)
+void* _get_right_child(Heap* heap, int_signed index)
 {
     int_signed child_index;
 
@@ -73,10 +73,10 @@ void *_get_right_child(Heap *heap, int_signed index)
     return heap->items[child_index];
 }
 
-static void _restore_heap_property(Heap *heap, int_signed index)
+static void _restore_heap_property(Heap* heap, int_signed index)
 {
     int_signed parent_index;
-    void *parent;
+    void* parent;
 
     while (index)
     {
@@ -91,7 +91,7 @@ static void _restore_heap_property(Heap *heap, int_signed index)
     }
 }
 
-boolean heap_push(Heap *heap, void *item)
+boolean heap_push(Heap* heap, void* item)
 {
     if (vector_push(heap, item))
     {
@@ -103,7 +103,7 @@ boolean heap_push(Heap *heap, void *item)
     return FALSE;
 }
 
-// void *heap_pop_root(Heap *heap)
+// void* heap_pop_root(Heap* heap)
 // {
 //     return NULL;
 // }

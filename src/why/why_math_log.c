@@ -2,8 +2,8 @@
 
 #include <assert.h>
 
-#define N_TERMS (1 << 6)
-#define LN2 (real)0.693147180559945309
+#define N_TERMS     (1 << 6)
+#define LN2         (real)0.693147180559945309
 #define R_THRESHOLD (1 << 3)
 #define L_THRESHOLD 1
 

@@ -7,7 +7,7 @@
 #include "why_print.h"
 #endif
 
-Polynomial *polynomial_increment(Polynomial *p, Polynomial *q)
+Polynomial* polynomial_increment(Polynomial* p, Polynomial* q)
 {
     int_signed n;
     Complex value;
@@ -27,10 +27,10 @@ Polynomial *polynomial_increment(Polynomial *p, Polynomial *q)
     return p;
 }
 
-Polynomial *polynomial_add(Polynomial *p, Polynomial *q)
+Polynomial* polynomial_add(Polynomial* p, Polynomial* q)
 {
-    Polynomial *new_polynomial;
-    Polynomial *larger_p;
+    Polynomial* new_polynomial;
+    Polynomial* larger_p;
     Complex     value;
     int_signed  n;
 
@@ -55,16 +55,16 @@ Polynomial *polynomial_add(Polynomial *p, Polynomial *q)
     return new_polynomial;
 }
 
-Polynomial *polynomial_addLD(Polynomial *p, Polynomial *q)
+Polynomial* polynomial_addLD(Polynomial* p, Polynomial* q)
 {
     return polynomial_increment(p, q);
 }
 
-Polynomial *polynomial_scale(Polynomial *p, Complex factor)
+Polynomial* polynomial_scale(Polynomial* p, Complex factor)
 {
-    Complex value;
-    int_signed n;
-    Polynomial *copy;
+    Complex     value;
+    int_signed  n;
+    Polynomial* copy;
 
     if (!p)
         return NULL;
@@ -82,10 +82,10 @@ Polynomial *polynomial_scale(Polynomial *p, Complex factor)
     return copy;
 }
 
-Polynomial *polynomial_subtract(Polynomial *p, Polynomial *q)
+Polynomial* polynomial_subtract(Polynomial* p, Polynomial* q)
 {
-    Polynomial *copy;
-    Polynomial *result;
+    Polynomial* copy;
+    Polynomial* result;
 
     copy = polynomial_scale(q, complex(-1, 0));
 
@@ -95,9 +95,9 @@ Polynomial *polynomial_subtract(Polynomial *p, Polynomial *q)
     return result;
 }
 
-Polynomial *polynomial_subtractLD(Polynomial *p, Polynomial *q)
+Polynomial* polynomial_subtractLD(Polynomial* p, Polynomial* q)
 {
-    Polynomial *result;
+    Polynomial* result;
 
     result = polynomial_subtract(p, q);
     polynomial_delete(&p);
@@ -105,13 +105,13 @@ Polynomial *polynomial_subtractLD(Polynomial *p, Polynomial *q)
     return result;
 }
 
-Polynomial *polynomial_multiply(Polynomial *p, Polynomial *q)
+Polynomial* polynomial_multiply(Polynomial* p, Polynomial* q)
 {
-    int_signed degree;
-    int_signed k;
-    Complex value;
-    Complex sum;
-    Polynomial *r;
+    int_signed  degree;
+    int_signed  k;
+    Complex     value;
+    Complex     sum;
+    Polynomial* r;
 
     degree = p->degree + q->degree;
     r = _new(degree + 1, NULL);
@@ -133,9 +133,9 @@ Polynomial *polynomial_multiply(Polynomial *p, Polynomial *q)
     return r;
 }
 
-Polynomial *polynomial_multiplyLD(Polynomial *p, Polynomial *q)
+Polynomial* polynomial_multiplyLD(Polynomial* p, Polynomial* q)
 {
-    Polynomial *result;
+    Polynomial* result;
 
     result = polynomial_multiply(p, q);
     polynomial_delete(&p);
@@ -144,7 +144,7 @@ Polynomial *polynomial_multiplyLD(Polynomial *p, Polynomial *q)
 }
 
 //careful
-static int_signed _is_monomial(const Polynomial *p)
+static int_signed _is_monomial(const Polynomial* p)
 {
     int_signed n;
 
@@ -160,10 +160,10 @@ static int_signed _is_monomial(const Polynomial *p)
     return p->degree;
 }
 
-Polynomial *polynomial_exponentiate(Polynomial *p, int_signed power)
+Polynomial* polynomial_exponentiate(Polynomial* p, int_signed power)
 {
-    Polynomial *result;
-    Polynomial *pointer;
+    Polynomial* result;
+    Polynomial* pointer;
 
     if (!p)
         return NULL;
@@ -172,7 +172,7 @@ Polynomial *polynomial_exponentiate(Polynomial *p, int_signed power)
         return polynomial_new_from_complex(complex(1, 0));
     
     if (_is_monomial(p))
-        return polynomial_new_from_complexG(p->coefficients[p->degree], power * p->degree, p->variable);
+        return polynomial_new_from_complexG(p->coefficients[p->degree], power*  p->degree, p->variable);
 
     pointer = polynomial_copy(p);
     result = pointer;
@@ -190,7 +190,7 @@ Polynomial *polynomial_exponentiate(Polynomial *p, int_signed power)
     return result;
 }
 
-Polynomial *polynomial_exponentiateG(Polynomial *p, Polynomial *q)
+Polynomial* polynomial_exponentiateG(Polynomial* p, Polynomial* q)
 {
     if (!p || !q)
         return NULL;

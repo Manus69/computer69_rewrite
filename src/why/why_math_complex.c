@@ -10,9 +10,9 @@ Complex complex(real re, real im)
     return (Complex){re, im};
 }
 
-Complex *complex_new(real re, real im)
+Complex* complex_new(real re, real im)
 {
-    Complex *z;
+    Complex* z;
 
     z = allocate(sizeof(Complex));
     z->re = re;
@@ -21,7 +21,7 @@ Complex *complex_new(real re, real im)
     return z;
 }
 
-Complex *complex_copy(Complex *z)
+Complex* complex_copy(Complex* z)
 {
     if (!z)
         return NULL;

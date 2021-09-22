@@ -5,13 +5,13 @@
 
 struct Vector
 {
-    void *(*copy)();
-    void (*delete)();
-    int_signed (*compare)();
+    void*       (*copy)();
+    void        (*delete)();
+    int_signed  (*compare)();
 
-    void **items;
-    int_signed current_index;
-    int_signed capacity;
+    void**      items;
+    int_signed  current_index;
+    int_signed  capacity;
 };
 
 #endif

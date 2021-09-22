@@ -4,7 +4,7 @@
 #include "why_cstring.h"
 #include "why_macros.h"
 
-void _string_init(String *string, const char *literal, int_signed length, unsigned char allocated)
+void _string_init(String* string, const char* literal, int_signed length, unsigned char allocated)
 {
     string->characters = (char *)literal;
     string->pointer = string->characters;
@@ -12,7 +12,7 @@ void _string_init(String *string, const char *literal, int_signed length, unsign
     string->allocated = allocated;
 }
 
-void _string_init_copy(String *lhs, const String *rhs)
+void _string_init_copy(String* lhs, const String* rhs)
 {
     lhs->characters = (char *)rhs->characters;
     lhs->pointer = lhs->characters;
@@ -20,12 +20,12 @@ void _string_init_copy(String *lhs, const String *rhs)
     lhs->allocated = FALSE;
 }
 
-void _string_set_allocation(String *string, byte allocated)
+void _string_set_allocation(String* string, byte allocated)
 {
     string->allocated = allocated;
 }
 
-int_signed _string_shift(String *string, int_signed shift)
+int_signed _string_shift(String* string, int_signed shift)
 {
     if (string->length < shift)
         shift = string->length;
@@ -36,7 +36,7 @@ int_signed _string_shift(String *string, int_signed shift)
     return shift;
 }
 
-String *string_skip_spaces(String *string)
+String* string_skip_spaces(String* string)
 {
     if (!string)
         return NULL;
@@ -47,7 +47,7 @@ String *string_skip_spaces(String *string)
     return string;    
 }
 
-int_signed _string_rewind(String *string)
+int_signed _string_rewind(String* string)
 {
     string->length = string->characters - string->pointer;
     string->characters = string->pointer;
@@ -55,9 +55,9 @@ int_signed _string_rewind(String *string)
     return string->length;
 }
 
-String *string_new_fixed_length(const char *literal, int_signed length)
+String* string_new_fixed_length(const char* literal, int_signed length)
 {
-    String *string;
+    String* string;
 
     string = allocate(sizeof(String));
     
@@ -66,7 +66,7 @@ String *string_new_fixed_length(const char *literal, int_signed length)
     return string;
 }
 
-String *string_new(const char *literal)
+String* string_new(const char* literal)
 {
     int_signed length;
 
@@ -78,10 +78,10 @@ String *string_new(const char *literal)
     return string_new_fixed_length(literal, length);
 }
 
-String *string_new_allocated_fl(const char *literal, int_signed length)
+String* string_new_allocated_fl(const char* literal, int_signed length)
 {
-    String *string;
-    char *characters;
+    String* string;
+    char* characters;
 
     string = allocate(sizeof(String));
 
@@ -95,7 +95,7 @@ String *string_new_allocated_fl(const char *literal, int_signed length)
     return string;
 }
 
-String *string_new_allocated(const char *literal)
+String* string_new_allocated(const char* literal)
 {
     int_signed length;
 
@@ -104,12 +104,12 @@ String *string_new_allocated(const char *literal)
     return string_new_allocated_fl(literal, length);
 }
 
-char string_at(const String *string, int_signed n)
+char string_at(const String* string, int_signed n)
 {
     return string->characters[n];
 }
 
-char *string_get_characters(const String *string)
+char* string_get_characters(const String* string)
 {
     if (!string)
         return NULL;
@@ -117,9 +117,9 @@ char *string_get_characters(const String *string)
     return string->characters;
 }
 
-char *string_slice_index(const String *string, int_signed left_index, int_signed length)
+char* string_slice_index(const String* string, int_signed left_index, int_signed length)
 {
-    char *slice;
+    char* slice;
 
     if (length + left_index > string->length)
         length = string->length - left_index;
@@ -129,17 +129,17 @@ char *string_slice_index(const String *string, int_signed left_index, int_signed
     return slice;
 }
 
-char *string_slice(const String *string, int_signed length)
+char* string_slice(const String* string, int_signed length)
 {
     return string_slice_index(string, 0, length);
 }
 
-int_signed string_length(const String *string)
+int_signed string_length(const String* string)
 {
     return string->length;
 }
 
-void string_delete(String **string)
+void string_delete(String** string)
 {
     if (!string || !*string)
         return ;
@@ -147,12 +147,12 @@ void string_delete(String **string)
         free((*string)->pointer);
 
     free(*string);
-    *string = NULL;
+   * string = NULL;
 }
 
-static String *_append_literal(String *string, const char *rhs, int_signed length)
+static String* _append_literal(String* string, const char* rhs, int_signed length)
 {
-    char *new_characters;
+    char* new_characters;
 
     new_characters = cstr_concat_length(string->characters, string->length, rhs, length);
     if (!new_characters)
@@ -166,7 +166,7 @@ static String *_append_literal(String *string, const char *rhs, int_signed lengt
     return string;
 }
 
-String *string_append_literal(String *string, const char *rhs)
+String* string_append_literal(String* string, const char* rhs)
 {
     int_signed length;
 
@@ -177,7 +177,7 @@ String *string_append_literal(String *string, const char *rhs)
     return _append_literal(string, rhs, length);
 }
 
-String *string_append_string(String *string, const String *rhs)
+String* string_append_string(String* string, const String* rhs)
 {
     if (!rhs)
         return string;
@@ -185,12 +185,12 @@ String *string_append_string(String *string, const String *rhs)
     return _append_literal(string, rhs->characters, rhs->length);
 }
 
-String *string_copy_shallow(const String *string)
+String* string_copy_shallow(const String* string)
 {
     return (String *)string;
 }
 
-String *string_copy_semideep(const String *string)
+String* string_copy_semideep(const String* string)
 {
     if (!string)
         return NULL;
@@ -198,10 +198,10 @@ String *string_copy_semideep(const String *string)
     return string_new_fixed_length(string->characters, string->length);
 }
 
-String *string_copy_deep(const String *string)
+String* string_copy_deep(const String* string)
 {
-    String *string_copy;
-    char *copy;
+    String* string_copy;
+    char* copy;
 
     if (!string)
         return NULL;
@@ -216,7 +216,7 @@ String *string_copy_deep(const String *string)
     return string_copy;
 }
 
-int_signed string_compare(const String *lhs, const String *rhs)
+int_signed string_compare(const String* lhs, const String* rhs)
 {
     int_signed min_length;
     int_signed lhs_length;
@@ -245,7 +245,7 @@ int_signed string_compare(const String *lhs, const String *rhs)
     return rhs->characters[n] - lhs->characters[n];
 }
 
-int_signed string_compare_length(const String *lhs, const String *rhs, int_signed length)
+int_signed string_compare_length(const String* lhs, const String* rhs, int_signed length)
 {
     if (!length)
         length = MIN(lhs->length, rhs->length);
@@ -253,7 +253,7 @@ int_signed string_compare_length(const String *lhs, const String *rhs, int_signe
     return cstr_compare_length(lhs->characters, rhs->characters, length);
 }
 
-boolean string_is_identical(const String *lhs, const String *rhs)
+boolean string_is_identical(const String* lhs, const String* rhs)
 {
     if (!lhs && !rhs)
         return TRUE;
@@ -270,7 +270,7 @@ boolean string_is_identical(const String *lhs, const String *rhs)
     return (cstr_compare_length(lhs->characters, rhs->characters, lhs->length) == 0) ? TRUE : FALSE;
 }
 
-boolean string_is_identical_to(const String *string, const char *characters)
+boolean string_is_identical_to(const String* string, const char* characters)
 {
     int_signed result;
 
@@ -285,25 +285,25 @@ boolean string_is_identical_to(const String *string, const char *characters)
     return result == 0 ? TRUE : FALSE;
 }
 
-String *string_substring(const String *string, int_signed left_index, int_signed length)
+String* string_substring(const String* string, int_signed left_index, int_signed length)
 {
-    char *pointer;
+    char* pointer;
 
     pointer = string->characters + left_index;
 
     return string_new_fixed_length(pointer, length);
 }
 
-String *string_substring_allocated(const String *string, int_signed left_index, int_signed length)
+String* string_substring_allocated(const String* string, int_signed left_index, int_signed length)
 {
-    char *characters;
+    char* characters;
 
     characters = string->characters + left_index;
 
     return string_new_allocated_fl(characters, length);
 }
 
-String *string_substring_from(const String *string, int_signed left_index)
+String* string_substring_from(const String* string, int_signed left_index)
 {
     if (string->length <= left_index)
         return NULL;
@@ -311,7 +311,7 @@ String *string_substring_from(const String *string, int_signed left_index)
     return string_substring(string, left_index, string->length - left_index);
 }
 
-String *string_substring_from_allocated(const String *string, int_signed left_index)
+String* string_substring_from_allocated(const String* string, int_signed left_index)
 {
     if (string->length <= left_index)
         return NULL;
@@ -319,16 +319,16 @@ String *string_substring_from_allocated(const String *string, int_signed left_in
     return string_substring_allocated(string, left_index, string->length - left_index);
 }
 
-static inline void _insert(char *string, int_signed n, char c)
+static inline void _insert(char* string, int_signed n, char c)
 {
     if (c)
         string[n] = c;
 }
 
-String *string_substitute_chars(String *string, const char *set, char replacement)
+String* string_substitute_chars(String* string, const char* set, char replacement)
 {
-    char *new_characters;
-    char *characters;
+    char* new_characters;
+    char* characters;
     int_signed n;
     int_signed index;
 
@@ -337,7 +337,7 @@ String *string_substitute_chars(String *string, const char *set, char replacemen
     n = 0;
     while (*characters)
     {
-        index = cstr_index_of(set, *characters);
+        index = cstr_index_of(set,* characters);
         if (index != NOT_FOUND)
         {
             if (replacement)
@@ -348,7 +348,7 @@ String *string_substitute_chars(String *string, const char *set, char replacemen
         }
         else
         {
-            new_characters[n] = *characters;
+            new_characters[n] =* characters;
             n ++;
         }
         characters ++;
@@ -359,14 +359,14 @@ String *string_substitute_chars(String *string, const char *set, char replacemen
     return string;
 }
 
-String *string_remove_spaces(String *string)
+String* string_remove_spaces(String* string)
 {
     return string_substitute_chars(string, " \t", 0);
 }
 
-String *string_to_lower(String *string)
+String* string_to_lower(String* string)
 {
-    char *characters;
+    char* characters;
 
     if (string->allocated == FALSE)
         characters = cstr_copy(string->characters);
@@ -380,9 +380,9 @@ String *string_to_lower(String *string)
     return string;
 }
 
-String *string_trim(String *string)
+String* string_trim(String* string)
 {
-    char *characters;
+    char* characters;
 
     if (!string)
         return NULL;
@@ -396,7 +396,7 @@ String *string_trim(String *string)
     return string;
 }
 
-boolean string_starts_with(const String *string, const char *start)
+boolean string_starts_with(const String* string, const char* start)
 {
     return cstr_starts_with(string_get_characters(string), start);
 }

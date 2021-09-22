@@ -1,15 +1,15 @@
 #include "frontend_declarations.h"
 #include "terminals.h"
 
-int_signed find_matching_bracket(const char *string, char o_symbol, char c_symbol)
+int_signed find_matching_bracket(const char* string, char o_symbol, char c_symbol)
 {
-    char *initial;
-    int_signed count;
+    char*       initial;
+    int_signed  count;
 
-    if (!string || *string != o_symbol)
+    if (!string ||* string != o_symbol)
         return NOT_FOUND;
 
-    initial = (char *)string;
+    initial = (char* )string;
     string ++;
     count = 1;
     while (*string)
@@ -28,21 +28,21 @@ int_signed find_matching_bracket(const char *string, char o_symbol, char c_symbo
     return NOT_FOUND;
 }
 
-int_signed find_matching_bracket_str(const String *string, char o_symbol, char c_symbol)
+int_signed find_matching_bracket_str(const String* string, char o_symbol, char c_symbol)
 {
-    char *characters;
+    char* characters;
 
     characters = string_get_characters(string);
 
     return find_matching_bracket(characters, o_symbol, c_symbol);
 }
 
-String *string_new_no_space_to_lower(const char *literal)
+String* string_new_no_space_to_lower(const char* literal)
 {
-    String *string;
-    char *new_literal;
-    int_signed length;
-    int_signed n;
+    String*     string;
+    char*       new_literal;
+    int_signed  length;
+    int_signed  n;
 
     length = cstr_length(literal);
     new_literal = memory_zero(length + 1);
@@ -63,9 +63,9 @@ String *string_new_no_space_to_lower(const char *literal)
     return string;
 }
 
-String *string_new_trimmed(const char *characters)
+String* string_new_trimmed(const char* characters)
 {
-    String *string;
+    String* string;
 
     string = string_new_allocated(characters);
     string = string_to_lower(string);
@@ -74,7 +74,7 @@ String *string_new_trimmed(const char *characters)
     return string;
 }
 
-void skip_over_equals(String *string)
+void skip_over_equals(String* string)
 {
     string_skip_spaces(string);
     if (string_at(string, 0) == TERMINALS[EQUALS])
@@ -82,11 +82,11 @@ void skip_over_equals(String *string)
     string_skip_spaces(string);
 }
 
-Vector *string_split_and_trim(String *string, char delimiter)
+Vector* string_split_and_trim(String* string, char delimiter)
 {
-    Vector *vector;
-    int_signed n;
-    String *item;
+    Vector*     vector;
+    String*     item;
+    int_signed  n;
 
     if (!(vector = string_split(string, delimiter)))
         return NULL;

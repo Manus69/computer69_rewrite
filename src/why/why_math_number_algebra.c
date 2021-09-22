@@ -46,7 +46,7 @@ real divide_real(real x, real y)
     return x / y;
 }
 
-boolean real_is_zero(real *x)
+boolean real_is_zero(real* x)
 {
     return *x == 0;
 }
@@ -56,9 +56,9 @@ boolean real_is_int(real x)
     return x == (int_signed)x;
 }
 
-void *real_add(real *x, real *y)
+void* real_add(real* x, real* y)
 {
-    real *result;
+    real* result;
 
     result = allocate(sizeof(real));
     *result = *x + *y;
@@ -66,9 +66,9 @@ void *real_add(real *x, real *y)
     return result;
 }
 
-void *real_mult(real *x, real *y)
+void* real_mult(real* x, real* y)
 {
-    real *result;
+    real* result;
 
     result = allocate(sizeof(real));
     *result = *x * *y;
@@ -76,14 +76,14 @@ void *real_mult(real *x, real *y)
     return result;
 }
 
-boolean complex_is_zero_p(Complex *z)
+boolean complex_is_zero_p(Complex* z)
 {
     return complex_is_zero(*z);
 }
 
-void *complex_add_p(Complex *z, Complex *w)
+void* complex_add_p(Complex* z, Complex* w)
 {
-    Complex *result;
+    Complex* result;
 
     result = allocate(sizeof(Complex));
     *result = complex_add(*z, *w);
@@ -91,9 +91,9 @@ void *complex_add_p(Complex *z, Complex *w)
     return result;
 }
 
-void *complex_mult_p(Complex *z, Complex *w)
+void* complex_mult_p(Complex* z, Complex* w)
 {
-    Complex *result;
+    Complex* result;
 
     result = allocate(sizeof(Complex));
     *result = complex_mult(*z, *w);

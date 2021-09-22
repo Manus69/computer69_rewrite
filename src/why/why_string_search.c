@@ -11,7 +11,7 @@ static inline boolean _not_id_char(char lhs, char rhs)
     return !_id_char(lhs, rhs);
 }
 
-int_signed string_index_of_predicate(const String *string, int_signed start, char c, boolean (*predicate)(char, char))
+int_signed string_index_of_predicate(const String* string, int_signed start, char c, boolean (*predicate)(char, char))
 {
     int_signed n;
 
@@ -29,26 +29,26 @@ int_signed string_index_of_predicate(const String *string, int_signed start, cha
     return NOT_FOUND;
 }
 
-int_signed string_index_of_from(const String *string, int_signed start, char c)
+int_signed string_index_of_from(const String* string, int_signed start, char c)
 {
     return string_index_of_predicate(string, start, c, _id_char);
 }
 
-int_signed string_index_of(const String *string, char c)
+int_signed string_index_of(const String* string, char c)
 {
     return string_index_of_from(string, 0, c);
 }
 
-int_signed string_index_of_compliment_from(const String *string, int_signed start, char c)
+int_signed string_index_of_compliment_from(const String* string, int_signed start, char c)
 {
     return string_index_of_predicate(string, start, c, _not_id_char);
 }
 
-int_signed string_index_of_any(const String *string, char *characters)
+int_signed string_index_of_any(const String* string, char* characters)
 {
-    int_signed n;
-    int_signed index;
-    String *wrapper;
+    int_signed  n;
+    int_signed  index;
+    String*     wrapper;
 
     n = 0;
     index = NOT_FOUND;
@@ -68,7 +68,7 @@ int_signed string_index_of_any(const String *string, char *characters)
     return NOT_FOUND;
 }
 
-static int_signed _string_find_from(const String *haystack, const String *needle, int_signed start)
+static int_signed _string_find_from(const String* haystack, const String* needle, int_signed start)
 {
     int_signed next_index;
     int_signed n;
@@ -97,7 +97,7 @@ static int_signed _string_find_from(const String *haystack, const String *needle
     return _string_find_from(haystack, needle, next_index);
 }
 
-int_signed string_find(const String *haystack, const String *needle)
+int_signed string_find(const String* haystack, const String* needle)
 {
     if (!needle)
         return NOT_FOUND;
@@ -111,10 +111,10 @@ int_signed string_find(const String *haystack, const String *needle)
     return _string_find_from(haystack, needle, 0);
 }
 
-int_signed string_find_literal(const String *haystack, const char *needle)
+int_signed string_find_literal(const String* haystack, const char* needle)
 {
-    String *string;
-    int_signed n;
+    String*     string;
+    int_signed  n;
 
     string = string_new(needle);
 

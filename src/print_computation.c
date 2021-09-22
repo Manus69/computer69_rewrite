@@ -6,9 +6,9 @@
 
 #include <assert.h>
 
-void print_computationL(const Computation *computation, const char *wc_symbol);
+void print_computationL(const Computation* computation, const char* wc_symbol);
 
-static void _pp_print(const Computation *computation, const char *wc_symbol)
+static void _pp_print(const Computation* computation, const char* wc_symbol)
 {
     printf("(");
     fflush(NULL);
@@ -16,10 +16,10 @@ static void _pp_print(const Computation *computation, const char *wc_symbol)
     printf(")");
 }
 
-static void _check_branch_and_print(const Computation *root, const Computation *branch, const char *wc_symbol, boolean left)
+static void _check_branch_and_print(const Computation* root, const Computation* branch, const char* wc_symbol, boolean left)
 {
-    Node *root_node;
-    Node *branch_node;
+    Node* root_node;
+    Node* branch_node;
 
     root_node = root->node;
     branch_node = branch ? branch->node : NULL;
@@ -46,31 +46,31 @@ static void _check_branch_and_print(const Computation *root, const Computation *
     print_computationL(branch, wc_symbol);
 }
 
-static void _check_left_branch_and_print(const Computation *root, const Computation *branch, const char *wc_symbol)
+static void _check_left_branch_and_print(const Computation* root, const Computation* branch, const char* wc_symbol)
 {
     return _check_branch_and_print(root, branch, wc_symbol, TRUE);
 }
 
-static void _check_right_branch_and_print(const Computation *root, const Computation *branch, const char *wc_symbol)
+static void _check_right_branch_and_print(const Computation* root, const Computation* branch, const char* wc_symbol)
 {
     return _check_branch_and_print(root, branch, wc_symbol, FALSE);
 }
 
-static void _print_function(const Computation *computation, const char *wc_symbol)
+static void _print_function(const Computation* computation, const char* wc_symbol)
 {
     print_node(computation->node, wc_symbol);
     _pp_print(computation->lhs, wc_symbol);
 }
 
-static void _print_u_minus(const Computation *computation, const char *wc_symbol)
+static void _print_u_minus(const Computation* computation, const char* wc_symbol)
 {
     print_node(computation->node, wc_symbol);
     print_computation(computation->lhs, wc_symbol);
 }
 
-static byte _check_u_minus(const Computation *computation)
+static byte _check_u_minus(const Computation* computation)
 {
-    Node *node;
+    Node* node;
 
     node = computation->node;
 
@@ -80,9 +80,9 @@ static byte _check_u_minus(const Computation *computation)
     return FALSE;
 }
 
-static void _print_computation(const Computation *computation, const char *wc_symbol, void (*m_print)())
+static void _print_computation(const Computation* computation, const char* wc_symbol, void (*m_print)())
 {
-    Node *root_node;
+    Node* root_node;
 
     if (!computation)
         return ;
@@ -103,17 +103,17 @@ static void _print_computation(const Computation *computation, const char *wc_sy
     _check_right_branch_and_print(computation, computation->rhs, wc_symbol);
 }
 
-void print_computation(const Computation *computation, const char *wc_symbol)
+void print_computation(const Computation* computation, const char* wc_symbol)
 {
     return _print_computation(computation, wc_symbol, print_matrix_reprL); //
 }
 
-void print_computationL(const Computation *computation, const char *wc_symbol)
+void print_computationL(const Computation* computation, const char* wc_symbol)
 {
     return _print_computation(computation, wc_symbol, print_matrix_reprL);
 }
 
-void print_computationDBG(const Computation *computation, const char *wc_symbol)
+void print_computationDBG(const Computation* computation, const char* wc_symbol)
 {
     print_computation(computation, wc_symbol);
     printf("\n");

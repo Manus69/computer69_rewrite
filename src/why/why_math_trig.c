@@ -3,9 +3,9 @@
 
 #include <assert.h>
 
-#define TRIG_DELTA 1.0 / (1 << 12)
-#define TWO_PI 2 * PI
-#define C_SIZE 12
+#define TRIG_DELTA  1.0 / (1 << 12)
+#define TWO_PI      2 * PI
+#define C_SIZE      12
 
 //maps angle closer to the origin and adjusts its sign
 static real _map_angle_sin(real x)

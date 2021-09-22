@@ -10,7 +10,7 @@
 #include "why_print.h"
 #endif
 
-static void _array_init(Complex *array, int_signed n, int_signed size)
+static void _array_init(Complex* array, int_signed n, int_signed size)
 {
     while (n < size)
     {
@@ -19,9 +19,9 @@ static void _array_init(Complex *array, int_signed n, int_signed size)
     }
 }
 
-Polynomial *_new(int_signed size, char *variable)
+Polynomial* _new(int_signed size, char* variable)
 {
-    Polynomial *p;
+    Polynomial* p;
 
     if (size <= 0)
         return polynomial_new(variable);
@@ -36,14 +36,14 @@ Polynomial *_new(int_signed size, char *variable)
     return p;
 }
 
-Polynomial *polynomial_new(char *variable)
+Polynomial* polynomial_new(char* variable)
 {
     return _new(P_DEFAULT_SIZE, variable);    
 }
 
-Polynomial *polynomial_new_from_complexG(Complex z, int_signed degree, char *variable)
+Polynomial* polynomial_new_from_complexG(Complex z, int_signed degree, char* variable)
 {
-    Polynomial *p;
+    Polynomial* p;
 
     p = _new(degree + 1, variable);
     polynomial_set(p, z, degree);
@@ -51,9 +51,9 @@ Polynomial *polynomial_new_from_complexG(Complex z, int_signed degree, char *var
     return p;
 }
 
-Polynomial *polynomial_new_from_complex(Complex z)
+Polynomial* polynomial_new_from_complex(Complex z)
 {
-    Polynomial *p;
+    Polynomial* p;
 
     p = polynomial_new(NULL);
     polynomial_set(p, z, 0);
@@ -65,11 +65,11 @@ Polynomial *polynomial_new_from_complex(Complex z)
     return p;
 }
 
-Polynomial *polynomial_new_from_coefficients(real coefficients[], int_signed size)
+Polynomial* polynomial_new_from_coefficients(real coefficients[], int_signed size)
 {
-    Polynomial *p;
-    Complex _coefficient;
-    int_signed n;
+    Polynomial*     p;
+    Complex         _coefficient;
+    int_signed      n;
 
     if (!size)
         return NULL;
@@ -88,9 +88,9 @@ Polynomial *polynomial_new_from_coefficients(real coefficients[], int_signed siz
     return p;
 }
 
-Polynomial *polynomial_copy(const Polynomial *p)
+Polynomial* polynomial_copy(const Polynomial* p)
 {
-    Polynomial *new;
+    Polynomial* new;
 
     if (!p)
         return NULL;
@@ -106,7 +106,7 @@ Polynomial *polynomial_copy(const Polynomial *p)
     return new;
 }
 
-void polynomial_delete(Polynomial **p)
+void polynomial_delete(Polynomial** p)
 {
     if (!p || !*p)
         return ;
@@ -117,7 +117,7 @@ void polynomial_delete(Polynomial **p)
     *p = NULL;
 }
 
-int_signed polynomial_get_degree(const Polynomial *p)
+int_signed polynomial_get_degree(const Polynomial* p)
 {
     if (!p)
         return -1;
@@ -125,12 +125,12 @@ int_signed polynomial_get_degree(const Polynomial *p)
     return p->degree;
 }
 
-char *polynomial_get_variable(const Polynomial *p)
+char* polynomial_get_variable(const Polynomial* p)
 {
     return p->variable;
 }
 
-int_signed _get_degree(Polynomial *p, int_signed start)
+int_signed _get_degree(Polynomial* p, int_signed start)
 {
     int_signed n;
 
@@ -146,7 +146,7 @@ int_signed _get_degree(Polynomial *p, int_signed start)
     return -1;
 }
 
-Complex polynomial_at(const Polynomial *p, int_signed degree)
+Complex polynomial_at(const Polynomial* p, int_signed degree)
 {
     if (degree >= p->capacity)
         return complex_zero();
@@ -154,11 +154,11 @@ Complex polynomial_at(const Polynomial *p, int_signed degree)
     return p->coefficients[degree];
 }
 
-static Polynomial *_extend_array(Polynomial *p, int_signed new_size)
+static Polynomial* _extend_array(Polynomial* p, int_signed new_size)
 {
-    Complex *new_array;
-    int_signed current_size;
-    int_signed extra_size;
+    Complex*    new_array;
+    int_signed  current_size;
+    int_signed  extra_size;
 
 
     new_size *= sizeof(Complex);
@@ -176,7 +176,7 @@ static Polynomial *_extend_array(Polynomial *p, int_signed new_size)
     return p;
 }
 
-boolean polynomial_set(Polynomial *p, Complex value, int_signed degree)
+boolean polynomial_set(Polynomial* p, Complex value, int_signed degree)
 {
     if (degree >= p->capacity)
         _extend_array(p, degree + 1);
@@ -196,17 +196,17 @@ boolean polynomial_set(Polynomial *p, Complex value, int_signed degree)
     return TRUE;
 }
 
-boolean polynomial_is_constant(const Polynomial *p)
+boolean polynomial_is_constant(const Polynomial* p)
 {
     return p->degree == 0;
 }
 
-Complex polynomial_get_constant_coefficient(const Polynomial *p)
+Complex polynomial_get_constant_coefficient(const Polynomial* p)
 {
     return p->coefficients[0];
 }
 
-boolean polynomial_is_real(const Polynomial *p)
+boolean polynomial_is_real(const Polynomial* p)
 {
     int_signed n;
 
@@ -222,7 +222,7 @@ boolean polynomial_is_real(const Polynomial *p)
     return TRUE;
 }
 
-boolean polynomial_is_zero(const Polynomial *p)
+boolean polynomial_is_zero(const Polynomial* p)
 {
     if (!p)
         return FALSE;
@@ -236,7 +236,7 @@ boolean polynomial_is_zero(const Polynomial *p)
     return complex_is_zero(p->coefficients[0]);
 }
 
-Complex polynomial_get_leading_coefficient(const Polynomial *p)
+Complex polynomial_get_leading_coefficient(const Polynomial* p)
 {
     if (p && p->degree >= 0)
         return p->coefficients[p->degree];

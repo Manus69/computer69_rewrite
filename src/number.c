@@ -7,21 +7,20 @@
 
 #include <assert.h>
 
-Number *number_new_int(int_signed n)
+Number* number_new_int(int_signed n)
 {
-    Number *number;
+    Number* number;
 
     number = allocate(sizeof(Number));
     number->n = n;
     number->type = NT_INT;
 
     data_add_pointer(data, number, sizeof(Number));
-    // vector_push(data_vector, number);
 
     return number;
 }
 
-Number *number_new_int_str(const char *string)
+Number* number_new_int_str(const char* string)
 {
     int_signed n;
 
@@ -30,9 +29,9 @@ Number *number_new_int_str(const char *string)
     return number_new_int(n);
 }
 
-Number *number_new_real(real x)
+Number* number_new_real(real x)
 {
-    Number *number;
+    Number* number;
 
     number = allocate(sizeof(Number));
     number->x = x;
@@ -43,7 +42,7 @@ Number *number_new_real(real x)
     return number;
 }
 
-Number *number_new_real_str(const char *string)
+Number* number_new_real_str(const char* string)
 {
     real x;
 
@@ -52,9 +51,9 @@ Number *number_new_real_str(const char *string)
     return number_new_real(x);
 }
 
-Number *number_new_complex(Complex z)
+Number* number_new_complex(Complex z)
 {
-    Number *number;
+    Number* number;
 
     number = allocate(sizeof(Number));
     number->z = z;
@@ -65,7 +64,7 @@ Number *number_new_complex(Complex z)
     return number;
 }
 
-Number *number_new_complex_str(const char *string)
+Number* number_new_complex_str(const char* string)
 {
     Complex z;
 
@@ -74,7 +73,7 @@ Number *number_new_complex_str(const char *string)
     return number_new_complex(z);
 }
 
-Number *number_promote(Number *number, NUMBER_TYPE type)
+Number* number_promote(Number* number, NUMBER_TYPE type)
 {
     Complex z;
 
@@ -97,7 +96,7 @@ Number *number_promote(Number *number, NUMBER_TYPE type)
     return number;
 }
 
-Number *number_demote_if_possible(Number *number)
+Number* number_demote_if_possible(Number* number)
 {
     if (!number)
         return NULL;
@@ -127,7 +126,7 @@ Number *number_demote_if_possible(Number *number)
     return number;
 }
 
-boolean number_is_zero(const Number *number)
+boolean number_is_zero(const Number* number)
 {
     if (!number)
         assert(0);
@@ -140,20 +139,20 @@ boolean number_is_zero(const Number *number)
         return complex_is_zero(number->z);
 }
 
-NUMBER_TYPE number_get_type(const Number *number)
+NUMBER_TYPE number_get_type(const Number* number)
 {
     return number->type;
 }
 
-int_signed number_get_int(const Number *number)
+int_signed number_get_int(const Number* number)
 {
     return number->n;
 }
 
-Number *number_from_string(String *string)
+Number* number_from_string(String* string)
 {
     int_signed length;
-    char *literal;
+    char* literal;
 
     if (string_length(string) == 0)
         return NULL;
@@ -186,20 +185,19 @@ Number *number_from_string(String *string)
     return NULL;
 }
 
-Number *number_copy(const Number *number)
+Number* number_copy(const Number* number)
 {
-    Number *copy;
+    Number* copy;
 
     copy = allocate(sizeof(Number));
     copy = memory_copy(copy, number, sizeof(Number));
 
     data_add_pointer(data, copy, sizeof(Number));
-    // vector_push(data_vector, copy);
 
     return copy;
 }
 
-Complex number_to_complex(const Number *number)
+Complex number_to_complex(const Number* number)
 {
     if (number->type == NT_COMPLEX)
         return number->z;
@@ -210,7 +208,7 @@ Complex number_to_complex(const Number *number)
     return complex(number->n, 0);
 }
 
-void number_delete(Number **number)
+void number_delete(Number** number)
 {
     #if NO_DELETE
     return ;

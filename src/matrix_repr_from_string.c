@@ -1,17 +1,21 @@
 #include "frontend_declarations.h"
 #include "terminals.h"
 #include "matrix_repr.h"
+#include "why_error.h"
 
-#include "print.h"
-#include <stdio.h>
+#if DBG
+    #include "print.h"
+    #include <stdio.h>
+#endif
+
 #include <assert.h>
 
-static MatrixRepr *_process_row(MatrixRepr *matrix, String *row_string, const VariableTable *v_table)
+static MatrixRepr* _process_row(MatrixRepr* matrix, String* row_string, const VariableTable* v_table)
 {
-    Vector *items;
-    Entity *item;
-    String *item_string;
-    int_signed n;
+    Vector*     items;
+    Entity*     item;
+    String*     item_string;
+    int_signed  n;
 
     items = string_split(row_string, TERMINALS[COMMA]);
     n = 0;
@@ -19,7 +23,10 @@ static MatrixRepr *_process_row(MatrixRepr *matrix, String *row_string, const Va
     if (!matrix->n_cols)
         matrix->n_cols = vector_size(items);
     if (matrix->n_cols == 0 || matrix->n_cols != vector_size(items))
-        assert(0);
+    {
+        vector_delete(&items);
+        return NULL;
+    }
 
     while (n < vector_size(items))
     {
@@ -35,13 +42,13 @@ static MatrixRepr *_process_row(MatrixRepr *matrix, String *row_string, const Va
     return matrix;
 }
 
-static MatrixRepr *_process_rows(Vector *rows, const VariableTable *v_table)
+static MatrixRepr* _process_rows(Vector* rows, const VariableTable* v_table)
 {
-    MatrixRepr *matrix;
-    String *row_string;
-    String *substring;
-    int_signed n;
-    int_signed length;
+    MatrixRepr* matrix;
+    String*     row_string;
+    String*     substring;
+    int_signed  n;
+    int_signed  length;
 
     matrix = matrix_repr_new(COPY_FUNCTION);
     n = 0;
@@ -54,15 +61,14 @@ static MatrixRepr *_process_rows(Vector *rows, const VariableTable *v_table)
         row_string = string_skip_spaces(row_string);
         length = id_row(row_string);
         if (!length)
-            assert(0);
+            return NULL;
 
         substring = string_substring(row_string, 1, length - 2);
-
-        #if DBG
-        print_string_n(substring);
-        #endif
-
-        _process_row(matrix, substring, v_table);
+        if (!_process_row(matrix, substring, v_table))
+        {
+            string_delete(&substring);
+            return NULL;
+        }
         
         string_delete(&substring);
         n ++;
@@ -71,12 +77,12 @@ static MatrixRepr *_process_rows(Vector *rows, const VariableTable *v_table)
     return matrix;
 }
 
-MatrixRepr *matrix_repr_from_string(String *string, const VariableTable *v_table)
+MatrixRepr* matrix_repr_from_string(String* string, const VariableTable* v_table)
 {
-    MatrixRepr *matrix;
-    int_unsigned length;
-    String *substring;
-    Vector *rows;
+    MatrixRepr*     matrix;
+    String*         substring;
+    Vector*         rows;
+    int_unsigned    length;
 
     length = id_matrix(string);
     if (!length)

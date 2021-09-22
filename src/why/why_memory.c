@@ -1,8 +1,8 @@
 #include "why_memory.h"
 
-void *memory_copy(void *restrict destination, const void *restrict source, int_unsigned size)
+void* memory_copy(void* restrict destination, const void* restrict source, int_unsigned size)
 {
-    void *initial;
+    void* initial;
 
     if (!destination || !source)
         return destination;
@@ -19,9 +19,9 @@ void *memory_copy(void *restrict destination, const void *restrict source, int_u
     return initial;
 }
 
-void *memory_set(void *object, byte value, int_unsigned size)
+void* memory_set(void* object, byte value, int_unsigned size)
 {
-    void *initial;
+    void* initial;
 
     if (!object)
         return NULL;
@@ -37,9 +37,9 @@ void *memory_set(void *object, byte value, int_unsigned size)
     return initial;
 }
 
-void *allocate(int_unsigned size)
+void* allocate(int_unsigned size)
 {
-    void *result;
+    void* result;
 
     result = malloc(size);
     if (!result)
@@ -48,9 +48,9 @@ void *allocate(int_unsigned size)
     return result;
 }
 
-void *reallocate(const void *item, int_unsigned current_size, int_unsigned extra_size)
+void* reallocate(const void* item, int_unsigned current_size, int_unsigned extra_size)
 {
-    void *new_item;
+    void* new_item;
 
     new_item = allocate(current_size + extra_size);
     memory_copy(new_item, item, current_size);
@@ -58,9 +58,9 @@ void *reallocate(const void *item, int_unsigned current_size, int_unsigned extra
     return new_item;
 }
 
-void *memory_zero(int_unsigned size)
+void* memory_zero(int_unsigned size)
 {
-    void *object;
+    void* object;
 
     object = allocate(size);
     memory_set(object, 0, size);
@@ -68,7 +68,7 @@ void *memory_zero(int_unsigned size)
     return object;
 }
 
-void memory_delete(void **item)
+void memory_delete(void** item)
 {
     free(*item);
     *item = NULL;

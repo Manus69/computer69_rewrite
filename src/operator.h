@@ -6,8 +6,8 @@
 
 struct Operator
 {
-    OPERATOR_TYPE type;
-    byte precedence;
+    OPERATOR_TYPE   type;
+    byte            precedence;
 };
 
 #endif

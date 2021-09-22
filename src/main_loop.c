@@ -8,8 +8,8 @@
 
 void main_loop()
 {
-    VariableTable   *v_table;
-    String          *line;
+    VariableTable*  v_table;
+    String*         line;
 
     v_table = NULL;
     while (TRUE)
@@ -19,32 +19,22 @@ void main_loop()
             break ;
 
         if (string_is_identical_to(line, CMD_QUIT))
-        {
-            string_delete(&line);
             break ;
-        }
         else if (string_is_identical_to(line, CMD_LIST))
-        {
             print_v_table(v_table);
-            string_delete(&line);
-        }
         else if (string_is_identical_to(line, CMD_PURGE))
-        {
             v_table = NULL;
-            string_delete(&line);
-        }
         else if (string_starts_with(line, CMD_COMMENT))
         {
             _string_shift(line, cstr_length(CMD_COMMENT));
             print_string_n(line);
-            string_delete(&line);
         }
         else
         {
             line = string_to_lower(line);
             v_table = process_input_line(line, v_table);
-            string_delete(&line);
         }
+        string_delete(&line);
     }
-    get_line(-1);
+    string_delete(&line);
 }

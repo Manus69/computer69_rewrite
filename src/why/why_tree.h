@@ -5,11 +5,11 @@
 
 struct Tree
 {
-    void *node;
-    int_signed (*compare)();
+    void*       node;
+    int_signed  (*compare)();
 
-    Tree *left;
-    Tree *right;
+    Tree*       left;
+    Tree*       right;
 };
 
 

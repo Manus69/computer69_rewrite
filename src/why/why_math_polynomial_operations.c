@@ -3,7 +3,7 @@
 #include "why_memory.h"
 
 
-Complex polynomial_evaluate(const Polynomial *p, Complex value)
+Complex polynomial_evaluate(const Polynomial* p, Complex value)
 {
     Complex result;
     int_signed n;
@@ -21,9 +21,9 @@ Complex polynomial_evaluate(const Polynomial *p, Complex value)
     return result;
 }
 
-Polynomial *polynomial_differentiate(const Polynomial *p)
+Polynomial* polynomial_differentiate(const Polynomial* p)
 {
-    Polynomial *derivative;
+    Polynomial* derivative;
     Complex value;
     int_signed n;
 
@@ -41,11 +41,11 @@ Polynomial *polynomial_differentiate(const Polynomial *p)
     return derivative;
 }
 
-static Polynomial *_get_multiplier(const Polynomial *p, const Polynomial *d)
+static Polynomial* _get_multiplier(const Polynomial* p, const Polynomial* d)
 {
     Complex leading_p;
     Complex leading_d;
-    Polynomial *multiplier;
+    Polynomial* multiplier;
 
     leading_p = polynomial_get_leading_coefficient(p);
     leading_d = polynomial_get_leading_coefficient(d);
@@ -56,12 +56,12 @@ static Polynomial *_get_multiplier(const Polynomial *p, const Polynomial *d)
 }
 
 //p(x) = q(x)d(x) + r(x)
-Polynomial *polynomial_factor(const Polynomial *p, const Polynomial *d)
+Polynomial* polynomial_factor(const Polynomial* p, const Polynomial* d)
 {
-    Polynomial *q;
-    Polynomial *remainder;
-    Polynomial *multiplier;
-    Polynomial *result;
+    Polynomial* q;
+    Polynomial* remainder;
+    Polynomial* multiplier;
+    Polynomial* result;
 
     if (!p || !d)
         return NULL;
@@ -79,7 +79,7 @@ Polynomial *polynomial_factor(const Polynomial *p, const Polynomial *d)
         multiplier = _get_multiplier(remainder, d);
         polynomial_set(result, polynomial_get_leading_coefficient(multiplier), multiplier->degree);
 
-        q = polynomial_multiplyLD(multiplier, (Polynomial *)d);
+        q = polynomial_multiplyLD(multiplier, (Polynomial* )d);
         remainder = polynomial_subtractLD(remainder, q);
 
         polynomial_delete(&q);

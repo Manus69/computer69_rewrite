@@ -10,11 +10,11 @@
 #include <stdio.h>
 #endif
 
-Vector *_solve_qubic(const Polynomial *p);
+Vector* _solve_qubic(const Polynomial* p);
 
-static Vector *_solve_constant(const Polynomial *p)
+static Vector* _solve_constant(const Polynomial* p)
 {
-    Vector *root;
+    Vector* root;
 
     if (!complex_is_zero(p->coefficients[0]))
         return NULL;
@@ -26,10 +26,10 @@ static Vector *_solve_constant(const Polynomial *p)
 }
 
 //a0 + a1x = 0
-static Vector *_solve_linear(const Polynomial *p)
+static Vector* _solve_linear(const Polynomial* p)
 {
-    Vector *roots;
-    real x;
+    Vector* roots;
+    real    x;
     
     roots = vector_new_with_capacity(copy_shallow, memory_delete, 2);
 
@@ -40,14 +40,10 @@ static Vector *_solve_linear(const Polynomial *p)
 }
 
 //c + bx + ax^2 = 0
-static Vector *_solve_quadratic(const Polynomial *p)
+static Vector* _solve_quadratic(const Polynomial* p)
 {
-    Vector *roots;
-    real a, b, c, x, D;
-
-    #if WHY_DBG
-    _print_polynomialDBG(p);
-    #endif
+    Vector* roots;
+    real    a, b, c, x, D;
 
     roots = vector_new_with_capacity(copy_shallow, memory_delete, 2);
     
@@ -77,7 +73,7 @@ static Vector *_solve_quadratic(const Polynomial *p)
     return roots;
 }
 
-Vector *polynomial_roots(const Polynomial *p)
+Vector* polynomial_roots(const Polynomial* p)
 {
     if (!p)
         return NULL;

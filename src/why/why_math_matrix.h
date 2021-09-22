@@ -6,9 +6,9 @@
 
 struct Matrix
 {
-    Complex *array;
-    int_signed n_rows;
-    int_signed n_cols;
+    Complex*    array;
+    int_signed  n_rows;
+    int_signed  n_cols;
 };
 
 #endif

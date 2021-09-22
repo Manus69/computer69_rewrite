@@ -5,10 +5,10 @@
 #include "why_memory.h"
 #include "why_cstring.h"
 
-Vector *string_split(String *string, char delimiter)
+Vector* string_split(String* string, char delimiter)
 {
-    Vector      *vector;
-    String      *element;
+    Vector*     vector;
+    String*     element;
     int_signed  index;
     int_signed  length;
 
@@ -20,13 +20,11 @@ Vector *string_split(String *string, char delimiter)
         if (index > 0)
         {
             element = string_substring_allocated(string, 0, index);
-            // element = string_substring(string, 0, index);
             _string_shift(string, index + 1);
         }
         else if (index == NOT_FOUND)
         {
             element = string_substring_from_allocated(string, 0);
-            // element = string_substring_from(string, 0);
             _string_shift(string, length);
         }
         else
@@ -41,10 +39,10 @@ Vector *string_split(String *string, char delimiter)
     return vector;
 }
 
-Vector *string_split_cstar(char *c_string, char delimiter)
+Vector* string_split_cstar(char* c_string, char delimiter)
 {
-    String *string;
-    Vector *vector;
+    String* string;
+    Vector* vector;
 
     string = string_new(c_string);
     vector = string_split(string, delimiter);

@@ -5,8 +5,8 @@
 
 struct String
 {
-    char        *characters;
-    char        *pointer;
+    char*       characters;
+    char*       pointer;
     int_signed  length;
     boolean     allocated;
 };

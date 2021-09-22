@@ -7,11 +7,11 @@
 
 typedef struct Vector Heap;
 
-Heap *heap_new(void *(*copy)(), void (*delete)(), int_signed (*compare)());
-void heap_delete(Heap **heap);
+Heap*   heap_new(void* (*copy)(), void (*delete)(), int_signed (*compare)());
+void    heap_delete(Heap** heap);
 
-boolean heap_push(Heap *heap, void *item);
-void *heap_pop_root(Heap *heap);
-void heap_map(Heap *heap, void (*function)());
+boolean heap_push(Heap* heap, void* item);
+void*   heap_pop_root(Heap* heap);
+void    heap_map(Heap* heap, void (*function)());
 
 #endif

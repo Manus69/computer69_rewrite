@@ -56,7 +56,7 @@ static int _determine_sign(Complex coefficient)
     return 1;
 }
 
-static void _print_coefficient(const Polynomial *p, int_signed degree, boolean leading)
+static void _print_coefficient(const Polynomial* p, int_signed degree, boolean leading)
 {
     Complex coefficient;
     int sign;
@@ -76,7 +76,7 @@ static void _print_coefficient(const Polynomial *p, int_signed degree, boolean l
 }
 
 //this is fucking ugly
-void print_polynomial(const Polynomial *p)
+void print_polynomial(const Polynomial* p)
 {
     int_signed  n;
     int_signed  degree;
@@ -116,7 +116,7 @@ void print_polynomial(const Polynomial *p)
     }
 }
 
-void print_polynomial_with_rhs(const Polynomial *p)
+void print_polynomial_with_rhs(const Polynomial* p)
 {
     if (!p)
         return ;
@@ -134,7 +134,7 @@ void print_polynomial_with_rhs(const Polynomial *p)
     printf("\n");
 }
 
-void _print_polynomialDBG(const Polynomial *p)
+void _print_polynomialDBG(const Polynomial* p)
 {
     int_signed n;
     int_signed degree;

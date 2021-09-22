@@ -4,7 +4,7 @@
 #include "why_definitions.h"
 
 extern int_unsigned WHY_ERROR;
-extern char *error_string;
+extern char*        error_string;
 
 typedef enum WHY_ERROR_TYPE WHY_ERROR_TYPE;
 
@@ -24,12 +24,12 @@ enum WHY_ERROR_TYPE
     WHY_ERROR_CONV,
 };
 
-void *error_set(int_unsigned type, const char *_error_message);
-void error_display();
-void error_reset();
-void error_display_message(const char *message);
-void *error_display_message_return(const char *message);
-void error_display_custom(const char *message);
-void *error_display_custom_return(const char *message);
+void*   error_set(int_unsigned type, const char* _error_message);
+void    error_display();
+void    error_reset();
+void    error_display_message(const char* message);
+void*   error_display_message_return(const char* message);
+void    error_display_custom(const char* message);
+void*   error_display_custom_return(const char* message);
 
 #endif

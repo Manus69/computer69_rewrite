@@ -8,11 +8,10 @@ struct Node
 {
     union
     {
-        Number *number;
-        Operator *operator;
-        MatrixRepr *matrix;
-        // String *identifier;
-        char *identifier;
+        Number*     number;
+        Operator*   operator;
+        MatrixRepr* matrix;
+        char*       identifier;
         BULITIN_FUNCTION_TYPE bf_type;
     };
     

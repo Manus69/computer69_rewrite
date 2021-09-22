@@ -77,6 +77,13 @@
     1cos(2pi)^3x
 ---
 
+### Error management
+#### In case of an error, the program stops the computation and tries to display a helpful message.
+    x = 1 / 0
+    pi = e
+    rubbish input ?
+---
+
 ### User-defined functions / Variables(II)
 #### Users can define functions of a single variable:
     f(x) = x^2

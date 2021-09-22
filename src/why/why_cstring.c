@@ -1,22 +1,22 @@
 #include "why_cstring.h"
 
-int_signed cstr_length(const char *string)
+int_signed cstr_length(const char* string)
 {
-    char *iterator;
+    char* iterator;
 
     if (!string)
         return 0;
 
-    iterator = (char *)string;
+    iterator = (char* )string;
     while (*iterator)
         iterator ++;
     
     return iterator - string;    
 }
 
-char *cstr_substring(const char *string, int_unsigned length)
+char* cstr_substring(const char* string, int_unsigned length)
 {
-    char *substring;
+    char* substring;
 
     substring = allocate(length + 1);
     substring = memory_copy(substring, string, length);
@@ -25,7 +25,7 @@ char *cstr_substring(const char *string, int_unsigned length)
     return substring;
 }
 
-char *cstr_copy(const char *string)
+char* cstr_copy(const char* string)
 {
     if (!string)
         return NULL;
@@ -33,13 +33,13 @@ char *cstr_copy(const char *string)
     return cstr_substring(string, cstr_length(string));
 }
 
-void cstr_delete(char **string)
+void cstr_delete(char** string)
 {
     free(*string);
     *string = NULL;
 }
 
-int_signed cstr_compare_length(const char *lhs, const char *rhs, int_signed length)
+int_signed cstr_compare_length(const char* lhs, const char* rhs, int_signed length)
 {
     int_signed n;
 
@@ -47,9 +47,9 @@ int_signed cstr_compare_length(const char *lhs, const char *rhs, int_signed leng
         return 0;
     
     if (!rhs)
-        return *lhs;
+        return* lhs;
     if (!lhs)
-        return *rhs;
+        return* rhs;
 
     n = 0;
     while (n < length)
@@ -63,29 +63,29 @@ int_signed cstr_compare_length(const char *lhs, const char *rhs, int_signed leng
     return 0;
 }
 
-int_signed cstr_compare(const char *lhs, const char *rhs)
+int_signed cstr_compare(const char* lhs, const char* rhs)
 {
     if (!lhs && !rhs)
         return 0;
     
     if (!rhs)
-        return *lhs;
+        return* lhs;
     if (!lhs)
-        return *rhs;
+        return* rhs;
     
-    while (*lhs == *rhs && *lhs)
+    while (*lhs ==* rhs &&* lhs)
     {
         lhs ++;
         rhs ++;
     }
 
-    return *rhs - *lhs;
+    return* rhs -* lhs;
 }
 
-char *cstr_concat_length(const char *lhs, int_signed lhs_len, const char *rhs, int_signed rhs_len)
+char* cstr_concat_length(const char* lhs, int_signed lhs_len, const char* rhs, int_signed rhs_len)
 {
     int_signed total_len;
-    char *new_str;
+    char* new_str;
 
     total_len = rhs_len + lhs_len;
 
@@ -98,7 +98,7 @@ char *cstr_concat_length(const char *lhs, int_signed lhs_len, const char *rhs, i
     return new_str;
 }
 
-char *cstr_concat(const char *lhs, const char *rhs)
+char* cstr_concat(const char* lhs, const char* rhs)
 {
     int_signed lhs_len;
     int_signed rhs_len;
@@ -109,7 +109,7 @@ char *cstr_concat(const char *lhs, const char *rhs)
     return cstr_concat_length(lhs, lhs_len, rhs, rhs_len);
 }
 
-int_signed cstr_index_of(const char *string, char c)
+int_signed cstr_index_of(const char* string, char c)
 {
     int_signed n;
 
@@ -124,7 +124,7 @@ int_signed cstr_index_of(const char *string, char c)
     return NOT_FOUND;
 }
 
-int_signed cstr_index_of_any(const char *string, const char *set)
+int_signed cstr_index_of_any(const char* string, const char* set)
 {
     int_signed n;
 
@@ -148,7 +148,7 @@ char cstr_char_to_lower(char c)
     return c;
 }
 
-void cstr_to_lower(char *string)
+void cstr_to_lower(char* string)
 {
     int diff;
 
@@ -165,7 +165,7 @@ void cstr_to_lower(char *string)
     }
 }
 
-static char *_trim_left(const char *string)
+static char* _trim_left(const char* string)
 {
     while (*string && id_whitespace(string))
         string ++;
@@ -173,9 +173,9 @@ static char *_trim_left(const char *string)
     return cstr_copy(string);
 }
 
-char *cstr_trim(const char *string)
+char* cstr_trim(const char* string)
 {
-    char *new_string;
+    char* new_string;
     int_signed length;
 
     new_string = _trim_left(string);
@@ -194,7 +194,7 @@ char *cstr_trim(const char *string)
     return new_string;
 }
 
-boolean cstr_starts_with(const char * restrict string, const char * restrict start)
+boolean cstr_starts_with(const char*  restrict string, const char*  restrict start)
 {
     if (!start)
         return FALSE;

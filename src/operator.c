@@ -5,9 +5,7 @@
 #include "why_cstring.h"
 #include "data_interface.h"
 
-#include <assert.h>
-
-boolean operator_is_binary(Operator *operator)
+boolean operator_is_binary(Operator* operator)
 {
     if (operator->type == OT_EXCLAM)
         return FALSE;
@@ -15,14 +13,14 @@ boolean operator_is_binary(Operator *operator)
     return TRUE;
 }
 
-int_signed operator_compare_precedence(Operator *lhs, Operator *rhs)
+int_signed operator_compare_precedence(Operator* lhs, Operator* rhs)
 {
     if (lhs->precedence > rhs->precedence)
         return -1;
     return rhs->precedence > lhs->precedence;
 }
 
-//+ - * / % ^ !
+//+ -*  / % ^ !
 static byte _precedence_array[] = {1, 1, 2, 2, 2, 3, 4};
 
 static byte _get_precedence(OPERATOR_TYPE type)
@@ -30,30 +28,29 @@ static byte _get_precedence(OPERATOR_TYPE type)
    return _precedence_array[type];
 }
 
-Operator *operator_new_from_type(OPERATOR_TYPE type)
+Operator* operator_new_from_type(OPERATOR_TYPE type)
 {
-    Operator *op;
+    Operator* op;
 
     op = allocate(sizeof(Operator));
     op->type = type;
     op->precedence = _get_precedence(type);
 
     data_add_pointer(data, op, sizeof(Operator));
-    // vector_push(data_vector, op);
 
     return op;
 }
 
-Operator *operator_new(String *string)
+Operator* operator_new(String* string)
 {
-    char *characters;
+    char* characters;
     int_signed index;
 
     if (string_length(string) == 0)
         return NULL;
     
     characters = string_get_characters(string);
-    index = cstr_index_of(TERMINALS, *characters);
+    index = cstr_index_of(TERMINALS,* characters);
 
     if (index == NOT_FOUND)
         return NULL;
@@ -65,12 +62,12 @@ Operator *operator_new(String *string)
     return operator_new_from_type(index);
 }
 
-OPERATOR_TYPE operator_get_type(const Operator *operator)
+OPERATOR_TYPE operator_get_type(const Operator* operator)
 {
     return operator->type;
 }
 
-void operator_delete(Operator **operator)
+void operator_delete(Operator** operator)
 {
     #if NO_DELETE
     return ;
@@ -83,15 +80,14 @@ void operator_delete(Operator **operator)
     *operator = NULL;
 }
 
-Operator *operator_copy(const Operator *operator)
+Operator* operator_copy(const Operator* operator)
 {
-    Operator *copy;
+    Operator* copy;
 
     copy = allocate(sizeof(Operator));
     copy = memory_copy(copy, operator, sizeof(Operator));
 
     data_add_pointer(data, copy, sizeof(Operator));
-    // vector_push(data_vector, copy);
 
     return copy;
 }

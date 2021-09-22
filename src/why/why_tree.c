@@ -2,9 +2,9 @@
 #include "why_tree_interface.h"
 #include "why_memory.h"
 
-Tree *tree_new(const void *node, int_signed (*compare)())
+Tree* tree_new(const void* node, int_signed (*compare)())
 {
-    Tree *tree;
+    Tree* tree;
 
     if (!node)
         return NULL;
@@ -18,10 +18,10 @@ Tree *tree_new(const void *node, int_signed (*compare)())
     return tree;
 }
 
-void tree_delete(Tree **tree, void (*delete_)())
+void tree_delete(Tree** tree, void (*delete_)())
 {
-    Tree *left;
-    Tree *right;
+    Tree* left;
+    Tree* right;
 
     if (!tree || !*tree)
         return ;
@@ -33,10 +33,10 @@ void tree_delete(Tree **tree, void (*delete_)())
     delete_(&(*tree)->node);
 
     free(*tree);
-    *tree = NULL;
+   * tree = NULL;
 }
 
-void *tree_get_node(Tree *tree)
+void* tree_get_node(Tree* tree)
 {
     if (!tree)
         return NULL;
@@ -44,7 +44,7 @@ void *tree_get_node(Tree *tree)
     return tree->node;
 }
 
-void tree_map_flr(Tree *tree, void (*function)())
+void tree_map_flr(Tree* tree, void (*function)())
 {
     if (!tree)
         return ;
@@ -54,7 +54,7 @@ void tree_map_flr(Tree *tree, void (*function)())
     tree_map_flr(tree->right, function);
 }
 
-void tree_map_lfr(Tree *tree, void (*function)())
+void tree_map_lfr(Tree* tree, void (*function)())
 {
     if (!tree)
         return ;
@@ -64,7 +64,7 @@ void tree_map_lfr(Tree *tree, void (*function)())
     tree_map_lfr(tree->right, function);
 }
 
-void *tree_search(const Tree *tree, const void *item)
+void* tree_search(const Tree* tree, const void* item)
 {
     if (!tree)
         return NULL;
@@ -72,7 +72,7 @@ void *tree_search(const Tree *tree, const void *item)
     return tree_search_function(tree, item, tree->compare);
 }
 
-void *tree_search_function(const Tree *tree, const void *item, int_signed (*function)())
+void* tree_search_function(const Tree* tree, const void* item, int_signed (*function)())
 {
     int_signed result;
 
@@ -88,7 +88,7 @@ void *tree_search_function(const Tree *tree, const void *item, int_signed (*func
         return tree_search_function(tree->left, item, function);
 }
 
-Tree *tree_insert(Tree *tree, const void *item)
+Tree* tree_insert(Tree* tree, const void* item)
 {
     int_signed result;
 
@@ -120,12 +120,12 @@ Tree *tree_insert(Tree *tree, const void *item)
     return NULL;
 }
 
-Tree *tree_get_left(Tree *tree)
+Tree* tree_get_left(Tree* tree)
 {
     return tree->left;
 }
 
-Tree *tree_get_right(Tree *tree)
+Tree* tree_get_right(Tree* tree)
 {
     return tree->right;
 }

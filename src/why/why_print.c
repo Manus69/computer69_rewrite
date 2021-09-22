@@ -1,5 +1,6 @@
 #include "why_print.h"
 #include "why_cstring.h"
+#include "why_error.h"
 
 #include <stdio.h>
 #include <assert.h>
@@ -12,13 +13,13 @@ void print_int(int_signed n)
     printf("%lld", n);
 }
 
-void print_int_pointerN(int_signed *n)
+void print_int_pointerN(int_signed* n)
 {
     print_int(*n);
     printf("\n");
 }
 
-static void _print_number_string(char *string)
+static void _print_number_string(char* string)
 {
     int_signed n;
     int_signed index_of_dot;
@@ -46,7 +47,7 @@ static void _print_number_string(char *string)
 
 void print_real(real x)
 {
-    char *buffer;
+    char* buffer;
 
     if (x < 0)
     {
@@ -59,7 +60,7 @@ void print_real(real x)
 
     if (absolute_value(x - round_to_int(x)) < TOLERANCE)
         printf("%.0Lf", x);
-    else
+    else if (!WHY_ERROR)
     {
         buffer = memory_zero(BUFFER_SIZE);
         sprintf(buffer, "%Lf", x);
@@ -99,21 +100,21 @@ void print_complex(Complex z)
     printf("i");
 }
 
-void print_cstring(const char *string)
+void print_cstring(const char* string)
 {
     printf("%s", string);
 }
 
-void print_cstringN(const char *string)
+void print_cstringN(const char* string)
 {
     print_cstring(string);
     printf("\n");
 }
 
 //this is ugly and dangerous
-void print_string(const String *string)
+void print_string(const String* string)
 {
-    char *cstring;
+    char* cstring;
     int_signed length;
 
     if (!string)
@@ -124,17 +125,17 @@ void print_string(const String *string)
     printf("%.*s", (int)length, cstring);
 }
 
-void print_string_n(const String *string)
+void print_string_n(const String* string)
 {
     print_string(string);
     printf("\n");
 }
 
-void print_vector(const Vector *vector, void (*print)(), const char *separator)
+void print_vector(const Vector* vector, void (*print)(), const char* separator)
 {
     int_signed n;
     int_signed size;
-    void *item;
+    void* item;
 
     if (!vector)
         return ;
@@ -156,7 +157,7 @@ void print_vector(const Vector *vector, void (*print)(), const char *separator)
     }
 }
 
-void print_list(const List *list, void (*function)())
+void print_list(const List* list, void (*function)())
 {
     return list_map((List *)list, function);
 }

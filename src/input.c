@@ -173,10 +173,8 @@ VariableTable* process_input_line(String* line, VariableTable* v_table)
     else if (id_statement(line))
         result = _process_assignment(line, v_table);
 
-    if (WHY_ERROR != WHY_ERROR_DEFAULT)
-    {
+    if (WHY_ERROR)
         error_display();
-    }
 
     return result;
 }

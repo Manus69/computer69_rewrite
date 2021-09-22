@@ -11,13 +11,13 @@
 
 struct Polynomial
 {
-    Complex     *coefficients;
-    char        *variable;
+    Complex*    coefficients;
+    char*       variable;
     int_signed  degree;
     int_signed  capacity;
 };
 
-int_signed _get_degree(Polynomial *p, int_signed start);
-Polynomial *_new(int_signed size, char *variable);
+int_signed  _get_degree(Polynomial* p, int_signed start);
+Polynomial* _new(int_signed size, char* variable);
 
 #endif

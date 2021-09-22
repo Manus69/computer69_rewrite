@@ -5,18 +5,18 @@
 
 struct List
 {
-    void *(*copy)();
-    void (*_delete)();
+    void*       (*copy)();
+    void        (*_delete)();
 
-    Sequence    *head;
-    Sequence    *tail;
+    Sequence*   head;
+    Sequence*   tail;
     int_signed  size;
 };
 
 struct Sequence
 {
-    void        *data;
-    Sequence    *next;
+    void*       data;
+    Sequence*   next;
 };
 
 #endif

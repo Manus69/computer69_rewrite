@@ -15,7 +15,7 @@
 #include <unistd.h>
 #include <assert.h>
 
-void print_number(const Number *number)
+void print_number(const Number* number)
 {
     if (!number)
         return ;
@@ -29,10 +29,10 @@ void print_number(const Number *number)
     else assert(0);
 }
 
-void print_operator(const Operator *operator)
+void print_operator(const Operator* operator)
 {
     int_signed index;
-    char *format;
+    char* format;
 
     if (!operator)
         return ;
@@ -46,7 +46,7 @@ void print_operator(const Operator *operator)
     printf(format, TERMINALS[index]);
 }
 
-void print_node(const Node *node, const char *wc_symbol)
+void print_node(const Node* node, const char* wc_symbol)
 {
     NODE_TYPE type;
 
@@ -71,9 +71,9 @@ void print_node(const Node *node, const char *wc_symbol)
     else assert(0);
 }
 
-void print_variable(const Variable *variable)
+void print_variable(const Variable* variable)
 {
-    Entity *value;
+    Entity* value;
 
     if (!variable)
         return ;
@@ -82,15 +82,15 @@ void print_variable(const Variable *variable)
     print_entity(value, NULL);
 }
 
-void print_variableN(const Variable *variable)
+void print_variableN(const Variable* variable)
 {
     print_variable(variable);
     printf("\n");
 }
 
-void print_variableNI(const Variable *variable)
+void print_variableNI(const Variable* variable)
 {
-    Entity *value;
+    Entity* value;
 
     if (!variable)
         return ;
@@ -100,9 +100,9 @@ void print_variableNI(const Variable *variable)
     printf("\n");
 }
 
-void print_variable_verbose(const Variable *variable, const char *wc_symbol)
+void print_variable_verbose(const Variable* variable, const char* wc_symbol)
 {
-    Entity *value;
+    Entity* value;
 
     if (!variable)
         return ;
@@ -123,7 +123,7 @@ void print_variable_verbose(const Variable *variable, const char *wc_symbol)
     print_entity(value, wc_symbol);
 }
 
-void print_v_table(const VariableTable *v_table)
+void print_v_table(const VariableTable* v_table)
 {
     if (!v_table)
         return ;
@@ -134,10 +134,10 @@ void print_v_table(const VariableTable *v_table)
     print_v_table(v_table->right);
 }
 
-void print_matrix_row(const MatrixRepr *matrix, int_signed j, const char *wc_symbol)
+void print_matrix_row(const MatrixRepr* matrix, int_signed j, const char* wc_symbol)
 {
-    int_signed k;
-    Entity *item;
+    Entity*     item;
+    int_signed  k;
 
     if (!matrix)
         return ;
@@ -158,7 +158,7 @@ void print_matrix_row(const MatrixRepr *matrix, int_signed j, const char *wc_sym
     printf(" ]");
 }
 
-static void _print_matrix_repr_separator(const MatrixRepr *matrix, const char *wc_symbol, const char *separator)
+static void _print_matrix_repr_separator(const MatrixRepr* matrix, const char* wc_symbol, const char* separator)
 {
     int_signed n;
     int_signed n_rows;
@@ -183,19 +183,19 @@ static void _print_matrix_repr_separator(const MatrixRepr *matrix, const char *w
     }
 }
 
-void print_matrix_repr(const MatrixRepr *matrix, const char *wc_symbol)
+void print_matrix_repr(const MatrixRepr* matrix, const char* wc_symbol)
 {
     return _print_matrix_repr_separator(matrix, wc_symbol, "\n");
 }
 
-void print_matrix_reprL(const MatrixRepr *matrix, const char *wc_symbol)
+void print_matrix_reprL(const MatrixRepr* matrix, const char* wc_symbol)
 {    
     return _print_matrix_repr_separator(matrix, wc_symbol, "; ");
 }
 
-static void *functions[] = {print_number, print_matrix_repr, print_computation, 0};
+static void* functions[] = {print_number, print_matrix_repr, print_computation, 0};
 
-void print_entity(const Entity *entity, const char *wc_symbol)
+void print_entity(const Entity* entity, const char* wc_symbol)
 {
     void (*print_function)();
 
@@ -206,10 +206,10 @@ void print_entity(const Entity *entity, const char *wc_symbol)
     print_function(entity->number, wc_symbol);
 }
 
-void print_roots(const Vector *roots)
+void print_roots(const Vector* roots)
 {
-    int_signed n;
-    Complex *z;
+    Complex*    z;
+    int_signed  n;
 
     if (!roots)
         return ;
