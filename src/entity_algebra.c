@@ -2,13 +2,11 @@
 #include "entity.h"
 #include "why_error.h"
 
-#include <assert.h>
-
-Entity *entity_add(Entity *lhs, Entity *rhs)
+Entity* entity_add(Entity* lhs, Entity* rhs)
 {
-    Number *number;
-    MatrixRepr *matrix;
-    Computation *computation;
+    Number*         number;
+    MatrixRepr*     matrix;
+    Computation*    computation;
 
     if (!lhs || !rhs || (lhs->type != rhs->type))
         return NULL;
@@ -32,7 +30,7 @@ Entity *entity_add(Entity *lhs, Entity *rhs)
     return NULL;
 }
 
-Entity *entity_increment(Entity *lhs, Entity *rhs)
+Entity* entity_increment(Entity* lhs, Entity* rhs)
 {
     if (!lhs || !rhs || (lhs->type != rhs->type))
         return NULL;
@@ -48,14 +46,14 @@ Entity *entity_increment(Entity *lhs, Entity *rhs)
         return lhs;
     }
     
-    assert(0);
+    return NULL;
 }
 
-Entity *entity_mult(Entity *lhs, Entity *rhs)
+Entity* entity_mult(Entity* lhs, Entity* rhs)
 {
-    Number *number;
-    MatrixRepr *matrix;
-    Computation *_computation;
+    Number*         number;
+    MatrixRepr*     matrix;
+    Computation*    _computation;
 
     if (!lhs || !rhs)
         return NULL;
@@ -84,10 +82,10 @@ Entity *entity_mult(Entity *lhs, Entity *rhs)
     return NULL;
 }
 
-Entity *entity_subtract(Entity *lhs, Entity *rhs)
+Entity* entity_subtract(Entity* lhs, Entity* rhs)
 {
-    Number *number;
-    MatrixRepr *matrix;
+    Number*     number;
+    MatrixRepr* matrix;
 
     if (!lhs)
         return error_set(WHY_ERROR_MATH, NULL);
@@ -124,9 +122,9 @@ Entity *entity_subtract(Entity *lhs, Entity *rhs)
     return NULL;
 }
 
-Entity *entity_divide(Entity *lhs, Entity *rhs)
+Entity* entity_divide(Entity* lhs, Entity* rhs)
 {
-    Number *number;
+    Number* number;
 
     if (!lhs || !rhs)
         return NULL;
@@ -145,9 +143,9 @@ Entity *entity_divide(Entity *lhs, Entity *rhs)
     return NULL;
 }
 
-Entity *entity_mod(Entity *lhs, Entity *rhs)
+Entity* entity_mod(Entity* lhs, Entity* rhs)
 {
-    Number *number;
+    Number* number;
 
     if (!lhs || !rhs)
         return NULL;
@@ -165,11 +163,11 @@ Entity *entity_mod(Entity *lhs, Entity *rhs)
     return NULL;
 }
 
-Entity *entity_power(Entity *lhs, Entity *rhs)
+Entity* entity_power(Entity* lhs, Entity* rhs)
 {
-    Number *number;
-    MatrixRepr *matrix;
-    Computation *_computation;
+    Number*         number;
+    MatrixRepr*     matrix;
+    Computation*    _computation;
 
     if (!lhs || !rhs)
         return NULL;
@@ -197,10 +195,10 @@ Entity *entity_power(Entity *lhs, Entity *rhs)
     return NULL;
 }
 
-Entity *entity_factorial(Entity *lhs, Entity *rhs)
+Entity* entity_factorial(Entity* lhs, Entity* rhs)
 {
-    Number *number;
-    Computation *_computation;
+    Number*         number;
+    Computation*    _computation;
 
     if (!lhs)
         return NULL;

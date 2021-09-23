@@ -9,9 +9,9 @@ struct Number
 {
     union
     {
-        int_signed n;
-        real x;
-        Complex z;
+        int_signed  n;
+        real        x;
+        Complex     z;
     };
 
     NUMBER_TYPE type;

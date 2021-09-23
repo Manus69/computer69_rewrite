@@ -6,9 +6,9 @@
 
 struct Variable
 {
-    Entity          *entity;
-    char            *name;
-    char            *initial_parameter;
+    Entity*         entity;
+    char*           name;
+    char*           initial_parameter;
     boolean         parametrized;
 };
 

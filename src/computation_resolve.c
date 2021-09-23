@@ -5,11 +5,9 @@
 #include "variable.h"
 #include "why_error.h"
 
-#include <assert.h>
-
-static Variable *_check_if_variable(Computation *computation, const VariableTable *v_table)
+static Variable* _check_if_variable(Computation* computation, const VariableTable* v_table)
 {
-    Variable *variable;
+    Variable* variable;
 
     if (!computation)
         return NULL;
@@ -22,13 +20,13 @@ static Variable *_check_if_variable(Computation *computation, const VariableTabl
     return variable;
 }
 
-static void _resolve_matrix(MatrixRepr *matrix, const char *wc_identifier, const VariableTable *v_table)
+static void _resolve_matrix(MatrixRepr* matrix, const char* wc_identifier, const VariableTable* v_table)
 {
-    Entity *item;
-    int_signed j;
-    int_signed k;
-    int_signed n_rows;
-    int_signed n_cols;
+    Entity*     item;
+    int_signed  j;
+    int_signed  k;
+    int_signed  n_rows;
+    int_signed  n_cols;
 
     j = 0;
     n_rows = matrix_repr_n_rows(matrix);
@@ -51,12 +49,12 @@ static void _resolve_matrix(MatrixRepr *matrix, const char *wc_identifier, const
     }
 }
 
-static Computation *_resolve_node(Computation *computation, const char *wc_identifier, const VariableTable *v_table)
+static Computation* _resolve_node(Computation* computation, const char* wc_identifier, const VariableTable* v_table)
 {
-    Variable *variable;
-    Entity *value;
-    Computation *copy;
-    MatrixRepr *matrix;
+    Variable*       variable;
+    Entity*         value;
+    Computation*    copy;
+    MatrixRepr*     matrix;
 
     variable = _check_if_variable(computation, v_table);
     if (variable)
@@ -69,14 +67,14 @@ static Computation *_resolve_node(Computation *computation, const char *wc_ident
         else if (variable_get_type(variable) == VT_COMPUTATION)
         {
             copy = computation_copy(variable->entity->computation);
-            if (computation->lhs) ///
+            if (computation->lhs)
                 copy = computation_replace_wc(copy, computation->lhs);
             computation = copy;
         }
         else if (variable_get_type(variable) == VT_MATRIX)
         {
             matrix = matrix_repr_copy(variable->entity->matrix);
-            if (computation->lhs) ////
+            if (computation->lhs)
                 matrix = matrix_repr_replace_wc(matrix, computation->lhs);
             computation = computation_from_entity(entity_new_from_matrix(matrix, FALSE), FALSE);            
         }
@@ -94,7 +92,7 @@ static Computation *_resolve_node(Computation *computation, const char *wc_ident
     return computation;
 }
 
-Computation *computation_resolve(Computation *computation, const char *wc_identifier, const VariableTable *v_table)
+Computation* computation_resolve(Computation* computation, const char* wc_identifier, const VariableTable* v_table)
 {
     if (!computation)
         return NULL;

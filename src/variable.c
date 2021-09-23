@@ -2,9 +2,9 @@
 #include "frontend_declarations.h"
 #include "data_interface.h"
 
-Variable *variable_new(char *name, char *initial_parameter, Entity *entity, boolean copy)
+Variable* variable_new(char* name, char* initial_parameter, Entity* entity, boolean copy)
 {
-    Variable *variable;
+    Variable* variable;
 
     variable = allocate(sizeof(Variable));
     variable->name = name;
@@ -13,13 +13,13 @@ Variable *variable_new(char *name, char *initial_parameter, Entity *entity, bool
     variable->initial_parameter = initial_parameter;
 
     data_add_pointer(data, variable, sizeof(Variable));
-    data_add_pointer(data, variable->name, sizeof(void *));
-    data_add_pointer(data, variable->initial_parameter, sizeof(void *));
+    data_add_pointer(data, variable->name, sizeof(void* ));
+    data_add_pointer(data, variable->initial_parameter, sizeof(void* ));
 
     return variable;
 }
 
-void variable_delete(Variable **variable)
+void variable_delete(Variable** variable)
 {
     #if NO_DELETE
     return ;
@@ -36,46 +36,46 @@ void variable_delete(Variable **variable)
     *variable = NULL;
 }
 
-int_signed variable_compare(const Variable *lhs, const Variable *rhs)
+int_signed variable_compare(const Variable* lhs, const Variable* rhs)
 {
     return cstr_compare(lhs->name, rhs->name);
 }
 
-char *variable_get_name(const Variable *variable)
+char* variable_get_name(const Variable* variable)
 {
     return variable->name;
 }
 
-Entity *variable_get_value(const Variable *variable)
+Entity* variable_get_value(const Variable* variable)
 {
     return variable->entity;
 }
 
-VARIABLE_TYPE variable_get_type(const Variable *variable)
+VARIABLE_TYPE variable_get_type(const Variable* variable)
 {
     return (VARIABLE_TYPE)entity_get_type(variable->entity);
 }
 
-boolean variable_is_parametrized(const Variable *variable)
+boolean variable_is_parametrized(const Variable* variable)
 {
     return variable->parametrized;
 }
 
-Variable *variable_copy(const Variable *variable)
+Variable* variable_copy(const Variable* variable)
 {
-    Variable *copy;
+    Variable* copy;
 
     copy = allocate(sizeof(Variable));
     copy->name = cstr_copy(variable->name);
     copy->entity = entity_copy(variable->entity);
 
     data_add_pointer(data, copy, sizeof(variable));
-    data_add_pointer(data, copy->name, sizeof(void *));
+    data_add_pointer(data, copy->name, sizeof(void* ));
 
     return copy;
 }
 
-Variable *variable_assign(Variable *variable, Entity *value, boolean copy)
+Variable* variable_assign(Variable* variable, Entity* value, boolean copy)
 {
     variable->entity = copy ? entity_copy(value) : value;
 

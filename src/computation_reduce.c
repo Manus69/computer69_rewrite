@@ -5,11 +5,11 @@
 #include "node.h"
 #include "entity.h"
 
-Computation *computation_reduce(Computation *computation, const VariableTable *v_table, Number *wc_value)
+Computation* computation_reduce(Computation* computation, const VariableTable* v_table, Number* wc_value)
 {
-    Number *result;    
-    Computation *_lhs;
-    Computation *_rhs;
+    Number*         result;    
+    Computation*    _lhs;
+    Computation*    _rhs;
 
     if (!computation)
         return NULL;
@@ -42,12 +42,12 @@ Computation *computation_reduce(Computation *computation, const VariableTable *v
     return computation;
 }
 
-Computation *computation_matrix_reduce(Computation *_computation, const VariableTable *v_table, Number *wc_value)
+Computation* computation_matrix_reduce(Computation* _computation, const VariableTable* v_table, Number* wc_value)
 {
-    Computation *reduced_item;
-    Entity *item;
-    int_signed n;
-    int_signed size;
+    Computation*    reduced_item;
+    Entity*         item;
+    int_signed      n;
+    int_signed      size;
 
     if (!_computation || _computation->node->type != NT_MATRIX)
         return NULL;

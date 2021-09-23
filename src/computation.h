@@ -5,9 +5,9 @@
 
 struct Computation
 {
-    Node *node;
-    Computation *lhs;
-    Computation *rhs;
+    Node*           node;
+    Computation*    lhs;
+    Computation*    rhs;
 };
 
 #endif

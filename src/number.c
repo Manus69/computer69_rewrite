@@ -5,8 +5,6 @@
 #include "why_cstring.h"
 #include "data_interface.h"
 
-#include <assert.h>
-
 Number* number_new_int(int_signed n)
 {
     Number* number;
@@ -129,7 +127,7 @@ Number* number_demote_if_possible(Number* number)
 boolean number_is_zero(const Number* number)
 {
     if (!number)
-        assert(0);
+        return FALSE;
     
     if (number->type == NT_INT)
         return number->n == 0;
@@ -151,8 +149,8 @@ int_signed number_get_int(const Number* number)
 
 Number* number_from_string(String* string)
 {
-    int_signed length;
-    char* literal;
+    char*       literal;
+    int_signed  length;
 
     if (string_length(string) == 0)
         return NULL;
@@ -162,7 +160,6 @@ Number* number_from_string(String* string)
     if (length)
     {
         _string_shift(string, length);
-
         return number_new_complex_str(literal);
     }
 
@@ -170,7 +167,6 @@ Number* number_from_string(String* string)
     if (length)
     {
         _string_shift(string, length);
-
         return number_new_real_str(literal);
     }
 
@@ -178,7 +174,6 @@ Number* number_from_string(String* string)
     if (length)
     {
         _string_shift(string, length);
-
         return number_new_int_str(literal);
     }
 

@@ -4,12 +4,9 @@
 #include "terminals.h"
 #include "data_interface.h"
 
-#include <assert.h>
-#include "print.h"
-
-MatrixRepr *matrix_repr_new(void *(*copy)())
+MatrixRepr* matrix_repr_new(void* (*copy)())
 {
-    MatrixRepr *matrix;
+    MatrixRepr* matrix;
 
     matrix = allocate(sizeof(MatrixRepr));
     matrix->items = vector_new(copy, entity_delete);
@@ -22,11 +19,11 @@ MatrixRepr *matrix_repr_new(void *(*copy)())
     return matrix;
 }
 
-MatrixRepr *matrix_repr_new_fixed_size(int_signed n_rows, int_signed n_cols)
+MatrixRepr* matrix_repr_new_fixed_size(int_signed n_rows, int_signed n_cols)
 {
-    MatrixRepr *matrix;
-    int_signed n;
-    int_signed size;
+    MatrixRepr* matrix;
+    int_signed  n;
+    int_signed  size;
 
     size = n_rows * n_cols;
     n = 0;
@@ -44,17 +41,17 @@ MatrixRepr *matrix_repr_new_fixed_size(int_signed n_rows, int_signed n_cols)
     return matrix;
 }
 
-int_signed matrix_repr_n_cols(const MatrixRepr *matrix)
+int_signed matrix_repr_n_cols(const MatrixRepr* matrix)
 {
     return matrix->n_cols;
 }
 
-int_signed matrix_repr_n_rows(const MatrixRepr *matrix)
+int_signed matrix_repr_n_rows(const MatrixRepr* matrix)
 {
     return matrix->n_rows;
 }
 
-boolean matrix_repr_is_square(const MatrixRepr *matrix)
+boolean matrix_repr_is_square(const MatrixRepr* matrix)
 {
     if (matrix->n_cols == matrix->n_rows)
         return TRUE;
@@ -62,7 +59,7 @@ boolean matrix_repr_is_square(const MatrixRepr *matrix)
     return FALSE;
 }
 
-boolean matrix_repr_equal_size(const MatrixRepr *lhs, const MatrixRepr *rhs)
+boolean matrix_repr_equal_size(const MatrixRepr* lhs, const MatrixRepr* rhs)
 {
     if (lhs->n_cols != rhs->n_cols)
         return FALSE;
@@ -70,10 +67,10 @@ boolean matrix_repr_equal_size(const MatrixRepr *lhs, const MatrixRepr *rhs)
     return lhs->n_rows== rhs->n_rows;
 }
 
-Entity *matrix_repr_at(const MatrixRepr *matrix, int_signed j, int_signed k)
+Entity* matrix_repr_at(const MatrixRepr* matrix, int_signed j, int_signed k)
 {
-    Entity *value;
-    int_signed n;
+    Entity*     value;
+    int_signed  n;
 
     n = j * matrix->n_cols + k;
     value = vector_at(matrix->items, n);
@@ -81,27 +78,27 @@ Entity *matrix_repr_at(const MatrixRepr *matrix, int_signed j, int_signed k)
     return value;
 }
 
-int_signed matrix_repr_get_n(const MatrixRepr *matrix)
+int_signed matrix_repr_get_n(const MatrixRepr* matrix)
 {
-    return matrix->n_rows * matrix->n_cols;
+    return matrix->n_rows*  matrix->n_cols;
 }
 
-Entity *matrix_repr_nth(const MatrixRepr *matrix, int_signed n)
+Entity* matrix_repr_nth(const MatrixRepr* matrix, int_signed n)
 {
     return vector_at(matrix->items, n);
 }
 
-boolean matrix_repr_push(MatrixRepr *matrix, Entity *value)
+boolean matrix_repr_push(MatrixRepr* matrix, Entity* value)
 {
     data_increment_bytes(data, sizeof(void *));
     
     return vector_push(matrix->items, value);
 }
 
-Entity *matrix_repr_set(MatrixRepr *matrix, Entity *value, int_signed j, int_signed k)
+Entity* matrix_repr_set(MatrixRepr* matrix, Entity* value, int_signed j, int_signed k)
 {
-    Entity *old_value;
-    int_signed n;
+    Entity*     old_value;
+    int_signed  n;
 
     n = j * matrix->n_cols + k;
     old_value = vector_set(matrix->items, value, n);
@@ -109,12 +106,12 @@ Entity *matrix_repr_set(MatrixRepr *matrix, Entity *value, int_signed j, int_sig
     return old_value;
 }
 
-Entity *matrix_repr_set_nth(MatrixRepr *matrix, Entity *value, int_signed n)
+Entity* matrix_repr_set_nth(MatrixRepr* matrix, Entity* value, int_signed n)
 {
     return vector_set(matrix->items, value, n);
 }
 
-void matrix_repr_delete(MatrixRepr **matrix)
+void matrix_repr_delete(MatrixRepr** matrix)
 {
     #if NO_DELETE
     return;
@@ -128,9 +125,9 @@ void matrix_repr_delete(MatrixRepr **matrix)
     *matrix = NULL;
 }
 
-MatrixRepr *matrix_repr_copy(const MatrixRepr *matrix)
+MatrixRepr* matrix_repr_copy(const MatrixRepr* matrix)
 {
-    MatrixRepr *copy;
+    MatrixRepr* copy;
     
     copy = matrix_repr_new(COPY_FUNCTION);
     copy->items = vector_copy_with(matrix->items, entity_copy_wrapper);

@@ -1,4 +1,5 @@
 #include "why_lib.h"
+#include "why_error.h"
 
 #include <assert.h>
 
@@ -10,12 +11,15 @@
 //ln x = 2[(x - 1)/(x + 1) + 1/3((x - 1)/(x + 1))^3 + 1/5((x - 1)/(x + 1))^5 + ...]
 real math_ln(real x)
 {
-    int_signed n;
-    real value;
-    real w;
+    real        value;
+    real        w;
+    int_signed  n;
 
     if (x <= 0)
-        assert(0);
+    {
+        error_set(WHY_ERROR_MATH, "log of a non-positive number");
+        return 0;
+    }
     
     if (x > R_THRESHOLD)
         return LN2 + math_ln(x / 2);
@@ -46,18 +50,16 @@ real math_log2(real x)
 
 real math_log(real x, real base)
 {
-    if (base <= 1)
-        assert(0);
-    
     return math_ln(x) / math_ln(base);
 }
 
+//unused
 //ln x = (x - 1)/x + 1/2((x - 1)/x)^2 + 1/3((x - 1)/x)^3 + ...
 //x >= 1/2 
-real math_ln3(real x)
+real math_ln_3(real x)
 {
-    real value, w;
-    int_signed n;
+    real        value, w;
+    int_signed  n;
 
     n = N_TERMS;
     w = (x - 1) / x;
@@ -74,18 +76,19 @@ real math_ln3(real x)
     return value;
 }
 
+//unused
 //ln x = (x - 1) - 1/2(x - 1)^2 + 1/3(x - 1)^3 - 1/4(x - 1)^4 + ...
 //somehow this only works for 0 < x <= 2 but why?
 //this is bullshit
-real math_ln2(real x)
+real math_ln_2(real x)
 {
-    int_signed n;
-    real value;
-    real coefficient;
-    real w;
+    real        value;
+    real        coefficient;
+    real        w;
+    int_signed  n;
 
-    if (x <= 0)
-        assert(0);
+    // if (x <= 0)
+    //     assert(0);
 
     n = N_TERMS;
     value = 0;

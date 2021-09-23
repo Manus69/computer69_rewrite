@@ -1,7 +1,7 @@
 #include "frontend_declarations.h"
 #include "terminals.h"
 
-boolean id_assignment(const String *string)
+boolean id_assignment(const String* string)
 {
     int_signed length;
     int_signed index;
@@ -20,11 +20,11 @@ boolean id_assignment(const String *string)
     return TRUE;
 }
 
-boolean id_evaluation(const String *string)
+boolean id_evaluation(const String* string)
 {
-    int_signed length;
-    int_signed n;
-    char c;
+    char        c;
+    int_signed  length;
+    int_signed  n;
 
     length = string_length(string);
     if (length <= 2)
@@ -49,7 +49,7 @@ boolean id_evaluation(const String *string)
     return TRUE;    
 }
 
-boolean id_find_roots(const String *string)
+boolean id_find_roots(const String* string)
 {
     int_signed length;
 
@@ -66,16 +66,16 @@ boolean id_find_roots(const String *string)
     return TRUE;
 }
 
-boolean id_display(const String *string, const VariableTable *v_table)
+boolean id_display(const String* string, const VariableTable* v_table)
 {
-    Variable *_variable;
+    Variable* _variable;
 
     _variable = v_table_search(v_table, string_get_characters(string));
     
     return _variable ? TRUE : FALSE;
 }
 
-boolean id_statement(const String *string)
+boolean id_statement(const String* string)
 {
     return string_length(string) > 0;
 }

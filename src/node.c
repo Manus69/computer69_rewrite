@@ -3,11 +3,9 @@
 #include "frontend_declarations.h"
 #include "data_interface.h"
 
-#include <assert.h>
-
-Node *node_new(void *object, NODE_TYPE type, boolean copy)
+Node* node_new(void* object, NODE_TYPE type, boolean copy)
 {
-    Node *node;
+    Node* node;
 
     node = allocate(sizeof(Node));
     
@@ -30,14 +28,14 @@ Node *node_new(void *object, NODE_TYPE type, boolean copy)
     return node;
 }
 
-Node *node_change_type(Node *node, NODE_TYPE type)
+Node* node_change_type(Node* node, NODE_TYPE type)
 {
     node->type = type;
 
     return node;
 }
 
-Node *node_convert_to_wildcard(Node *node)
+Node* node_convert_to_wildcard(Node* node)
 {
     if (node->type != NT_IDENTIFIER)
         return NULL;
@@ -47,12 +45,12 @@ Node *node_convert_to_wildcard(Node *node)
     return node;
 }
 
-NODE_TYPE node_get_type(const Node *node)
+NODE_TYPE node_get_type(const Node* node)
 {
     return node->type;
 }
 
-static void *_fetch_destructor(NODE_TYPE type)
+static void* _fetch_destructor(NODE_TYPE type)
 {
     if (type == NT_NUMBER)
         return number_delete;
@@ -68,7 +66,7 @@ static void *_fetch_destructor(NODE_TYPE type)
     return NULL;
 }
 
-void node_delete(Node **node)
+void node_delete(Node** node)
 {
     void (*destructor)();
 
@@ -87,28 +85,28 @@ void node_delete(Node **node)
     *node = NULL;
 }
 
-Node *node_get_number(String *string)
+Node* node_get_number(String* string)
 {
-    Number *number;
+    Number* number;
 
     number = number_from_string(string);
     
     return number ? node_new(number, NT_NUMBER, FALSE) : NULL;   
 }
 
-Node *node_get_operator(String *string)
+Node* node_get_operator(String* string)
 {
-    Operator *operator;
+    Operator* operator;
 
     operator = operator_new(string);
 
     return operator ? node_new(operator, NT_OPERATOR, FALSE) : NULL;
 }
 
-Node *node_get_identifier(String *string)
+Node* node_get_identifier(String* string)
 {
-    int_unsigned length;
-    char *substring;
+    char*           substring;
+    int_unsigned    length;
 
     if (contains_i(string_get_characters(string)))
         return NULL;
@@ -123,10 +121,10 @@ Node *node_get_identifier(String *string)
     return node_new(substring, NT_IDENTIFIER, FALSE);
 }
 
-Node *node_get_matrix(String *string, const VariableTable *v_table)
+Node* node_get_matrix(String* string, const VariableTable* v_table)
 {
-    MatrixRepr *matrix;
-    Node *node;
+    MatrixRepr* matrix;
+    Node*       node;
 
     matrix = matrix_repr_from_string(string, v_table);
     node = matrix ? node_new(matrix, NT_MATRIX, FALSE) : NULL;    
@@ -134,9 +132,9 @@ Node *node_get_matrix(String *string, const VariableTable *v_table)
     return node;
 }
 
-Node *node_copy(const Node *node)
+Node* node_copy(const Node* node)
 {
-    Node *new_node;
+    Node* new_node;
 
     new_node = allocate(sizeof(Node));
     new_node->type = node->type;

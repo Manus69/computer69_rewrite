@@ -7,13 +7,11 @@
 #include "computation.h"
 #include "variable.h"
 #include "number.h"
-#include "variable_table.h"
 #include "why_tree.h"
 #include "entity.h"
 
 #include <stdio.h>
 #include <unistd.h>
-#include <assert.h>
 
 void print_number(const Number* number)
 {
@@ -26,13 +24,12 @@ void print_number(const Number* number)
         print_real(number->x);
     else if (number->type == NT_COMPLEX)
         print_complex(number->z);
-    else assert(0);
 }
 
 void print_operator(const Operator* operator)
 {
-    int_signed index;
-    char* format;
+    char*       format;
+    int_signed  index;
 
     if (!operator)
         return ;
@@ -68,7 +65,6 @@ void print_node(const Node* node, const char* wc_symbol)
         print_cstring(FUNCTION_STRINGS[node->bf_type]);
     else if (type == NT_MATRIX)
         print_matrix_repr(node->matrix, wc_symbol);
-    else assert(0);
 }
 
 void print_variable(const Variable* variable)

@@ -3,15 +3,13 @@
 #include "node.h"
 #include "entity.h"
 
-Computation *computation_replace_wc(Computation *_computation, Computation *value)
+Computation* computation_replace_wc(Computation* _computation, Computation* value)
 {
     if (!_computation)
         return NULL;
     
     if (_computation->node->type == NT_WILDCARD)
-    {
         return value;
-    }
 
     if (_computation->node->type == NT_MATRIX)
     {
@@ -26,18 +24,16 @@ Computation *computation_replace_wc(Computation *_computation, Computation *valu
     return _computation;
 }
 
-MatrixRepr *matrix_repr_replace_wc(MatrixRepr *matrix, Computation *value)
+MatrixRepr* matrix_repr_replace_wc(MatrixRepr* matrix, Computation* value)
 {
-    int_signed n;
-    Entity *element;
+    Entity*     element;
+    int_signed  n;
 
     n = 0;
     while ((element = matrix_repr_nth(matrix, n)))
     {
         if (element->type == ET_COMPUTATION)
-        {
             element->computation = computation_replace_wc(element->computation, value);
-        }
 
         n ++;
     }

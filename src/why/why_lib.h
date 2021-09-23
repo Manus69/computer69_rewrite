@@ -15,8 +15,6 @@
 #include "why_print.h"
 #include "why_cstring.h"
 
-#define WHY_DBG 0
-
 Vector* string_split(String* string, char delimiter);
 Vector* cstr_split(char* string, char delimiter);
 String* get_line(int file_descriptor);

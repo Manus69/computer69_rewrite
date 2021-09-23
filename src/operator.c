@@ -43,8 +43,8 @@ Operator* operator_new_from_type(OPERATOR_TYPE type)
 
 Operator* operator_new(String* string)
 {
-    char* characters;
-    int_signed index;
+    char*       characters;
+    int_signed  index;
 
     if (string_length(string) == 0)
         return NULL;

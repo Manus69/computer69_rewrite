@@ -1,14 +1,13 @@
 #include "frontend_declarations.h"
 #include "matrix_repr.h"
 #include "entity.h"
+#include "why_error.h"
 
-#include <assert.h>
-
-static Entity *_add_jk(const MatrixRepr *lhs, const MatrixRepr *rhs, int_signed j, int_signed k)
+static Entity* _add_jk(const MatrixRepr* lhs, const MatrixRepr* rhs, int_signed j, int_signed k)
 {
-    Entity *result;
-    Entity *_lhs;
-    Entity *_rhs;
+    Entity* result;
+    Entity* _lhs;
+    Entity* _rhs;
 
     _lhs = matrix_repr_at(lhs, j, k);
     _rhs = matrix_repr_at(rhs, j, k);
@@ -17,11 +16,11 @@ static Entity *_add_jk(const MatrixRepr *lhs, const MatrixRepr *rhs, int_signed 
     return result;
 }
 
-static Entity *_subtract_jk(const MatrixRepr *lhs, const MatrixRepr *rhs, int_signed j, int_signed k)
+static Entity* _subtract_jk(const MatrixRepr* lhs, const MatrixRepr* rhs, int_signed j, int_signed k)
 {
-    Entity *result;
-    Entity *_lhs;
-    Entity *_rhs;
+    Entity* result;
+    Entity* _lhs;
+    Entity* _rhs;
 
     _lhs = matrix_repr_at(lhs, j, k);
     _rhs = matrix_repr_at(rhs, j, k);
@@ -30,13 +29,13 @@ static Entity *_subtract_jk(const MatrixRepr *lhs, const MatrixRepr *rhs, int_si
     return result;
 }
 
-static Entity *_multiply_jk(const MatrixRepr *lhs, const MatrixRepr *rhs, int_signed j, int_signed k)
+static Entity* _multiply_jk(const MatrixRepr* lhs, const MatrixRepr* rhs, int_signed j, int_signed k)
 {
-    Entity *result;
-    Entity *product;
-    Entity *_lhs;
-    Entity *_rhs;
-    int_signed w;
+    Entity*     result;
+    Entity*     product;
+    Entity*     _lhs;
+    Entity*     _rhs;
+    int_signed  w;
 
     if (!lhs->n_cols)
         return NULL;
@@ -54,19 +53,18 @@ static Entity *_multiply_jk(const MatrixRepr *lhs, const MatrixRepr *rhs, int_si
         product = entity_mult(_lhs, _rhs);        
         result = entity_increment(result, product); //this is spooky
 
-        // entity_delete(&product);
         w ++;
     }
 
     return result;
 }
 
-static MatrixRepr *_matrix_operation(MatrixRepr *matrix, MatrixRepr *lhs, MatrixRepr *rhs, Entity *(*combine_jk)())
+static MatrixRepr* _matrix_operation(MatrixRepr* matrix, MatrixRepr* lhs, MatrixRepr* rhs, Entity* (*combine_jk)())
 {
-    int_signed j;
-    int_signed k;
-    int_signed n_rows;
-    Entity *value;
+    Entity*     value;
+    int_signed  j;
+    int_signed  k;
+    int_signed  n_rows;
 
     j = 0;
     n_rows = matrix_repr_n_rows(matrix);
@@ -87,9 +85,9 @@ static MatrixRepr *_matrix_operation(MatrixRepr *matrix, MatrixRepr *lhs, Matrix
     return matrix;
 }
 
-MatrixRepr *matrix_repr_add(MatrixRepr *lhs, MatrixRepr *rhs)
+MatrixRepr* matrix_repr_add(MatrixRepr* lhs, MatrixRepr* rhs)
 {
-    MatrixRepr *matrix;
+    MatrixRepr* matrix;
 
     if (!matrix_repr_equal_size(lhs, rhs))
         return NULL;
@@ -100,9 +98,9 @@ MatrixRepr *matrix_repr_add(MatrixRepr *lhs, MatrixRepr *rhs)
     return matrix;
 }
 
-MatrixRepr *matrix_repr_subtract(MatrixRepr *lhs, MatrixRepr *rhs)
+MatrixRepr* matrix_repr_subtract(MatrixRepr* lhs, MatrixRepr* rhs)
 {
-    MatrixRepr *matrix;
+    MatrixRepr* matrix;
 
     if (!matrix_repr_equal_size(lhs, rhs))
         return NULL;
@@ -113,9 +111,9 @@ MatrixRepr *matrix_repr_subtract(MatrixRepr *lhs, MatrixRepr *rhs)
     return matrix;
 }
 
-MatrixRepr *matrix_repr_mult(MatrixRepr *lhs, MatrixRepr *rhs)
+MatrixRepr* matrix_repr_mult(MatrixRepr* lhs, MatrixRepr* rhs)
 {
-    MatrixRepr *matrix;
+    MatrixRepr* matrix;
 
     if (matrix_repr_n_cols(lhs) != matrix_repr_n_rows(rhs))
         return NULL;
@@ -126,13 +124,13 @@ MatrixRepr *matrix_repr_mult(MatrixRepr *lhs, MatrixRepr *rhs)
     return matrix;
 }
 
-MatrixRepr *matrix_repr_scale(MatrixRepr *matrix, Number *number)
+MatrixRepr* matrix_repr_scale(MatrixRepr* matrix, Number* number)
 {
-    MatrixRepr *new_matrix;
-    Entity *value;
-    Entity *new_value;
-    int_signed j;
-    int_signed k;
+    MatrixRepr* new_matrix;
+    Entity*     value;
+    Entity*     new_value;
+    int_signed  j;
+    int_signed  k;
 
     new_matrix = matrix_repr_new_fixed_size(matrix->n_rows, matrix->n_cols);
     j = 0;
@@ -143,14 +141,11 @@ MatrixRepr *matrix_repr_scale(MatrixRepr *matrix, Number *number)
         {
             value = matrix_repr_at(matrix, j, k);
             if (value->type == ET_COMPUTATION)
-            {
                 new_value = entity_new_from_computation(computation_scale(value->computation, number), FALSE);
-            }
             else if (value->type == ET_NUMBER)
-            {
                 new_value = entity_new_from_number(number_mult(value->number, number), FALSE);
-            }
-            else assert(0);
+            else
+                return error_set(WHY_ERROR_GENERIC, NULL);
 
             matrix_repr_set(new_matrix, new_value, j, k);
 
@@ -164,12 +159,12 @@ MatrixRepr *matrix_repr_scale(MatrixRepr *matrix, Number *number)
 }
 
 //this is a placeholder
-MatrixRepr *matrix_repr_power(MatrixRepr *lhs, Number *number)
+MatrixRepr* matrix_repr_power(MatrixRepr* lhs, Number* number)
 {
-    MatrixRepr *matrix;
-    MatrixRepr *pointer;
-    int_signed m;
-    int_signed n;
+    MatrixRepr* matrix;
+    MatrixRepr* pointer;
+    int_signed  m;
+    int_signed  n;
 
     if (number_get_type(number) != NT_INT)
         return NULL;
@@ -200,12 +195,12 @@ MatrixRepr *matrix_repr_power(MatrixRepr *lhs, Number *number)
     return matrix;
 }
 
-MatrixRepr *matrix_repr_I(int_signed size)
+MatrixRepr* matrix_repr_I(int_signed size)
 {
-    MatrixRepr *matrix;
-    Entity *item;
-    int_signed j;
-    int_signed k;
+    MatrixRepr* matrix;
+    Entity*     item;
+    int_signed  j;
+    int_signed  k;
 
     matrix = matrix_repr_new_fixed_size(size, size);
     j = 0;

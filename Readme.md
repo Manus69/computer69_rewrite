@@ -141,6 +141,7 @@
 #### for example:
     [[1, 0];[0, 1]]
     A = [[pi, e];[0, 1]]
+#### note that matrix size is limited to 4 right now.
 ---
 
 ### Matrix operations

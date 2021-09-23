@@ -7,9 +7,9 @@ struct Entity
 {
     union
     {
-        Number *number;
-        MatrixRepr *matrix;
-        Computation *computation;
+        Number*         number;
+        MatrixRepr*     matrix;
+        Computation*    computation;
     };
 
     ENTITY_TYPE type;

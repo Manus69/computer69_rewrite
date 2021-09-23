@@ -5,17 +5,13 @@
 #include "entity.h"
 #include "why_error.h"
 
-#include "print.h" //
-
-#include <assert.h>
-
-static const void *op_functions[] = {number_add, number_subtract, 
+static const void* op_functions[] = {number_add, number_subtract, 
 number_mult, number_divide, number_mod, number_power, number_factorial, 0};
 
-static const void *op_functionsG[] = {entity_add, entity_subtract, 
+static const void* op_functionsG[] = {entity_add, entity_subtract, 
 entity_mult, entity_divide, entity_mod, entity_power, entity_factorial, 0};
 
-static Number *_get_value(const char *id)
+static Number* _get_value(const char* id)
 {
     if (!id)
         return NULL;
@@ -28,11 +24,11 @@ static Number *_get_value(const char *id)
     return error_set(WHY_ERROR_NAME, id);
 }
 
-static Number *_eval_btf(const Computation *computation, const VariableTable *v_table, Number *wc_value)
+static Number* _eval_btf(const Computation* computation, const VariableTable* v_table, Number* wc_value)
 {
-    Number *(*function)();
-    Number *lhs_value;
-    Number *result;
+    Number* (*function)();
+    Number* lhs_value;
+    Number* result;
 
     lhs_value = computation_eval(computation->lhs, v_table, wc_value);
     function = get_bft_pointer(computation->node->bf_type);
@@ -44,28 +40,29 @@ static Number *_eval_btf(const Computation *computation, const VariableTable *v_
         return result;
     }
 
-    assert(0);
+    return error_set(WHY_ERROR_EVAL, NULL);
 }
 
-static Entity *_eval_btfG(const Computation *computation, const VariableTable *v_table, Entity *wc_value)
+static Entity* _eval_btfG(const Computation* computation, const VariableTable* v_table, Entity* wc_value)
 {
-    Number *result;
+    Number* result;
     
     if (!wc_value)
         result = _eval_btf(computation, v_table, NULL);
     else if (wc_value->type == ET_NUMBER)
         result = _eval_btf(computation, v_table, wc_value->number);
-    else assert(0);
+    else
+        return error_set(WHY_ERROR_EVAL, NULL);
 
     return entity_new_from_number(result, FALSE);
 }
 
-static Number *_eval_function(const Computation *computation, const VariableTable *v_table, Number *wc_value)
+static Number* _eval_function(const Computation* computation, const VariableTable* v_table, Number* wc_value)
 {
-    Number *lhs_value;
-    Number *result;
-    Variable *variable;
-    Entity *value;
+    Number*     lhs_value;
+    Number*     result;
+    Variable*   variable;
+    Entity*     value;
 
     variable = v_table_search(v_table, computation->node->identifier);
     if (variable)
@@ -74,7 +71,7 @@ static Number *_eval_function(const Computation *computation, const VariableTabl
         value = variable_get_value(variable);
 
         if (entity_get_type(value) != ET_COMPUTATION)
-            assert(0);
+            return error_set(WHY_ERROR_EVAL, NULL);
         
         result = computation_eval(value->computation, v_table, lhs_value);
         result = number_demote_if_possible(result);
@@ -82,17 +79,17 @@ static Number *_eval_function(const Computation *computation, const VariableTabl
         return result;
     }
 
-    assert(0);
+    return error_set(WHY_ERROR_EVAL, NULL);
 }
 
-static Entity *_eval_matrix(MatrixRepr *matrix, const VariableTable *v_table, Entity *wc_value)
+static Entity* _eval_matrix(MatrixRepr* matrix, const VariableTable* v_table, Entity* wc_value)
 {
-    int_signed n;
-    Entity *value;
-    Number *number;
+    int_signed  n;
+    Entity*     value;
+    Number*     number;
 
     if (wc_value && wc_value->type != ET_NUMBER)
-        assert(0);
+        return error_set(WHY_ERROR_EVAL, NULL);
     
     n = 0;
     while ((value = matrix_repr_nth(matrix, n)))
@@ -110,12 +107,12 @@ static Entity *_eval_matrix(MatrixRepr *matrix, const VariableTable *v_table, En
     return entity_new_from_matrix(matrix, TRUE);
 }
 
-static Entity *_eval_functionG(const Computation *computation, const VariableTable *v_table, Entity *wc_value)
+static Entity* _eval_functionG(const Computation* computation, const VariableTable* v_table, Entity* wc_value)
 {
-    Entity *lhs_value;
-    Entity *result;
-    Entity *argument; //
-    Variable *variable;
+    Entity*     lhs_value;
+    Entity*     result;
+    Entity*     argument;
+    Variable*   variable;
 
     variable = v_table_search(v_table, computation->node->identifier);
     if (variable)
@@ -127,7 +124,8 @@ static Entity *_eval_functionG(const Computation *computation, const VariableTab
             result = computation_evalG(argument->computation, v_table, lhs_value);
         else if (argument->type == ET_MATRIX)
             result = _eval_matrix(argument->matrix, v_table, lhs_value);
-        else assert(0);
+        else
+            return error_set(WHY_ERROR_EVAL, NULL);
 
         if (result->type == ET_NUMBER)
             result->number = number_demote_if_possible(result->number);
@@ -138,30 +136,30 @@ static Entity *_eval_functionG(const Computation *computation, const VariableTab
     return error_set(WHY_ERROR_EVAL, "unknown function");
 }
 
-static Number *_eval_id(const Computation *computation)
+static Number* _eval_id(const Computation* computation)
 {
-    Number *value;
+    Number* value;
 
     value = _get_value(computation->node->identifier);
 
     return value;
 }
 
-static Entity *_eval_idG(const Computation *computation)
+static Entity* _eval_idG(const Computation* computation)
 {
-    Number *result;
+    Number* result;
 
     result = _eval_id(computation);
 
     return result ? entity_new_from_number(_eval_id(computation), FALSE) : NULL;
 }
 
-Number *computation_eval(const Computation *computation, const VariableTable *v_table, Number *wc_value)
+Number* computation_eval(const Computation* computation, const VariableTable* v_table, Number* wc_value)
 {
-    Number *(*function)();
-    Number *lhs_value;
-    Number *rhs_value;
-    Number *result;
+    Number* (*function)();
+    Number* lhs_value;
+    Number* rhs_value;
+    Number* result;
 
     if (!computation)
         return NULL;
@@ -191,7 +189,7 @@ Number *computation_eval(const Computation *computation, const VariableTable *v_
     return result;
 }
 
-static Entity *_eval_wildcard(Entity *wc_value)
+static Entity* _eval_wildcard(Entity* wc_value)
 {
     if (!wc_value)
         return NULL;
@@ -203,15 +201,15 @@ static Entity *_eval_wildcard(Entity *wc_value)
     if (wc_value->type == ET_COMPUTATION)
         return entity_new_from_computation(wc_value->computation, TRUE);
 
-    assert(0);
+    return error_set(WHY_ERROR_EVAL, NULL);
 }
 
-Entity *computation_evalG(const Computation *computation, const VariableTable *v_table, Entity *wc_value)
+Entity* computation_evalG(const Computation* computation, const VariableTable* v_table, Entity* wc_value)
 {
-    Entity *(*function)();
-    Entity *lhs_value;
-    Entity *rhs_value;
-    Entity *result;
+    Entity* (*function)();
+    Entity* lhs_value;
+    Entity* rhs_value;
+    Entity* result;
 
     if (!computation)
         return NULL;

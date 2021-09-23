@@ -8,8 +8,6 @@
     #include <stdio.h>
 #endif
 
-#include <assert.h>
-
 static MatrixRepr* _process_row(MatrixRepr* matrix, String* row_string, const VariableTable* v_table)
 {
     Vector*     items;
@@ -26,6 +24,11 @@ static MatrixRepr* _process_row(MatrixRepr* matrix, String* row_string, const Va
     {
         vector_delete(&items);
         return NULL;
+    }
+    if (matrix->n_cols > MATRIX_MAX_SIZE)
+    {
+        vector_delete(&items);
+        return error_set(WHY_ERROR_GENERIC, "the matrix is too large");
     }
 
     while (n < vector_size(items))
@@ -55,6 +58,9 @@ static MatrixRepr* _process_rows(Vector* rows, const VariableTable* v_table)
     
     matrix->n_rows = vector_size(rows);
 
+    if (matrix->n_rows > MATRIX_MAX_SIZE)
+        return error_set(WHY_ERROR_GENERIC, "the matrix is too large");
+    
     while (n < vector_size(rows))
     {
         row_string = vector_at(rows, n);

@@ -33,9 +33,7 @@ static VariableTable* _process_assignment(String* line, VariableTable* v_table)
 
     _variable = variable_create_from_string(line, v_table);
     if (!_variable)
-    {
         return v_table;
-    }
 
     print_variableNI(_variable);
     

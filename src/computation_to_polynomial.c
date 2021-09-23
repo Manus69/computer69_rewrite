@@ -3,12 +3,10 @@
 #include "node.h"
 #include "entity.h"
 
-#include <assert.h>
-
-static Polynomial *_combine_polynomials(Polynomial *lhs, Operator *op, Polynomial *rhs)
+static Polynomial* _combine_polynomials(Polynomial* lhs, Operator* op, Polynomial* rhs)
 {
+    Polynomial*     result;
     OPERATOR_TYPE   op_type;
-    Polynomial      *result;
     Complex         z;
 
     result = NULL;
@@ -46,11 +44,11 @@ static Polynomial *_combine_polynomials(Polynomial *lhs, Operator *op, Polynomia
     return result;
 }
 
-Polynomial *computation_to_polynomial(const Computation *_computation)
+Polynomial* computation_to_polynomial(const Computation* _computation)
 {
-    Polynomial *lhs;
-    Polynomial *rhs;
-    Complex z;
+    Polynomial* lhs;
+    Polynomial* rhs;
+    Complex     z;
 
     if (!_computation)
         return NULL;
@@ -72,11 +70,11 @@ Polynomial *computation_to_polynomial(const Computation *_computation)
         if (is_e(_computation->node->identifier))
             return polynomial_new_from_complex(complex(E, 0));
         
-        assert(0);
+        return NULL;
     }
 
     if (_computation->node->type != NT_OPERATOR)
-        assert(0);
+        return NULL;
     
     lhs = computation_to_polynomial(_computation->lhs);
     rhs = computation_to_polynomial(_computation->rhs);

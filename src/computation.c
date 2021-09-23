@@ -3,9 +3,9 @@
 #include "node.h"
 #include "data_interface.h"
 
-Computation *computation_new(Node *node, boolean copy)
+Computation* computation_new(Node* node, boolean copy)
 {
-    Computation *computation;
+    Computation* computation;
 
     computation = allocate(sizeof(Computation));
     computation->node = copy ? node_copy(node) : node;
@@ -17,9 +17,9 @@ Computation *computation_new(Node *node, boolean copy)
     return computation;
 }
 
-void computation_delete(Computation **computation)
+void computation_delete(Computation** computation)
 {
-    Computation *cmp;
+    Computation* cmp;
 
     #if NO_DELETE
     return ;
@@ -37,29 +37,29 @@ void computation_delete(Computation **computation)
     *computation = NULL;
 }
 
-Computation *computation_get_lhs(const Computation *computation)
+Computation* computation_get_lhs(const Computation* computation)
 {
     return computation->lhs;
 }
 
-Computation *computation_get_rhs(const Computation *computation)
+Computation* computation_get_rhs(const Computation* computation)
 {
     return computation->rhs;
 }
 
-Node *computation_get_node(const Computation *computation)
+Node* computation_get_node(const Computation* computation)
 {
     return computation->node;
 }
 
-Computation *computation_insert_root(Computation *root, Computation *new_root)
+Computation* computation_insert_root(Computation* root, Computation* new_root)
 {
     new_root->lhs = root;
 
     return new_root;
 }
 
-void computation_traverse(Computation *computation, void (*function)())
+void computation_traverse(Computation* computation, void (*function)())
 {
     if (!computation)
         return ;
@@ -69,9 +69,9 @@ void computation_traverse(Computation *computation, void (*function)())
     computation_traverse(computation->rhs, function);
 }
 
-Computation *computation_copy(const Computation *computation)
+Computation* computation_copy(const Computation* computation)
 {
-    Computation *copy;
+    Computation* copy;
 
     if (!computation)
         return NULL;
@@ -83,20 +83,20 @@ Computation *computation_copy(const Computation *computation)
     return copy;
 }
 
-void *computation_copy_wrapper(Computation *computation)
+void* computation_copy_wrapper(Computation* computation)
 {
     return computation_copy(computation);
 }
 
-void computation_swap_nodes(Computation *lhs, Computation *rhs)
+void computation_swap_nodes(Computation* lhs, Computation* rhs)
 {
     if (!lhs || !rhs)
         return ;
     
-    SWAP(lhs->node, rhs->node, Node *);
+    SWAP(lhs->node, rhs->node, Node* );
 }
 
-Computation *computation_find_parentR(Computation *root, Computation *_computation)
+Computation* computation_find_parentR(Computation* root, Computation* _computation)
 {
     if (!root)
         return NULL;

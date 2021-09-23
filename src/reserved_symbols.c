@@ -1,14 +1,14 @@
 #include "why_memory.h"
 #include "why_cstring.h"
 
-const char *RESERVED_SYMBOLS[] =
+const char* RESERVED_SYMBOLS[] =
 {
     "abs", "i", "pi", "e", "sin", "cos", "tan", "log", "ln", "exp", "abs", "sqrt", 0,
 };
 
-const char *FUNCTION_STRINGS[] = {"sin", "cos", "tan", "sqrt", "log", "ln", "exp", "abs", 0};
+const char* FUNCTION_STRINGS[] = {"sin", "cos", "tan", "sqrt", "log", "ln", "exp", "abs", 0};
 
-char *check_reserved_symbols(const char *string)
+char* check_reserved_symbols(const char* string)
 {
     int_signed n;
 
@@ -24,12 +24,12 @@ char *check_reserved_symbols(const char *string)
     return NULL;
 }
 
-boolean is_pi(const char *string)
+boolean is_pi(const char* string)
 {
     return !cstr_compare(string, "pi");
 }
 
-boolean is_e(const char *string)
+boolean is_e(const char* string)
 {
     return !cstr_compare(string, "e");
 }
