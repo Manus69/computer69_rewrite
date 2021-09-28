@@ -2,8 +2,6 @@
 #include "why_math_polynomial.h"
 #include "why_error.h"
 
-#define DBG 0
-
 static Polynomial* _scale(const Polynomial* p)
 {
     int_signed  n;
@@ -78,11 +76,6 @@ Vector* _solve_qubic(const Polynomial* p)
     real        a_root;
 
     p_scaled = _scale(p);
-
-    #if DBG
-        // _print_polynomialDBG(p_scaled);
-        _print_polynomialDBG(p);
-    #endif
 
     if (!_in_range(p_scaled))
     {

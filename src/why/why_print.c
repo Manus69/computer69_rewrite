@@ -3,7 +3,6 @@
 #include "why_error.h"
 
 #include <stdio.h>
-#include <assert.h>
 #include <unistd.h>
 
 #define BUFFER_SIZE (1 << 7)
@@ -114,8 +113,8 @@ void print_cstringN(const char* string)
 //this is ugly and dangerous
 void print_string(const String* string)
 {
-    char* cstring;
-    int_signed length;
+    char*       cstring;
+    int_signed  length;
 
     if (!string)
         return ;

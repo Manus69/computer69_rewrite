@@ -71,7 +71,7 @@ void node_delete(Node** node)
     void (*destructor)();
 
     #if NO_DELETE
-    return ;
+        return ;
     #endif
 
     if (!node || !*node)

@@ -22,7 +22,7 @@ Variable* variable_new(char* name, char* initial_parameter, Entity* entity, bool
 void variable_delete(Variable** variable)
 {
     #if NO_DELETE
-    return ;
+        return ;
     #endif
 
     if (!variable || !*variable)

@@ -3,12 +3,7 @@
 #include "why_memory.h"
 #include "why_cstring.h"
 #include "why_lib.h"
-
-#include <assert.h>
-
-#if WHY_DBG
-#include "why_print.h"
-#endif
+#include "why_error.h"
 
 static void _array_init(Complex* array, int_signed n, int_signed size)
 {
@@ -57,10 +52,6 @@ Polynomial* polynomial_new_from_complex(Complex z)
 
     p = polynomial_new(NULL);
     polynomial_set(p, z, 0);
-
-    #if WHY_DBG
-    _print_polynomialDBG(p);
-    #endif
 
     return p;
 }
@@ -241,5 +232,7 @@ Complex polynomial_get_leading_coefficient(const Polynomial* p)
     if (p && p->degree >= 0)
         return p->coefficients[p->degree];
 
-    assert(0);
+    error_set(WHY_ERROR_MATH, NULL);
+    
+    return complex(0, 0);
 }

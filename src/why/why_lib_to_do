@@ -9,5 +9,4 @@ make a sort
 make isert(tree, item, after) to insert items in trees after another item in the traversal order
 sets via trees
 radix sort
-
-align * to the left?
+<stdint.h>?

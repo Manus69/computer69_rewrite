@@ -4,10 +4,11 @@
 #include "why_tree_interface.h"
 #include "why_vector_interface.h"
 
-#define NO_DELETE 1
-#define CHECK_MEMORY 1
+#define NO_DELETE       1
+#define CHECK_MEMORY    1
 #define MATRIX_MAX_SIZE 4
-#define WHITE_SPACE " \t\n\r"
+#define FACTORIAL_MAX_N 20
+#define WHITE_SPACE     " \t\n\r"
 
 typedef struct Number Number;
 typedef struct MatrixRepr MatrixRepr;

@@ -56,7 +56,6 @@ Polynomial* computation_to_polynomial(const Computation* _computation)
     if (_computation->node->type == NT_NUMBER)
     {
         z = number_to_complex(_computation->node->number);
-
         return polynomial_new_from_complex(z);
     }
 

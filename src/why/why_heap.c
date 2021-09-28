@@ -75,8 +75,8 @@ void* _get_right_child(Heap* heap, int_signed index)
 
 static void _restore_heap_property(Heap* heap, int_signed index)
 {
-    int_signed parent_index;
-    void* parent;
+    int_signed  parent_index;
+    void*       parent;
 
     while (index)
     {
@@ -102,8 +102,3 @@ boolean heap_push(Heap* heap, void* item)
     
     return FALSE;
 }
-
-// void* heap_pop_root(Heap* heap)
-// {
-//     return NULL;
-// }

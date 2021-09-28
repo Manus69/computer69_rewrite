@@ -18,7 +18,7 @@ VariableTable* v_table_new(const Variable* variable)
 void v_table_delete(VariableTable** v_table)
 {
     #if NO_DELETE
-    return ;
+        return ;
     #endif
 
     return tree_delete(v_table, variable_delete);

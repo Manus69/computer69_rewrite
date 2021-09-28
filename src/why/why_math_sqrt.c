@@ -3,11 +3,6 @@
 #include <assert.h>
 #include <limits.h>
 
-#define DBG 0
-#if DBG
-#include <stdio.h>
-#endif
-
 #define SQRT_EPSILON    1.0 / (1 << 20)
 #define SN_CUTOFF       100
 #define FACTOR          (1 << 4)

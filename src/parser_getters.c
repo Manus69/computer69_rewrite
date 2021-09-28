@@ -7,9 +7,9 @@ static Computation* _get_term(String* string, const VariableTable* v_table);
 
 Computation* get_stuff_in_parens(String* string, const VariableTable* v_table)
 {
-    int_signed right_index;
-    String* substring;
-    Computation* computation;
+    int_signed      right_index;
+    String*         substring;
+    Computation*    computation;
 
     right_index = find_matching_bracket_str(string, TERMINALS[O_PAREN], TERMINALS[C_PAREN]);
     if (right_index <= 1)
@@ -26,10 +26,10 @@ Computation* get_stuff_in_parens(String* string, const VariableTable* v_table)
 
 Computation* get_function(String* string, const VariableTable* v_table)
 {
-    int_unsigned length;
-    Node* identifier_node;
-    Computation* argument;
-    Computation* identifier;
+    int_unsigned    length;
+    Node*           identifier_node;
+    Computation*    argument;
+    Computation*    identifier;
 
     length = id_function_name_str(string);
     if (!length)

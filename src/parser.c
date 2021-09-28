@@ -6,8 +6,7 @@
 #include "why_error.h"
 #include "parser.h"
 
-#include "why_string.h" //
-// #include <assert.h>
+// #include "why_string.h"
 
 static boolean _check_if_implicit_star(String* string, Computation* lhs)
 {

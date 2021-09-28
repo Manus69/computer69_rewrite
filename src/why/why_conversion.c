@@ -2,8 +2,6 @@
 #include "why_cstring.h"
 #include "why_error.h"
 
-#include <assert.h>
-
 static real _convert_decimal_part(const char* string, int_signed length)
 {
     real result;
@@ -60,9 +58,9 @@ int_signed convert_to_int(const char* string)
 
 real convert_to_real(const char* string)
 {
-    real result;
-    int_unsigned int_part;
-    int_unsigned decimal_part;
+    real            result;
+    int_unsigned    int_part;
+    int_unsigned    decimal_part;
 
     if (*string == '-')
         return -convert_to_real(++ string);
@@ -95,10 +93,10 @@ real convert_to_real(const char* string)
 
 Complex convert_to_complex(const char* string)
 {
-    int_unsigned length;
-    int_signed sign;
-    real re;
-    real im;
+    int_unsigned    length;
+    int_signed      sign;
+    real            re;
+    real            im;
     
     if (*string == 'i')
         return complex(0, 1);
@@ -132,7 +130,7 @@ Complex convert_to_complex(const char* string)
     if (!length)
         return (Complex){re, 0};
 
-    im = convert_to_real(string)*  sign;
+    im = convert_to_real(string) * sign;
 
     return (Complex){re, im};
 }

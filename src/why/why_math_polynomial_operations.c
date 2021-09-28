@@ -5,8 +5,8 @@
 
 Complex polynomial_evaluate(const Polynomial* p, Complex value)
 {
-    Complex result;
-    int_signed n;
+    Complex     result;
+    int_signed  n;
 
     result = complex_zero();
     n = polynomial_get_degree(p);
@@ -24,8 +24,8 @@ Complex polynomial_evaluate(const Polynomial* p, Complex value)
 Polynomial* polynomial_differentiate(const Polynomial* p)
 {
     Polynomial* derivative;
-    Complex value;
-    int_signed n;
+    Complex     value;
+    int_signed  n;
 
     derivative = _new(p->degree + 1, p->variable);
     n = 1;
@@ -43,8 +43,8 @@ Polynomial* polynomial_differentiate(const Polynomial* p)
 
 static Polynomial* _get_multiplier(const Polynomial* p, const Polynomial* d)
 {
-    Complex leading_p;
-    Complex leading_d;
+    Complex     leading_p;
+    Complex     leading_d;
     Polynomial* multiplier;
 
     leading_p = polynomial_get_leading_coefficient(p);

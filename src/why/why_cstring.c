@@ -73,19 +73,19 @@ int_signed cstr_compare(const char* lhs, const char* rhs)
     if (!lhs)
         return* rhs;
     
-    while (*lhs ==* rhs &&* lhs)
+    while (*lhs == *rhs && *lhs)
     {
         lhs ++;
         rhs ++;
     }
 
-    return* rhs -* lhs;
+    return *rhs - *lhs;
 }
 
 char* cstr_concat_length(const char* lhs, int_signed lhs_len, const char* rhs, int_signed rhs_len)
 {
-    int_signed total_len;
-    char* new_str;
+    int_signed  total_len;
+    char*       new_str;
 
     total_len = rhs_len + lhs_len;
 
@@ -175,8 +175,8 @@ static char* _trim_left(const char* string)
 
 char* cstr_trim(const char* string)
 {
-    char* new_string;
-    int_signed length;
+    char*       new_string;
+    int_signed  length;
 
     new_string = _trim_left(string);
     length = cstr_length(new_string);

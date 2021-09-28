@@ -6,8 +6,8 @@
 #include "why_vector_interface.h"
 #include "why_math_complex.h"
 
-#define P_COEFFICIENT_ABS_MAX (1 << 15)
-#define P_DEFAULT_SIZE (1 << 1)
+#define P_COEFFICIENT_ABS_MAX   (1 << 15)
+#define P_DEFAULT_SIZE          (1 << 1)
 
 struct Polynomial
 {

@@ -4,7 +4,7 @@
 
 void* copy_shallow(const void* item)
 {
-    return (void* )item;
+    return (void *)item;
 }
 
 void* copy_cstring(const char* string)

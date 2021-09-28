@@ -4,8 +4,6 @@
 #include "computation.h"
 #include "operator.h"
 
-#include <assert.h>
-
 void print_computationL(const Computation* computation, const char* wc_symbol);
 
 static void _pp_print(const Computation* computation, const char* wc_symbol)

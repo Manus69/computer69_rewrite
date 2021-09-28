@@ -81,7 +81,7 @@ String* string_new(const char* literal)
 String* string_new_allocated_fl(const char* literal, int_signed length)
 {
     String* string;
-    char* characters;
+    char*   characters;
 
     string = allocate(sizeof(String));
 
@@ -147,7 +147,7 @@ void string_delete(String** string)
         free((*string)->pointer);
 
     free(*string);
-   * string = NULL;
+    *string = NULL;
 }
 
 static String* _append_literal(String* string, const char* rhs, int_signed length)
@@ -201,7 +201,7 @@ String* string_copy_semideep(const String* string)
 String* string_copy_deep(const String* string)
 {
     String* string_copy;
-    char* copy;
+    char*   copy;
 
     if (!string)
         return NULL;
@@ -238,9 +238,7 @@ int_signed string_compare(const String* lhs, const String* rhs)
 
     n = 0;
     while (n < min_length && lhs->characters[n] == rhs->characters[n])
-    {
         n ++;
-    }
 
     return rhs->characters[n] - lhs->characters[n];
 }
@@ -327,10 +325,10 @@ static inline void _insert(char* string, int_signed n, char c)
 
 String* string_substitute_chars(String* string, const char* set, char replacement)
 {
-    char* new_characters;
-    char* characters;
-    int_signed n;
-    int_signed index;
+    char*       new_characters;
+    char*       characters;
+    int_signed  n;
+    int_signed  index;
 
     new_characters = memory_zero(string->length + 1);
     characters = string_get_characters(string);

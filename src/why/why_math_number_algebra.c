@@ -1,13 +1,50 @@
 #include "why_math_number_interface.h"
 #include "why_memory.h"
+#include "why_lib.h"
+
+#if OVERFLOW_CHECK
+    #include "why_error.h"
+#endif
+
+boolean check_add_overflow(int_signed n, int_signed m)
+{
+    if (n > 0 && m > 0)
+    {
+        if (n > WHY_INT_MAX - m)
+            return TRUE;
+    }
+    
+    return FALSE;
+}
 
 int_signed add_int(int_signed n, int_signed m)
 {
+    #if OVERFLOW_CHECK
+    if (check_add_overflow(n, m))
+        error_set(WHY_ERROR_MATH, "int overflow");
+    #endif
+
     return n + m;
+}
+
+boolean check_mult_overflow(int_signed n, int_signed m)
+{
+    if (!n || !m)
+        return FALSE;
+    
+    if (ABS(n) > WHY_INT_MAX / ABS(m))
+        return TRUE;
+    
+    return FALSE;
 }
 
 int_signed mult_int(int_signed n, int_signed m)
 {
+    #if OVERFLOW_CHECK
+    if (check_mult_overflow(n, m))
+        error_set(WHY_ERROR_MATH, "int overflow");
+    #endif
+
     return n * m;
 }
 

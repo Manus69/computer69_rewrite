@@ -127,18 +127,16 @@ void print_polynomial_with_rhs(const Polynomial* p)
         printf(" = 0");
     }
     else
-    {
         print_polynomial(p);
-    }
 
     printf("\n");
 }
 
 void _print_polynomialDBG(const Polynomial* p)
 {
-    int_signed n;
-    int_signed degree;
-    Complex z;
+    int_signed  n;
+    int_signed  degree;
+    Complex     z;
 
     n = 0;
     degree = polynomial_get_degree(p);

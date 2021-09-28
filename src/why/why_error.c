@@ -29,9 +29,7 @@ void* error_set(int_unsigned type, const char* _error_string)
     
     WHY_ERROR = type;
     if (error_string)
-    {
         free(error_string);
-    }
     
     error_string = cstr_copy(_error_string);
 

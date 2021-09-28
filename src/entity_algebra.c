@@ -96,13 +96,9 @@ Entity* entity_subtract(Entity* lhs, Entity* rhs)
         return entity_new_from_number(number, FALSE);
     }
     else if (lhs->type == ET_COMPUTATION && !rhs)
-    {
         return entity_new_from_computation(computation_subtract(lhs->computation, NULL), FALSE);
-    }
     else if (lhs->type == ET_COMPUTATION && rhs->type == ET_COMPUTATION)
-    {
         return entity_new_from_computation(computation_subtract(lhs->computation, rhs->computation), FALSE);
-    }
     else if (lhs->type == ET_NUMBER && rhs->type == ET_NUMBER)
     {
         number = number_subtract(lhs->number, rhs->number);
@@ -132,7 +128,6 @@ Entity* entity_divide(Entity* lhs, Entity* rhs)
     if (lhs->type == ET_NUMBER && rhs->type == ET_NUMBER)
     {
         number = number_divide(lhs->number, rhs->number);
-
         return entity_new_from_number(number, FALSE);
     }
     if (lhs->type == ET_COMPUTATION && rhs->type == ET_COMPUTATION)

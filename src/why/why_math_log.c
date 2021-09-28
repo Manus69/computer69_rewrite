@@ -87,9 +87,6 @@ real math_ln_2(real x)
     real        w;
     int_signed  n;
 
-    // if (x <= 0)
-    //     assert(0);
-
     n = N_TERMS;
     value = 0;
     w = x - 1;

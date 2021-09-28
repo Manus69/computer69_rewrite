@@ -2,8 +2,8 @@
 #include "why_string_interface.h"
 #include "why_memory.h"
 
-#define READ_SIZE (1 << 11)
-#define NUMBER_OF_DESCRIPTORS (1 << 10)
+#define READ_SIZE               (1 << 11)
+#define NUMBER_OF_DESCRIPTORS   (1 << 10)
 
 static void _delete_buffers(Buffer** buffers)
 {
@@ -31,9 +31,7 @@ static Buffer* _get_buffer(int_signed index)
         return NULL;
 
     if (buffers[index] == NULL)
-    {
         buffers[index] = buffer_new();
-    }
 
     return buffers[index];
 }

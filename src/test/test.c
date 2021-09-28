@@ -434,7 +434,6 @@ void test_statement(const char *characters)
 {
     String *string;
 
-    // string = string_new_no_space_to_lower(characters);
     string = string_new_trimmed(characters);
     print_string_n(string);
 

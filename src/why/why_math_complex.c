@@ -2,8 +2,7 @@
 #include "why_math.h"
 #include "why_macros.h"
 #include "why_memory.h"
-
-#include <assert.h>
+#include "why_error.h"
 
 Complex complex(real re, real im)
 {
@@ -82,7 +81,10 @@ real complex_mod_squared(Complex z)
 Complex complex_inv(Complex z)
 {
     if (complex_is_zero(z))
-        assert(0);
+    {
+        error_set(WHY_ERROR_MATH, NULL);
+        return complex(0, 0);
+    }
     
     return (Complex){z.re / complex_mod_squared(z), -z.im / complex_mod_squared(z)};
 }

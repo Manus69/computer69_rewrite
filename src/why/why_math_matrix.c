@@ -4,8 +4,8 @@
 
 Matrix* matrix_new(int_signed n_rows, int_signed n_cols)
 {
-    Matrix* matrix;
-    int_signed size;
+    Matrix*     matrix;
+    int_signed  size;
 
     matrix = allocate(sizeof(Matrix));
     size = n_rows * n_cols;

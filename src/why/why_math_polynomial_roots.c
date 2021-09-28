@@ -2,14 +2,6 @@
 #include "why_math_polynomial.h"
 #include "why_error.h"
 
-#include <assert.h>
-
-#define DBG 1
-
-#if DBG
-#include <stdio.h>
-#endif
-
 Vector* _solve_qubic(const Polynomial* p);
 
 static Vector* _solve_constant(const Polynomial* p)

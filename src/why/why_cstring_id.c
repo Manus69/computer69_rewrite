@@ -81,8 +81,8 @@ int_unsigned id_int(const char* string)
 
 int_unsigned id_float(const char* string)
 {
-    char* pointer;
-    int_signed length;
+    char*       pointer;
+    int_signed  length;
 
     if (!string || !*string)
         return 0;

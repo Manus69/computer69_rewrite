@@ -1,10 +1,8 @@
 #include "why_math.h"
 #include "why_error.h"
+#include "why_lib.h"
 
-#include <limits.h>
-#include <assert.h>
-
-#define LIMIT 90
+#define FIB_LIMIT 90
 
 real math_id(real x)
 {
@@ -51,13 +49,19 @@ real power(real base, int_unsigned n)
 
 int_signed power_int(int_signed base, int_unsigned n)
 {
-    return (int_signed)power(base, n);
+    real result;
+
+    result = power(base, n);
+    if (result > WHY_INT_MAX)
+        return (int_signed)error_set(WHY_ERROR_MATH, "the number is too large");
+    
+    return result;
 }
 
 int_unsigned round_to_int(real x)
 {
-    if (x > ULLONG_MAX)
-        return (int_unsigned)error_set(WHY_ERROR_CONV, "the number is too big");
+    if (x > WHY_INT_MAX)
+        return (int_unsigned)error_set(WHY_ERROR_CONV, "the number is too large");
     
     return (int_unsigned)x;
 }
@@ -69,10 +73,10 @@ real absolute_value(real x)
 
 int_unsigned fib(int_unsigned n)
 {
-    static int_unsigned values[LIMIT];
-    int_unsigned value;
+    static int_unsigned values[FIB_LIMIT];
+    int_unsigned        value;
 
-    if (n >= LIMIT)
+    if (n >= FIB_LIMIT)
         return 0;
     
     if (n == 0)
@@ -103,7 +107,7 @@ static real math_mod_negative(real x, real mod)
 real math_mod(real x, real mod)
 {
     if (mod <= 0)
-        assert(0);
+        return (int_signed)error_set(WHY_ERROR_MATH, "negative mod");
     
     if (x < 0)
         return math_mod_negative(x, mod);

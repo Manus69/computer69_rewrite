@@ -4,8 +4,6 @@
 
 #include <unistd.h>
 
-#define DBG 0
-
 void main_loop()
 {
     VariableTable*  v_table;

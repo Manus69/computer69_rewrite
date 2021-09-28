@@ -27,8 +27,8 @@ static real _sin_coefficients[C_SIZE] = {0, 1, 0, -1, 0, 1, 0, -1, 0, 1, 0, -1};
 //sin x = 0 + x + 0x^2 - x^3/3! + 0x^4 + x^5/5! + 0x^6 - x^7/7!
 real math_sin(real x)
 {
-    int_signed n;
-    real result;
+    int_signed  n;
+    real        result;
 
     x = math_mod(x, TWO_PI);
     x = _map_angle_sin(x);

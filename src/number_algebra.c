@@ -157,6 +157,9 @@ Number* number_factorial(Number* lhs, const Number* rhs)
     if (lhs->n < 0)
         return error_set(WHY_ERROR_MATH, "! is defined for non-negative integers");
     
+    if (lhs->n > FACTORIAL_MAX_N)
+        return error_set(WHY_ERROR_MATH, "! argument is too large");
+    
     return number_new_int(factorial(lhs->n));
 }
 

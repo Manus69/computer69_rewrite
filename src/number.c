@@ -206,7 +206,7 @@ Complex number_to_complex(const Number* number)
 void number_delete(Number** number)
 {
     #if NO_DELETE
-    return ;
+        return ;
     #endif
 
     if (!number || !*number)

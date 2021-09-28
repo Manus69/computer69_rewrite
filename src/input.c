@@ -3,12 +3,7 @@
 #include "computation.h"
 #include "node.h"
 #include "why_error.h"
-
-#define DBG 1
-#if DBG
-    #include "print.h" //
-    #include <assert.h>
-#endif
+#include "print.h"
 
 static VariableTable* _insert_into_table(Variable* variable, VariableTable* v_table)
 {
@@ -45,9 +40,9 @@ static VariableTable* _process_assignment(String* line, VariableTable* v_table)
 
 static VariableTable* _process_eval(String* line, VariableTable* v_table)
 {
-    Vector* substrings;
-    String* lhs;
-    VariableTable* result;
+    Vector*         substrings;
+    String*         lhs;
+    VariableTable*  result;
 
     substrings = string_split_and_trim(line, TERMINALS[EQUALS]);
     lhs = vector_at(substrings, 0);

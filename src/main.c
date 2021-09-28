@@ -27,12 +27,12 @@ static void _at_exit()
 //only letters in variable names?
 //remove all asserts
 //be careful around things of the form f(x) = ... ; g(x) = f with no arg; this must be checked
-//max size for matrices?
 //limit for factorials and powers?
 //find an input to break "insert root"
 //put more complicated expressions into readme
 // f(x) = ? should be equivalent to "f" ?
 //test functions with veird values: log(-1), etc
+//do i handle overflow?
 
 int main()
 {
@@ -45,7 +45,7 @@ int main()
     data = data_init();
     
     // run_tests();
-    // test_statement("-999999999999999999999999999999999999999999999999999999x = x^2?");
+    // test_statement("1000^3");
     // test_sequence(valid_sequence);
     main_loop();
 
