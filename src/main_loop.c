@@ -1,6 +1,7 @@
 #include "frontend_declarations.h"
 #include "print.h"
 #include "main_loop_commands.h"
+#include "why_error.h"
 
 #include <unistd.h>
 
@@ -14,6 +15,8 @@ void main_loop()
     {
         line = get_line(STDIN_FILENO);
         if (!(line = string_trim(line)))
+            break ;
+        if (WHY_ERROR)
             break ;
 
         if (string_is_identical_to(line, CMD_QUIT))

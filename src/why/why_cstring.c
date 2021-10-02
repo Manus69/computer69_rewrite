@@ -140,6 +140,33 @@ int_signed cstr_index_of_any(const char* string, const char* set)
     return NOT_FOUND;
 }
 
+static boolean _is_substring(const char* string, const char* substring)
+{
+    while (*substring && *string == *substring)
+    {
+        substring ++;
+        string ++;
+    }
+    
+    return *substring ? FALSE : TRUE;
+}
+
+int_signed cstr_index_of_substring(const char* haystack, const char* needle)
+{
+    int_signed n;
+
+    n = 0;
+    while (haystack[n])
+    {
+        if (_is_substring(&haystack[n], needle))
+            return n;
+        
+        n ++;
+    }
+
+    return NOT_FOUND;
+}
+
 char cstr_char_to_lower(char c)
 {
     if (id_upper(&c))

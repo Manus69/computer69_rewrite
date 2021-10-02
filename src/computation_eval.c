@@ -9,7 +9,7 @@ static const void* op_functions[] = {number_add, number_subtract,
 number_mult, number_divide, number_mod, number_power, number_factorial, 0};
 
 static const void* op_functionsG[] = {entity_add, entity_subtract, 
-entity_mult, entity_divide, entity_mod, entity_power, entity_factorial, 0};
+entity_mult, entity_divide, entity_mod, entity_power, entity_factorial, entity_star_star, 0};
 
 static Number* _get_value(const char* id)
 {

@@ -8,6 +8,7 @@ int_signed      cstr_compare(const char* lhs, const char* rhs);
 int_signed      cstr_compare_length(const char* lhs, const char* rhs, int_signed length);
 int_signed      cstr_index_of(const char* string, char c);
 int_signed      cstr_index_of_any(const char* string, const char* set);
+int_signed      cstr_index_of_substring(const char* haystack, const char* needle);
 char*           cstr_substring(const char* string, int_unsigned length);
 char*           cstr_copy(const char* string);
 char*           cstr_concat_length(const char* lhs, int_signed lhs_len, const char* rhs, int_signed rhs_len);

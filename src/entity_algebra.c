@@ -70,7 +70,7 @@ Entity* entity_mult(Entity* lhs, Entity* rhs)
     }
     else if (lhs->type == ET_MATRIX && rhs->type == ET_MATRIX)
     {
-        matrix = matrix_repr_mult(lhs->matrix, rhs->matrix);
+        matrix = matrix_repr_term_mult(lhs->matrix, rhs->matrix);
         return entity_new_from_matrix(matrix, FALSE);
     }
     else if (lhs->type == ET_COMPUTATION && rhs->type == ET_COMPUTATION)
@@ -207,6 +207,22 @@ Entity* entity_factorial(Entity* lhs, Entity* rhs)
     {
         _computation = computation_factorial(lhs->computation, NULL);
         return entity_new_from_computation(_computation, FALSE);
+    }
+
+    return NULL;
+}
+
+Entity* entity_star_star(Entity* lhs, Entity* rhs)
+{
+    MatrixRepr*     matrix;
+
+    if (!lhs || !rhs)
+        return NULL;
+
+    if (lhs->type == ET_MATRIX && rhs->type == ET_MATRIX)
+    {
+        matrix = matrix_repr_mult(lhs->matrix, rhs->matrix);
+        return entity_new_from_matrix(matrix, FALSE);
     }
 
     return NULL;

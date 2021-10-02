@@ -4,11 +4,12 @@
 #include "why_tree_interface.h"
 #include "why_vector_interface.h"
 
-#define NO_DELETE       1
-#define CHECK_MEMORY    1
-#define MATRIX_MAX_SIZE 4
-#define FACTORIAL_MAX_N 20
-#define WHITE_SPACE     " \t\n\r"
+#define NO_DELETE           1
+#define CHECK_MEMORY        1
+#define MATRIX_MAX_SIZE     4
+#define MATRIX_MAX_POWER    100
+#define FACTORIAL_MAX_N     20
+#define WHITE_SPACE         " \t\n\r"
 
 typedef struct Number Number;
 typedef struct MatrixRepr MatrixRepr;
@@ -51,6 +52,7 @@ enum OPERATOR_TYPE
     OT_STAR, OT_SLASH, OT_MOD,
     OT_CARET,
     OT_EXCLAM,
+    OT_STARSTAR,
 };
 
 enum BULITIN_FUNCTION_TYPE

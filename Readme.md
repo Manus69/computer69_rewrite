@@ -1,6 +1,5 @@
 ### Computer69 is an interpreter of mathematical expressions.
 ### It is capable of evaluating arithmetical expressions, polynomials, trigonometric functions, matrix operations and so on.
-### Some of its more advanced features are still in development, they will become available in the future versions.
 ---
 ## Installation and controls
 #### Clone the repository in the directory of your choice and type "make".
@@ -65,7 +64,8 @@
     (i * pi * e)^0
 #### "+" stands for numeric or matrix addition;
 #### "-" numeric or matrix subtraction or unary negation;
-#### "*" numeric or matrix multiplication;
+#### "*" numeric multiplication;
+#### "**" matrix multiplication;
 #### "/" numeric division;
 #### "%" remainder after integer division;
 #### "^" exponentiation (rhs must be in **N**);
@@ -88,7 +88,7 @@
 #### Users can define functions of a single variable:
     f(x) = x^2
     g(x) = exp(x) + 1 / sqrt(x)
-    s(t) = a + v * t + (1/2) * g * t^2
+    s(t) = (1/2) * g * t^2 + sin(x)
 ---
 
 ### Function evaluation
@@ -148,7 +148,7 @@
 #### Matrices can be added, multiplied by a scalar or multiplied by a matrix:
     A = [[1, 0];[0, 1]] + [[0, 1];[1, 0]]
     B = pi * [[1, 0]]
-    C = [[pi, e]]*[[e];[pi]]*A
+    C = [[pi, e]]**[[e];[pi]]**A
 #### raising to an integer power is also defined:
     A = [[1, 1];[0, 1]]^69
 ---
@@ -164,7 +164,7 @@
 #### For example:
     a(x) = [[1, x];[0, 1]]
     b(x) = [[1, 0];[x, 1]]
-    c(x) = a(x) * b(x)
+    c(x) = a(x) ** b(x)
     c(0)
 ---
 
@@ -177,12 +177,12 @@
     V(r) = (4pi/3)r^3
     V(6300 * 1000) = ?
 #### Compute the 69th Fibonacci number using matrices:
-    F69 = [[0, 1]]*[[1, 1];[1, 0]]^68*[[1];[0]]
+    F69 = [[0, 1]]**[[1, 1];[1, 0]]^68**[[1];[0]]
 #### Another way to have fun is to rotate some vectors in the plane:
     r(x) = [[cos(x), -sin(x)];[sin(x), cos(x)]]
     r_pi = r(pi)
     v = [[1];[1]]
-    w = r_pi^2 * v
+    w = r_pi^2 ** v
 ---
 
 ## Upcoming features

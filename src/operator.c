@@ -20,8 +20,8 @@ int_signed operator_compare_precedence(Operator* lhs, Operator* rhs)
     return rhs->precedence > lhs->precedence;
 }
 
-//+ -*  / % ^ !
-static byte _precedence_array[] = {1, 1, 2, 2, 2, 3, 4};
+//+ - * / % ^ ! **
+static byte _precedence_array[] = {1, 1, 2, 2, 2, 3, 4, 2};
 
 static byte _get_precedence(OPERATOR_TYPE type)
 {
@@ -41,6 +41,19 @@ Operator* operator_new_from_type(OPERATOR_TYPE type)
     return op;
 }
 
+static Operator* _handle_star(String *string)
+{
+    _string_shift(string, 1);
+
+    if (string_at(string, 0) == TERMINALS[STAR])
+    {
+        _string_shift(string, 1);
+        return operator_new_from_type(OT_STARSTAR);
+    }
+
+    return operator_new_from_type(OT_STAR);
+}
+
 Operator* operator_new(String* string)
 {
     char*       characters;
@@ -50,13 +63,17 @@ Operator* operator_new(String* string)
         return NULL;
     
     characters = string_get_characters(string);
-    index = cstr_index_of(TERMINALS,* characters);
+    index = cstr_index_of(TERMINALS, *characters);
 
     if (index == NOT_FOUND)
         return NULL;
+
+    if (string_at(string, 0) == TERMINALS[STAR])
+        return _handle_star(string);
+    
     if (index > EXCLAM)
         return NULL;
-    
+
     _string_shift(string, 1);
 
     return operator_new_from_type(index);

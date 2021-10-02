@@ -73,6 +73,7 @@ MatrixRepr*     matrix_repr_subtract(MatrixRepr* lhs, MatrixRepr* rhs);
 MatrixRepr*     matrix_repr_mult(MatrixRepr* lhs, MatrixRepr* rhs);
 MatrixRepr*     matrix_repr_add_row(MatrixRepr* matrix, Vector* row);
 MatrixRepr*     matrix_repr_scale(MatrixRepr* matrix, Number* number);
+MatrixRepr*     matrix_repr_term_mult(MatrixRepr* lhs, MatrixRepr *rhs);
 
 //node
 Node*           node_new(void* data, NODE_TYPE type, boolean copy);
@@ -135,6 +136,7 @@ Entity*         entity_mod(Entity* lhs, Entity* rhs);
 Entity*         entity_power(Entity* lhs, Entity* rhs);
 Entity*         entity_increment(Entity* lhs, Entity* rhs);
 Entity*         entity_factorial(Entity* lhs, Entity* rhs);
+Entity*         entity_star_star(Entity* lhs, Entity* rhs);
 Computation*    computation_from_entity(Entity* entity, boolean copy);
 
 //variable

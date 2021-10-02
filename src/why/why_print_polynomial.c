@@ -59,7 +59,7 @@ static int _determine_sign(Complex coefficient)
 static void _print_coefficient(const Polynomial* p, int_signed degree, boolean leading)
 {
     Complex coefficient;
-    int sign;
+    int     sign;
 
     coefficient = polynomial_at(p, degree);
     if (leading)
@@ -68,11 +68,11 @@ static void _print_coefficient(const Polynomial* p, int_signed degree, boolean l
         return ;
     }
     
-    coefficient = polynomial_at(p, degree);
     sign = _determine_sign(coefficient);
     
     sign > 0 ? printf(" + ") : printf(" - ");
-    _print_p_coefficient(coefficient, FALSE, degree);
+    _print_p_coefficient(complex(absolute_value(coefficient.re),
+    absolute_value(coefficient.im)), FALSE, degree);
 }
 
 //this is fucking ugly

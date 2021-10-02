@@ -51,10 +51,23 @@ static Entity* _multiply_jk(const MatrixRepr* lhs, const MatrixRepr* rhs, int_si
         _lhs = matrix_repr_at(lhs, j, w);
         _rhs = matrix_repr_at(rhs, w, k);
         product = entity_mult(_lhs, _rhs);        
-        result = entity_increment(result, product); //this is spooky
+        result = entity_increment(result, product);
 
         w ++;
     }
+
+    return result;
+}
+
+static Entity* _term_multiply_jk(const MatrixRepr* lhs, const MatrixRepr* rhs, int_signed j, int_signed k)
+{
+    Entity* result;
+    Entity* _lhs;
+    Entity* _rhs;
+
+    _lhs = matrix_repr_at(lhs, j, k);
+    _rhs = matrix_repr_at(rhs, j, k);
+    result = entity_mult(_lhs, _rhs);
 
     return result;
 }
@@ -124,6 +137,19 @@ MatrixRepr* matrix_repr_mult(MatrixRepr* lhs, MatrixRepr* rhs)
     return matrix;
 }
 
+MatrixRepr* matrix_repr_term_mult(MatrixRepr* lhs, MatrixRepr *rhs)
+{
+    MatrixRepr* matrix;
+
+    if (!matrix_repr_equal_size(lhs, rhs))
+        return NULL;
+    
+    matrix = matrix_repr_new_fixed_size(rhs->n_rows, rhs->n_cols);
+    matrix = _matrix_operation(matrix, lhs, rhs, _term_multiply_jk);
+
+    return matrix;
+}
+
 MatrixRepr* matrix_repr_scale(MatrixRepr* matrix, Number* number)
 {
     MatrixRepr* new_matrix;
@@ -167,14 +193,16 @@ MatrixRepr* matrix_repr_power(MatrixRepr* lhs, Number* number)
     int_signed  n;
 
     if (number_get_type(number) != NT_INT)
-        return NULL;
+        return error_set(WHY_ERROR_MATH, NULL);
 
     n = number_get_int(number);
 
     if (!matrix_repr_is_square(lhs))
-        return NULL;
+        return error_set(WHY_ERROR_MATH, "the matrix is not square");
     if (n < 0)
-        return NULL;
+        return error_set(WHY_ERROR_MATH, NULL);
+    if (n > MATRIX_MAX_POWER)
+        return error_set(WHY_ERROR_MATH, "the exponent is too large");
     if (n == 0)
         return matrix_repr_I(lhs->n_cols);
     if (n == 1)
