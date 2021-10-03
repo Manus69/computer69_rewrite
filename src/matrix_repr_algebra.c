@@ -38,7 +38,7 @@ static Entity* _multiply_jk(const MatrixRepr* lhs, const MatrixRepr* rhs, int_si
     int_signed  w;
 
     if (!lhs->n_cols)
-        return NULL;
+        return error_set(WHY_ERROR_MATH, NULL);
     
     _lhs = matrix_repr_at(lhs, j, 0);
     _rhs = matrix_repr_at(rhs, 0, k);
@@ -103,7 +103,7 @@ MatrixRepr* matrix_repr_add(MatrixRepr* lhs, MatrixRepr* rhs)
     MatrixRepr* matrix;
 
     if (!matrix_repr_equal_size(lhs, rhs))
-        return NULL;
+        return error_set(WHY_ERROR_MATH, "matrix dimensions do not match");
     
     matrix = matrix_repr_new_fixed_size(lhs->n_rows, lhs->n_cols);
     matrix = _matrix_operation(matrix, lhs, rhs, _add_jk);
@@ -116,7 +116,7 @@ MatrixRepr* matrix_repr_subtract(MatrixRepr* lhs, MatrixRepr* rhs)
     MatrixRepr* matrix;
 
     if (!matrix_repr_equal_size(lhs, rhs))
-        return NULL;
+        return error_set(WHY_ERROR_MATH, "matrix dimensions do not match");
     
     matrix = matrix_repr_new_fixed_size(lhs->n_rows, lhs->n_cols);
     matrix = _matrix_operation(matrix, lhs, rhs, _subtract_jk);
@@ -129,7 +129,7 @@ MatrixRepr* matrix_repr_mult(MatrixRepr* lhs, MatrixRepr* rhs)
     MatrixRepr* matrix;
 
     if (matrix_repr_n_cols(lhs) != matrix_repr_n_rows(rhs))
-        return NULL;
+        return error_set(WHY_ERROR_MATH, "matrix dimensions do not match");
     
     matrix = matrix_repr_new_fixed_size(matrix_repr_n_rows(lhs), rhs->n_cols);
     matrix = _matrix_operation(matrix, lhs, rhs, _multiply_jk);
@@ -142,7 +142,7 @@ MatrixRepr* matrix_repr_term_mult(MatrixRepr* lhs, MatrixRepr *rhs)
     MatrixRepr* matrix;
 
     if (!matrix_repr_equal_size(lhs, rhs))
-        return NULL;
+        return error_set(WHY_ERROR_MATH, "matrix dimensions do not match");
     
     matrix = matrix_repr_new_fixed_size(rhs->n_rows, rhs->n_cols);
     matrix = _matrix_operation(matrix, lhs, rhs, _term_multiply_jk);
@@ -208,7 +208,7 @@ MatrixRepr* matrix_repr_power(MatrixRepr* lhs, Number* number)
     if (n == 1)
         return matrix_repr_copy(lhs);
 
-    m = 0;
+    m = 1;
     matrix = matrix_repr_copy(lhs);
     pointer = matrix;
     while (m < n)

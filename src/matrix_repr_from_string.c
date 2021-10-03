@@ -66,7 +66,7 @@ static MatrixRepr* _process_rows(Vector* rows, const VariableTable* v_table)
         row_string = vector_at(rows, n);
         row_string = string_skip_spaces(row_string);
         length = id_row(row_string);
-        if (!length)
+        if (!length || length != string_length(row_string))
             return NULL;
 
         substring = string_substring(row_string, 1, length - 2);

@@ -13,6 +13,9 @@
 #include <stdio.h>
 #include <unistd.h>
 
+#define N_SEPARATOR "\n"
+#define S_SEPARATOR "; "
+
 void print_number(const Number* number)
 {
     if (!number)
@@ -29,18 +32,21 @@ void print_number(const Number* number)
 void print_operator(const Operator* operator)
 {
     char*       format;
-    int_signed  index;
+    int_signed  type;
 
     if (!operator)
         return ;
 
-    index = operator_get_type(operator);
-    if (index == OT_CARET || index == OT_EXCLAM)
+    type = operator_get_type(operator);
+    if (type == OT_CARET || type == OT_EXCLAM)
         format = "%c";
     else
         format = " %c ";
 
-    printf(format, TERMINALS[index]);
+    if (type == OT_STARSTAR)
+        printf(" %s ", "**");
+    else
+        printf(format, TERMINALS[type]);
 }
 
 void print_node(const Node* node, const char* wc_symbol)
@@ -168,6 +174,8 @@ static void _print_matrix_repr_separator(const MatrixRepr* matrix, const char* w
     if (!n_rows || !n_cols)
         return ;
     
+    if (cstr_compare(separator, S_SEPARATOR) == 0)
+        printf("[");
     print_matrix_row(matrix, 0, wc_symbol);
 
     n = 1;
@@ -177,16 +185,19 @@ static void _print_matrix_repr_separator(const MatrixRepr* matrix, const char* w
         print_matrix_row(matrix, n, wc_symbol);
         n ++;
     }
+
+    if (cstr_compare(separator, S_SEPARATOR) == 0)
+        printf("]");
 }
 
 void print_matrix_repr(const MatrixRepr* matrix, const char* wc_symbol)
 {
-    return _print_matrix_repr_separator(matrix, wc_symbol, "\n");
+    return _print_matrix_repr_separator(matrix, wc_symbol, N_SEPARATOR);
 }
 
 void print_matrix_reprL(const MatrixRepr* matrix, const char* wc_symbol)
 {    
-    return _print_matrix_repr_separator(matrix, wc_symbol, "; ");
+    return _print_matrix_repr_separator(matrix, wc_symbol, S_SEPARATOR);
 }
 
 static void* functions[] = {print_number, print_matrix_repr, print_computation, 0};

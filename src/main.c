@@ -40,7 +40,7 @@ int main()
 
     main_loop();
 
-    // const char* s[] = {"a = [[1]]", "a + 1 = 0 ?", 0};
+    // const char* s[] = {"[[-1,0];[0,-1]]^2", 0};
     // test_all_statements(s);
 
     return EXIT_SUCCESS;
