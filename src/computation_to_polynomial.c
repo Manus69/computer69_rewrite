@@ -2,6 +2,15 @@
 #include "computation.h"
 #include "node.h"
 #include "entity.h"
+#include "why_error.h"
+
+static void* _handle_errors(Polynomial *lhs, Polynomial *rhs)
+{
+    polynomial_delete(&lhs);
+    polynomial_delete(&rhs);
+
+    return error_set(WHY_ERROR_MATH, NULL);
+}
 
 static Polynomial* _combine_polynomials(Polynomial* lhs, Operator* op, Polynomial* rhs)
 {
@@ -13,7 +22,7 @@ static Polynomial* _combine_polynomials(Polynomial* lhs, Operator* op, Polynomia
     op_type = operator_get_type(op);
 
     if ((!lhs || !rhs) && (op_type != OT_MINUS))
-        return NULL;
+        return _handle_errors(lhs, rhs);
     
     if (op_type == OT_PLUS)
         result = polynomial_add(lhs, rhs);

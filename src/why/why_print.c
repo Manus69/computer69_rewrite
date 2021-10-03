@@ -57,7 +57,9 @@ void print_real(real x)
         return ;
     }
 
-    if (absolute_value(x - round_to_int(x)) < TOLERANCE)
+    if (x == 0)
+        printf("0");
+    else if (absolute_value(x - round_to_int(x)) < TOLERANCE)
         printf("%.0Lf", x);
     else if (!WHY_ERROR)
     {

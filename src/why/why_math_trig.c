@@ -1,8 +1,6 @@
 #include "why_math.h"
 #include "why_error.h"
 
-#include <assert.h>
-
 #define TRIG_DELTA  1.0 / (1 << 12)
 #define TWO_PI      2 * PI
 #define C_SIZE      12

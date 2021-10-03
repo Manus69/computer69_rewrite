@@ -53,6 +53,13 @@ static VariableTable* _process_eval(String* line, VariableTable* v_table)
     return result;
 }
 
+static void _process_errors(Polynomial* _lhs, Polynomial* _rhs)
+{
+    polynomial_delete(&_lhs);
+    polynomial_delete(&_rhs);
+    error_set(WHY_ERROR_GENERIC, "could not convert to a polynomial");
+}
+
 static void _process_polynomial(Computation* lhs, Computation* rhs)
 {    
     Polynomial* p;
@@ -62,6 +69,9 @@ static void _process_polynomial(Computation* lhs, Computation* rhs)
 
     _lhs = computation_to_polynomial(lhs);
     _rhs = computation_to_polynomial(rhs);
+
+    if (!_lhs || !_rhs)
+        return _process_errors(_lhs, _rhs);
 
     p = polynomial_subtract(_lhs, _rhs);
     print_polynomial_with_rhs(p);

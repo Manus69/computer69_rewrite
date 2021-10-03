@@ -10,4 +10,5 @@ make isert(tree, item, after) to insert items in trees after another item in the
 sets via trees
 radix sort
 <stdint.h>?
+<stdbool.h>?
 some sort of a dictionary to unfuck enum - string array management?

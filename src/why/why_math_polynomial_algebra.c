@@ -4,7 +4,7 @@
 #include "why_cstring.h"
 
 #if WHY_DBG
-#include "why_print.h"
+    #include "why_print.h"
 #endif
 
 Polynomial* polynomial_increment(Polynomial* p, Polynomial* q)

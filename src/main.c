@@ -7,16 +7,18 @@
 
 void test_all_statements(const char** strings)
 {
-    int_signed  n;
-    String*     string;
+    int_signed      n;
+    String*         string;
+    VariableTable*  v_table;
 
     n = 0;
+    v_table = NULL;
     while (strings[n])
     {
         string = string_new_trimmed(strings[n]);
         print_string_n(string);
 
-        process_input_line(string, NULL);
+        v_table = process_input_line(string, v_table);
         string_delete(&string);
 
         n ++;
@@ -30,9 +32,6 @@ static void _at_exit()
 }
 
 //dont forget the author file
-//be careful around things of the form f(x) = ... ; g(x) = f with no arg; this must be checked
-// f(x) = ? should be equivalent to "f" ?
-//test functions with veird values: log(-1), etc
 
 int main()
 {
@@ -41,5 +40,8 @@ int main()
 
     main_loop();
 
-    return 0;
+    // const char* s[] = {"a = [[1]]", "a + 1 = 0 ?", 0};
+    // test_all_statements(s);
+
+    return EXIT_SUCCESS;
 }

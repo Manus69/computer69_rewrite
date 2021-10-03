@@ -1,6 +1,6 @@
 #include "why_lib.h"
+#include "why_error.h"
 
-#include <assert.h>
 #include <limits.h>
 
 #define SQRT_EPSILON    1.0 / (1 << 20)
@@ -12,7 +12,7 @@ real math_sqrt(real a)
     real x, x0, f, f_prime;
 
     if (a < 0)
-        assert(0);
+        return (int_signed)error_set(WHY_ERROR_MATH, "sqrt of a negative number");
     
     if (a == 0)
         return 0;
