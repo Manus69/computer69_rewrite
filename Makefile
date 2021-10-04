@@ -17,7 +17,7 @@ objects = $(subst $(source_folder),$(obj_folder),$(source:.c=.o))
 test_objects = $(subst $(test_folder),$(obj_folder),$(test_source:.c=.o))
 why_objects = $(subst $(why_folder),$(obj_folder),$(why_source:.c=.o))
 
-all: $(why_objects) $(test_objects) $(objects) $(name)
+all: $(directory) $(why_objects) $(test_objects) $(objects) $(name)
 
 release: flags=$(release_flags)
 release: clean all
@@ -42,5 +42,8 @@ clean:
 
 fclean: clean
 	rm -f $(name)
+
+directory:
+	mkdir -p $(obj_folder)
 
 re: fclean all
