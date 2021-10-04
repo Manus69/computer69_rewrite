@@ -31,17 +31,12 @@ static void _at_exit()
     data_delete(&data);
 }
 
-//dont forget the author file
-
 int main()
 {
     atexit(_at_exit);
     data = data_init();
 
     main_loop();
-
-    // const char* s[] = {"[[-1,0];[0,-1]]^2", 0};
-    // test_all_statements(s);
 
     return EXIT_SUCCESS;
 }
